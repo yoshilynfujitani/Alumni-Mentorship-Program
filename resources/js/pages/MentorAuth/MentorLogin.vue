@@ -11,10 +11,10 @@
             >
                 <img
                     class="w-8 h-8 mr-2"
-                    src="../../../public/mmsu_logo.png"
+                    src="../../../../public/mmsu_logo.png"
                     alt="logo"
                 />
-                Student Portal
+                Mentor Portal
             </a>
             <div
                 class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
@@ -81,22 +81,14 @@
                         </button>
 
                         <p
-                            class="text-sm font-light text-gray-500 dark:text-gray-400 flex flex-col text-center"
+                            class="text-sm font-light text-gray-500 dark:text-gray-400"
                         >
-                            <RouterLink to="/signup">
+                            <RouterLink to="/mentorsignup">
                                 Don’t have an account yet?
                                 <a
                                     href="#"
                                     class="font-medium text-green-600 hover:underline dark:text-green-500"
                                     >Sign up</a
-                                >
-                            </RouterLink>
-                            <RouterLink to="/mentorsignup">
-                                Log In as a Mentor
-                                <a
-                                    href="#"
-                                    class="font-medium text-green-600 hover:underline dark:text-green-500"
-                                    >Login</a
                                 >
                             </RouterLink>
                         </p>

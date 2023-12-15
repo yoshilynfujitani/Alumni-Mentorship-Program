@@ -38,7 +38,7 @@
                 />
                 <span
                     class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-                    >Student Portal</span
+                    >Mentor Portal</span
                 >
             </div>
             <ul class="space-y-2 font-medium flex flex-col justify-between">
@@ -146,10 +146,8 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center justify-center h-screen">
-            <slot />
-        </div>
+    <div class="h-screen w- screen flex items-center justify-center">
+        <slot />
     </div>
 </template>
 

@@ -12,11 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('studentDetails', function (Blueprint $table) {
-            $table->id("studentId");
+        Schema::connection('mentor')->create('mentorDetails', function (Blueprint $table) {
+            $table->id("mentorId");
+
             $table->string('name');
-             $table->string('course');
-             $table->integer('role')->default(2);   
+            $table->string('email');
+            $table->boolean('verified')->default(0);
+            $table->string('field');
+            $table->string('password');
+            $table->integer('role')->default(1);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
            
