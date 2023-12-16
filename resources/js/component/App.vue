@@ -62,7 +62,7 @@
                                 {{ appointment.startSchedule }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ appointment.mentor_name }}
+                                {{ appointment.name }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <a

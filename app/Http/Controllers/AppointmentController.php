@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Mentor;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
@@ -27,11 +28,16 @@ class AppointmentController extends Controller
         return $res;
     }
     public function getAppointments(){
-        return  DB::connection("mentor")->table('appointmentdetails')
-        ->select('appointmentdetails.*', 'mentordetails.name as mentor_name')
-        ->join('mentordetails', 'mentordetails.mentorId', '=', 'appointmentdetails.mentorId')
-        ->where('appointmentdetails.studentId', '=', Auth::id())
+        $data = DB::table(DB::raw('adminportal.users AS users'))
+        ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')
+        ->where("studentId",Auth::id())
         ->get();
-    
+        // $data = DB::connection('admin')->table('users')->get()
+        // ->union(
+        //     DB::connection('mentor')->table('appointmentdetails')->where("studentId",Auth::id())->get()
+        // );
+        
+        return $data;
     }
+    
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class signUpController extends Controller
+class StudentSignUpController extends Controller
 {
     //
     public function signUp(Request $request){
@@ -19,6 +19,7 @@ class signUpController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->course = $request->course;
+        $user->role = 1;
         $user->password = Hash::make($request->password);
 
         $res = $user->save();

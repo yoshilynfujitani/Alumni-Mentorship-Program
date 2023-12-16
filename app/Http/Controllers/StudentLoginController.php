@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 
-class LoginController extends Controller
+class StudentLoginController extends Controller
 {
     //
     public function login(Request $request){

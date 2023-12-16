@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+
 use App\Http\Controllers\MentorController;
-use App\Http\Controllers\signUpController;
-use App\Http\Controllers\studentController;
+
+
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\StudentLoginController;
+use App\Http\Controllers\StudentSignUpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +24,11 @@ use App\Http\Controllers\AppointmentController;
 //     return view('app');
 // });
 
-Route::post("/submit-student", [studentController::class, 'createStudent'])->name("createStudent");
-Route::get("/get-students", [studentController::class, "getStudents"]);
-Route::post("/get-student", [studentController::class, "getStudent"]);
-Route::post("/update-student", [studentController::class, "updateStudent"]);
-Route::post("/delete-student", [studentController::class, "deleteStudent"]);
-Route::post("/login", [LoginController::class, "login"]);
-Route::post("/signup", [signUpController::class, "signup"]);
-Route::get("/checkUser", [LoginController::class, "checkLogin"]);
-Route::post("/logout", [LoginController::class, "logout"]);
+//Student Auth
+Route::post("/login", [StudentLoginController::class, "login"]);
+Route::post("/signup", [StudentSignUpController::class, "signup"]);
+Route::get("/checkUser", [StudentLoginController::class, "checkLogin"]);
+Route::post("/logout", [StudentLoginController::class, "logout"]);
 
 //Appointments
 Route::post("/addAppointment", [AppointmentController::class, "requestAppointment"]);

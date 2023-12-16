@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mentor;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,14 +12,15 @@ class MentorController extends Controller
     //
     public function signUp(Request $request){
    
-        if(Mentor::where('email', $request->email)->exists()){
+        if(User::where('email', $request->email)->exists()){
             return;
         }
-        $user = new Mentor;
+        $user = new User;
 
         $user->name = $request->name;
         $user->email = $request->email;
         $user->field = $request->field;
+        $user->role = 2;
         $user->password = Hash::make($request->password);
     
         $res = $user->save();
@@ -27,6 +29,9 @@ class MentorController extends Controller
     }
 
     public function getMentors(){
-        return Mentor::select()->where('verified', 1)->get();
+        return User::select()
+        ->where('verified', 1)
+        ->where('role', 2)
+        ->get();
     }
 }
