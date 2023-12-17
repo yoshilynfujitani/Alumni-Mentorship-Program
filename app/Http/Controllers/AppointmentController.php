@@ -30,12 +30,12 @@ class AppointmentController extends Controller
     public function getAppointments(){
         $data = DB::table(DB::raw('adminportal.users AS users'))
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')
+        ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
         ->where("studentId",Auth::id())
+        ->orderBy("appt.created_at")
+        ->select('users.name', 'appt.*', 'status.*') 
         ->get();
-        // $data = DB::connection('admin')->table('users')->get()
-        // ->union(
-        //     DB::connection('mentor')->table('appointmentdetails')->where("studentId",Auth::id())->get()
-        // );
+       
         
         return $data;
     }

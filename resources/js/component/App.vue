@@ -41,6 +41,7 @@
                             <th scope="col" class="px-6 py-3">Field</th>
                             <th scope="col" class="px-6 py-3">Start Date</th>
                             <th scope="col" class="px-6 py-3">Mentor</th>
+                            <th scope="col" class="px-6 py-3">Status</th>
                             <th scope="col" class="px-6 py-3">
                                 <span class="sr-only">Edit</span>
                             </th>
@@ -64,11 +65,31 @@
                             <td class="px-6 py-4">
                                 {{ appointment.name }}
                             </td>
+                            <td class="\ text-right">
+                                <h1
+                                    v-if="appointment.Status === 0"
+                                    class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md"
+                                >
+                                    {{ appointment.statusName }}
+                                </h1>
+                                <h1
+                                    v-if="appointment.Status === 1"
+                                    class="text-white font-bold bg-green-400 py-2 px-4 rounded-md"
+                                >
+                                    {{ appointment.statusName }}
+                                </h1>
+                                <h1
+                                    v-if="appointment.Status === 2"
+                                    class="text-white font-bold bg-red-400 py-2 px-4 rounded-md"
+                                >
+                                    {{ appointment.statusName }}
+                                </h1>
+                            </td>
                             <td class="px-6 py-4 text-right">
                                 <a
                                     href="#"
                                     class="font-medium text-green-600 dark:text-green-500 hover:underline"
-                                    >Edit</a
+                                    >Chat</a
                                 >
                             </td>
                         </tr>
