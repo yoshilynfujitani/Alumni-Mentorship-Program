@@ -1,10 +1,22 @@
 <template lang="">
     <Layout>
-        <div class="">
-            <h1>{{ this.name }}</h1>
+        <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
+            >Appointment Date</label
+        >
+        <div class="w-full bg-green-50/40 p-5 rounded-md">
             <form @submit.prevent="submitAppointment" class="">
-                <div class="">
-                    <div class="">
+                <div class="flex gap-5">
+                    <div class="flex flex-col w-1/2">
+                        <DatePicker
+                            v-model="date"
+                            :color="color"
+                            mode="dateTime"
+                            hide-time-header
+                            expanded
+                            borderless
+                        />
+                    </div>
+                    <div class="w-2/3">
                         <div class="mb-5">
                             <label
                                 for="text"
@@ -36,24 +48,19 @@
                             <option>Math</option>
                         </select>
                     </div>
-                    <div class="flex flex-col gap-5 my-5 w-full">
-                        <label for="">Appointment Date</label>
-                        <DatePicker
-                            v-model="date"
-                            :color="color"
-                            mode="dateTime"
-                            hide-time-header
-                            expanded
-                        />
+                    <!-- Mentor Profile -->
+                    <div class="flex flex-col w-1/2">
+                        Mentor Profile
+                        <button
+                            type="submit"
+                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        >
+                            Make Appointment
+                        </button>
                     </div>
                 </div>
+
                 <input type="text" v-model="mentorId" hidden />
-                <button
-                    type="submit"
-                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                >
-                    Make Appointment
-                </button>
             </form>
         </div>
     </Layout>
