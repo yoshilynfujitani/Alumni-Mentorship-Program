@@ -7,6 +7,7 @@ import Mentors from "@/pages/Mentors.vue";
 
 import PDCApp from "@/pages/PDCPages/PDCApp.vue";
 import PDCMentors from "@/pages/PDCPages/PDCMentors.vue";
+import PDCStudents from "@/pages/PDCPages/PDCStudents.vue";
 export const routes = [
     {
         path: "/",
@@ -46,5 +47,10 @@ export const routes = [
         path: "/pdcmentors",
         name: "pdcmentors",
         component: PDCMentors,
+    },
+    {
+        path: "/pdcstudents",
+        name: "pdcstudents",
+        component: PDCStudents,
     },
 ];

@@ -1,9 +1,9 @@
 <template>
     <Layout>
-        <div class="max-w-[800px]">
+        <div class="min-w-[400px] max-w-[800px]">
             <div class="" v-if="loading"><h1>Loading...</h1></div>
-            <div class="" v-else>
-                <div
+            <div class="w-full">
+                <!-- <div
                     class="flex flex-col items-center gap-5"
                     v-if="appointments == 0"
                 >
@@ -15,11 +15,8 @@
                             Find a mentor
                         </button></router-link
                     >
-                </div>
-                <div
-                    class="relative overflow-x-auto shadow-md sm:rounded-lg"
-                    v-else
-                >
+                </div> -->
+                <div class="w-full overflow-x-auto shadow-md sm:rounded-lg">
                     <DatePicker
                         v-model="date"
                         :color="color"
@@ -37,13 +34,67 @@
                             <p
                                 class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400"
                             >
-                                Browse a list of Flowbite products designed to
-                                help you work and play, stay organized, get
-                                answers, keep in touch, grow your business, and
-                                more.
+                                To be able to request appointments from a mentor
+                                you must first request a ticket to PDC. Once
+                                approve you will be recommended to mentors with
+                                your requested field and make appointments
                             </p>
+                            <!-- <button
+                                class="bg-green-500 px-4 py-2 rounded-md text-white my-4 text-sm"
+                            >
+                                Request to PDC
+                            </button> -->
+                            <Modal
+                                :modalContent="{
+                                    title: 'Request Ticket',
+                                    content: 'Please fill out the form below:',
+                                    disablebtn: ticketStatus,
+                                }"
+                                buttonLabel="Request to PDC"
+                                cancelLabel="Cancel Ticket"
+                                saveLabel="Submit Ticket"
+                                @save="sendTicket"
+                            >
+                                <div class="my-4">
+                                    <label
+                                        for="field"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        >Select a field to request</label
+                                    >
+                                    <select
+                                        v-model="selectedField"
+                                        id="field"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    >
+                                        <option selected>Choose a Field</option>
+                                        <option value="(1)">
+                                            Business Management
+                                        </option>
+                                        <option value="2">Creative Arts</option>
+                                        <option value="3">
+                                            Engineering and Mathematics
+                                        </option>
+                                        <option value="4">
+                                            Humanities Arts and Social Sciences
+                                        </option>
+                                        <option value="5">
+                                            IT and Computer Science
+                                        </option>
+                                        <option value="6">
+                                            Medical and Health Science
+                                        </option>
+                                        <option value="7">
+                                            Teaching and Education
+                                        </option>
+                                        <option value="8">
+                                            Leadership and Team Building
+                                        </option>
+                                    </select>
+                                </div>
+                            </Modal>
                         </caption>
                         <thead
+                            v-if="appointments > 0"
                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                         >
                             <tr>
@@ -120,16 +171,18 @@
 <script>
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
+import Modal from "./Modal.vue";
 export default {
     components: {
         Calendar,
         DatePicker,
+        Modal,
     },
     data() {
         return {
             appointments: [],
             loading: false,
-
+            selectedField: null,
             attributes: [
                 {
                     // An optional key can be used for retrieving this attribute later,
@@ -148,6 +201,8 @@ export default {
                     order: 0,
                 },
             ],
+            userName: "",
+            ticketStatus: null,
         };
     },
     methods: {
@@ -166,13 +221,21 @@ export default {
         checkAuth() {
             axios.get("/checkUser").then(({ data }) => {
                 console.log(data);
-                if (!data) {
+                this.userName = data.userName;
+                this.ticketStatus = data.ticketStatus;
+                if (!data.loggedIn) {
                     this.$router.push("/");
                 }
             });
         },
         refecthAppointments() {
             this.getAppointments();
+        },
+        sendTicket() {
+            const fieldId = parseInt(this.selectedField);
+            axios.post("/requestticket", { fieldId }).then(({ data }) => {
+                console.log(data);
+            });
         },
     },
 

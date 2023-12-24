@@ -53,16 +53,14 @@
                         >
                             Instructor's Name
                         </th>
-                        <th scope="col" class="px-6 py-3">College</th>
+                        <th scope="col" class="px-6 py-3">Course</th>
                         <th
                             scope="col"
                             class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
                         >
                             Field
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            Status
-                        </th>
+                        <th scope="col" class="px-6 py-3">Status</th>
                         <th
                             scope="col"
                             class="px-16 py-3 text-center"
@@ -89,28 +87,9 @@
                         </th>
                         <td class="px-6 py-4">{{ Mentor.course }}</td>
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            {{ Mentor.fieldName }}
+                            {{ Mentor.field }}
                         </td>
-                        <td class="px-6 py-4 flex justify-center">
-                            <h1
-                                v-if="Mentor.verified === 0"
-                                class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md w-fit"
-                            >
-                                {{ Mentor.statusName }}
-                            </h1>
-                            <h1
-                                v-if="Mentor.verified === 1"
-                                class="text-white font-bold bg-green-400 py-2 px-4 rounded-md w-fit"
-                            >
-                                {{ Mentor.statusName }}
-                            </h1>
-                            <h1
-                                v-if="Mentor.verified === 2"
-                                class="text-white font-bold bg-red-400 py-2 px-4 rounded-md w-fit text-center"
-                            >
-                                {{ Mentor.statusName }}
-                            </h1>
-                        </td>
+                        <td class="px-6 py-4">{{ Mentor.statusName }}</td>
                         <td
                             class="px-6 py-4 text-center"
                             v-if="

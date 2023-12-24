@@ -24,6 +24,7 @@ export default {
             const fetchby = "all";
             axios.post("/getmentorAPI", { fetchby }).then(({ data }) => {
                 this.mentors = data;
+                console.log(data);
             });
         },
     },

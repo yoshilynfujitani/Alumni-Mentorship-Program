@@ -33,7 +33,8 @@ class MentorController extends Controller
         if($request->fetchMentorBy == "active"){
             return DB::connection('admin')->table('users')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->select('users.*', 'userstatus.statusName')
+            ->join('userfields', 'users.field', '=', 'userfields.fieldId')
+            ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
             ->where('users.verified', 1)
             ->where('users.role', 2)->get();
         }
@@ -41,14 +42,16 @@ class MentorController extends Controller
         if($request->fetchMentorBy == "pending"){
             return DB::connection('admin')->table('users')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->select('users.*', 'userstatus.statusName')
+            ->join('userfields', 'users.field', '=', 'userfields.fieldId')
+            ->select('users.*', 'userstatus.statusName','userfields.fieldName')
             ->where('users.verified', 0)
             ->where('users.role', 2)->get();
         }
         if($request->fetchMentorBy == "all"){
             return DB::connection('admin')->table('users')->orderBy('created_at')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->select('users.*', 'userstatus.statusName')
+            ->join('userfields', 'users.field', '=', 'userfields.fieldId',)
+            ->select('users.*', 'userstatus.statusName','userfields.fieldName')
         
             ->where('users.role', 2)->get();
         }

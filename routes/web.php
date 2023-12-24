@@ -6,6 +6,7 @@ use App\Http\Controllers\PDCController;
 
 
 use App\Http\Controllers\MentorController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\StudentLoginController;
 use App\Http\Controllers\StudentSignUpController;
@@ -31,9 +32,10 @@ Route::post("/signup", [StudentSignUpController::class, "signup"]);
 Route::get("/checkUser", [StudentLoginController::class, "checkLogin"]);
 Route::post("/logout", [StudentLoginController::class, "logout"]);
 
-//Appointments
+//Student
 Route::post("/addAppointment", [AppointmentController::class, "requestAppointment"]);
 Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]);
+Route::post("/requestticket", [TicketController::class, "requestTicket"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
