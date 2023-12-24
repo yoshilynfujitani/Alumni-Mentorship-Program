@@ -14,7 +14,7 @@
                     src="../../../public/mmsu_logo.png"
                     alt="logo"
                 />
-                Student Portal
+                Alumni Mentorship Program
             </a>
             <div
                 class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
@@ -83,22 +83,7 @@
                         <p
                             class="text-sm font-light text-gray-500 dark:text-gray-400 flex flex-col text-center"
                         >
-                            <RouterLink to="/signup">
-                                Don’t have an account yet?
-                                <a
-                                    href="#"
-                                    class="font-medium text-green-600 hover:underline dark:text-green-500"
-                                    >Sign up</a
-                                >
-                            </RouterLink>
-                            <RouterLink to="/mentorsignup">
-                                Log In as a Mentor
-                                <a
-                                    href="#"
-                                    class="font-medium text-green-600 hover:underline dark:text-green-500"
-                                    >Login</a
-                                >
-                            </RouterLink>
+                            Use your student no to log in
                         </p>
                     </form>
                 </div>
@@ -123,8 +108,19 @@ export default {
             axios
                 .post("/login", { email, password })
                 .then((res) => {
+                    console.log(res.data.user.role);
                     if (res.status == 200) {
-                        this.$router.push("/home");
+                        switch (res.data.user.role) {
+                            case 1:
+                                this.$router.push("/home");
+                                break;
+                            case 2:
+                                this.$router.push("/home");
+                                break;
+                            case 3:
+                                this.$router.push("/pdchome");
+                                break;
+                        }
                     }
                 })
                 .catch((err) => {

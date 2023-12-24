@@ -9,11 +9,9 @@
     </Layout>
 </template>
 <script>
-import Layout1 from "../Layout/Layout1.vue";
 import MentorCard from "../component/MentorComponents/MentorCard.vue";
 export default {
     components: {
-        Layout1,
         MentorCard,
     },
     data() {
@@ -23,9 +21,9 @@ export default {
     },
     methods: {
         getMentors() {
-            axios.get("/getmentorAPI").then(({ data }) => {
+            const fetchby = "all";
+            axios.post("/getmentorAPI", { fetchby }).then(({ data }) => {
                 this.mentors = data;
-                console.log(data);
             });
         },
     },

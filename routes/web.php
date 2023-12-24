@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PDCController;
+
+
 use App\Http\Controllers\MentorController;
-
-
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\StudentLoginController;
 use App\Http\Controllers\StudentSignUpController;
@@ -36,7 +37,10 @@ Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
-Route::get("/getmentorAPI", [MentorController::class, "getMentors"]);
+Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
+
+//PDC
+Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

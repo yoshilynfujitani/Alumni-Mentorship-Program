@@ -15,7 +15,20 @@ class StudentLoginController extends Controller
             $user = User::where("email",$request->email)->first();
             if(Hash::check($request->password, $user->password)){
                 Auth::login($user);
-                return response()->json(['message' => 'Login successful'], 200);
+    
+                // Include user details in the response
+                $userDetails = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    // Add other user details as needed
+                ];
+    
+                return response()->json([
+                    'message' => 'Login successful',
+                    'user' => $userDetails
+                ], 200);
             } else {
                 return response()->json(['message' => 'Invalid password'], 401);
             }

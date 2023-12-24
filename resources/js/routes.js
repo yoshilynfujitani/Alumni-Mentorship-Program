@@ -2,22 +2,18 @@ import App from "@/component/App.vue";
 
 import Login from "@/pages/Login.vue";
 import Signup from "@/pages/Signup.vue";
-import AppointmentForm from "@/component/AppointmentForm.vue";
+import AppointmentForm from "@/component/StudentComponents/AppointmentForm.vue";
 import Mentors from "@/pages/Mentors.vue";
-import MentorSignup from "@/pages/MentorAuth/MentorSignup.vue";
-import MentorLogin from "@/pages/MentorAuth/MentorLogin.vue";
 
+import PDCApp from "@/pages/PDCPages/PDCApp.vue";
+import PDCMentors from "@/pages/PDCPages/PDCMentors.vue";
 export const routes = [
     {
         path: "/",
         name: "login",
         component: Login,
     },
-    {
-        path: "/mentorlogin",
-        name: "mentorlogin",
-        component: MentorLogin,
-    },
+
     {
         path: "/home",
         name: "home",
@@ -29,11 +25,6 @@ export const routes = [
         name: "signup",
         component: Signup,
     },
-    {
-        path: "/mentorsignup",
-        name: "mentorsignup",
-        component: MentorSignup,
-    },
 
     {
         path: "/appointment/:id",
@@ -44,5 +35,16 @@ export const routes = [
         path: "/mentors",
         name: "mentors",
         component: Mentors,
+    },
+    //PDC Routes
+    {
+        path: "/pdchome",
+        name: "pdchome",
+        component: PDCApp,
+    },
+    {
+        path: "/pdcmentors",
+        name: "pdcmentors",
+        component: PDCMentors,
     },
 ];

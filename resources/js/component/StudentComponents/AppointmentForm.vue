@@ -66,13 +66,11 @@
     </Layout>
 </template>
 <script>
-import Layout1 from "../Layout/Layout1.vue";
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 
 export default {
     components: {
-        Layout1,
         Calendar,
         DatePicker,
     },
