@@ -30,6 +30,7 @@ use App\Http\Controllers\StudentSignUpController;
 Route::post("/login", [StudentLoginController::class, "login"]);
 Route::post("/signup", [StudentSignUpController::class, "signup"]);
 Route::get("/checkUser", [StudentLoginController::class, "checkLogin"]);
+Route::get("/checkuserstatus", [StudentLoginController::class, "checkUserStatus"]);
 Route::post("/logout", [StudentLoginController::class, "logout"]);
 
 //Student
@@ -43,6 +44,7 @@ Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
 
 //PDC
 Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);
+Route::get("/gettickets", [TicketController::class, "getTickets"]);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

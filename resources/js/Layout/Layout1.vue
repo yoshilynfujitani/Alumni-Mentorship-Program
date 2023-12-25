@@ -139,7 +139,7 @@ export default {
         },
         checkAuth() {
             axios.get("/checkUser").then(({ data }) => {
-                if (!data) {
+                if (!data.loggedIn) {
                     this.$router.push("/");
                 }
             });

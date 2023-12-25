@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
@@ -22,5 +24,15 @@ class TicketController extends Controller
         $currentUser->save();
 
         return;
+    }
+    
+    public function getTickets(){
+        
+        return DB::connection('admin')->table('ticketlogs')
+        ->join('users', 'users.id','=', 'ticketlogs.studentId')
+        ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+        ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
+        ->select('users.name','users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+        ->get();
     }
 }

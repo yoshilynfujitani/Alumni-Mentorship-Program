@@ -5,7 +5,6 @@
                 @click="isOpen = true"
                 class="bg-green-500 px-4 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
                 type="button"
-                :disabled="modalContent.disablebtn"
                 :class="{ 'cursor-not-allowed': modalContent.disablebtn }"
             >
                 {{ buttonLabel }}

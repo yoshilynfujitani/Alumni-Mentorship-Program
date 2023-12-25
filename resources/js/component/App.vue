@@ -2,6 +2,7 @@
     <Layout>
         <div class="min-w-[400px] max-w-[800px]">
             <div class="" v-if="loading"><h1>Loading...</h1></div>
+
             <div class="w-full">
                 <!-- <div
                     class="flex flex-col items-center gap-5"
@@ -17,13 +18,7 @@
                     >
                 </div> -->
                 <div class="w-full overflow-x-auto shadow-md sm:rounded-lg">
-                    <DatePicker
-                        v-model="date"
-                        :color="color"
-                        expanded
-                        borderless
-                        :attributes="attributes"
-                    />
+                    <DatePicker expanded borderless :attributes="attributes" />
                     <table
                         class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                     >
@@ -44,11 +39,22 @@
                             >
                                 Request to PDC
                             </button> -->
+                            <div
+                                class="text-center text-sm my-5 shadow-sm"
+                                v-if="ticketStatus"
+                            >
+                                <p
+                                    class="bg-yellow-100 mx-auto text-yellow-700 px-4 py-2 rounded-md flex items-center gap-2 justify-center"
+                                >
+                                    <FlFilledWarning />Your request is being
+                                    verified. Please wait
+                                </p>
+                            </div>
                             <Modal
+                                v-else
                                 :modalContent="{
                                     title: 'Request Ticket',
                                     content: 'Please fill out the form below:',
-                                    disablebtn: ticketStatus,
                                 }"
                                 buttonLabel="Request to PDC"
                                 cancelLabel="Cancel Ticket"
@@ -172,11 +178,13 @@
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 import Modal from "./Modal.vue";
+import { FlFilledWarning } from "@kalimahapps/vue-icons";
 export default {
     components: {
         Calendar,
         DatePicker,
         Modal,
+        FlFilledWarning,
     },
     data() {
         return {
@@ -185,18 +193,11 @@ export default {
             selectedField: null,
             attributes: [
                 {
-                    // An optional key can be used for retrieving this attribute later,
-                    // and will most likely be derived from your data object
                     key: 1,
-                    // Attribute type definitions
-                    content: "green", // Boolean, String, Object
 
-                    dot: true, // Boolean, String, Object
+                    content: "green",
 
-                    // We also need some dates to know where to display the attribute
-                    // We use a single date here, but it could also be an array of dates,
-                    //  a date range or a complex date pattern.
-                    dates: [],
+                    dot: true,
 
                     order: 0,
                 },
@@ -218,16 +219,6 @@ export default {
             });
         },
 
-        checkAuth() {
-            axios.get("/checkUser").then(({ data }) => {
-                console.log(data);
-                this.userName = data.userName;
-                this.ticketStatus = data.ticketStatus;
-                if (!data.loggedIn) {
-                    this.$router.push("/");
-                }
-            });
-        },
         refecthAppointments() {
             this.getAppointments();
         },
@@ -235,17 +226,23 @@ export default {
             const fieldId = parseInt(this.selectedField);
             axios.post("/requestticket", { fieldId }).then(({ data }) => {
                 console.log(data);
+                this.checkUserStatus();
+            });
+        },
+        checkUserStatus() {
+            axios.get("/checkuserstatus").then(({ data }) => {
+                console.log(data);
+                this.ticketStatus = data;
             });
         },
     },
 
     created() {
         this.getAppointments();
-        this.checkAuth();
     },
     mounted() {
         this.refecthAppointments();
-        this.checkAuth();
+        this.checkUserStatus();
     },
     watch: {
         authenticated(newValue) {

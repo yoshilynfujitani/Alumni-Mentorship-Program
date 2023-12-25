@@ -37,25 +37,32 @@ class StudentLoginController extends Controller
         }
     }
     
+    public function checkUserStatus(){
+        $user = Auth::user();
+    
+   
+        $ticketStatus = $user->ticketStatus;
+        return $ticketStatus;
+    }
 
     public function checkLogin()
     {
         if (Auth::check()) {
-            // User is logged in
+            
             $user = Auth::user();
     
-            // Additional information
-            $userName = $user->name; // Replace 'name' with the actual field in your users table
-            $ticketStatus = $user->ticketStatus; // Replace 'ticket_status' with the actual field in your users table
+            
+            $userName = $user->name;
+           
     
-            // Return the information as an associative array
+            
             return [
                 'loggedIn' => true,
                 'userName' => $userName,
-                'ticketStatus' => $ticketStatus,
+               
             ];
         } else {
-            // User is not logged in
+            
             return [
                 'loggedIn' => false,
             ];
