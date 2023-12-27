@@ -41,10 +41,13 @@ Route::post("/requestticket", [TicketController::class, "requestTicket"]);
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
 Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
+Route::post("/getmentorstudent", [MentorController::class, "getMentorsStudent"]);
 
 //PDC
 Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);
 Route::get("/gettickets", [TicketController::class, "getTickets"]);
+Route::get("/gettickets", [TicketController::class, "getTickets"]);
+Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

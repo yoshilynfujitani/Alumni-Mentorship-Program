@@ -1,24 +1,38 @@
 <template lang="">
     <LayoutPDC>
-        <div class="self-start">
+        <div class="self-start space-x-2">
             <button
                 @click="handleFilter('active')"
+                :class="{
+                    'bg-green-700 text-white': fetchMentorBy === 'active',
+                    'bg-white text-green-700 border':
+                        fetchMentorBy !== 'active',
+                }"
                 type="button"
-                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                class="focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
             >
                 Active Mentors
             </button>
             <button
                 @click="handleFilter('pending')"
+                :class="{
+                    'bg-green-700 text-white': fetchMentorBy === 'pending',
+                    'bg-white text-green-700 border':
+                        fetchMentorBy !== 'pending',
+                }"
                 type="button"
-                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                class="transition-all focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
             >
                 Pending Mentors
             </button>
             <button
                 @click="handleFilter('all')"
+                :class="{
+                    'bg-green-700 text-white': fetchMentorBy === 'all',
+                    'bg-white text-green-700 border': fetchMentorBy !== 'all',
+                }"
                 type="button"
-                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                class="focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
             >
                 All Mentors
             </button>
@@ -37,7 +51,7 @@
         </div>
 
         <div
-            class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg"
+            class="self-start overflow-x-auto w-full min-h-full shadow-md sm:rounded-lg"
             v-else
         >
             <table

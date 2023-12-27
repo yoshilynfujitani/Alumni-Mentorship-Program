@@ -42,7 +42,9 @@ class StudentLoginController extends Controller
     
    
         $ticketStatus = $user->ticketStatus;
-        return $ticketStatus;
+        $fieldToTake = $user->fieldToTake;
+        $allowedToAppoint = $user->allowToAppoint;
+        return ['ticketStatus' =>$ticketStatus, 'fieldToTake'=>$fieldToTake, 'allowToAppoint'=>$allowedToAppoint];
     }
 
     public function checkLogin()

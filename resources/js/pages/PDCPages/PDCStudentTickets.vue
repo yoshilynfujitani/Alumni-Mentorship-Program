@@ -115,7 +115,17 @@
                                         />
                                     </svg>
                                 </button>
-                                <button @click="verify(2, Mentor.id)">
+                                <button
+                                    @click="
+                                        verify(
+                                            2,
+                                            Ticket.studentId,
+
+                                            Ticket.field,
+                                            Ticket.id
+                                        )
+                                    "
+                                >
                                     <svg
                                         class="w-3 h-3 text-gray-800 dark:text-white hover:text-red-500"
                                         aria-hidden="true"
@@ -132,7 +142,17 @@
                                         />
                                     </svg>
                                 </button>
-                                <button @click="verify(1, Mentor.id)">
+                                <button
+                                    @click="
+                                        verify(
+                                            1,
+                                            Ticket.studentId,
+                                            Ticket.field,
+
+                                            Ticket.id
+                                        )
+                                    "
+                                >
                                     <svg
                                         class="w-3 h-3 text-gray-800 dark:text-white hover:text-green-600"
                                         aria-hidden="true"
@@ -184,12 +204,17 @@ export default {
                 this.isLoading = false;
             });
         },
-        updateStatus(mentor) {
-            mentor.isEdit = !mentor.isEdit;
+        updateStatus(Ticket) {
+            Ticket.isEdit = !Ticket.isEdit;
         },
-        verify(statusId, mentorId) {
+        verify(requestStatus, studentId, field, ticketId) {
             axios
-                .post("/editmentorstatus", { statusId, mentorId })
+                .post("/verifyticket", {
+                    requestStatus,
+                    studentId,
+                    field,
+                    ticketId,
+                })
                 .then(({ data }) => {
                     console.log(data);
                     this.getTickets();

@@ -124,13 +124,28 @@
     </aside>
     <div class="ml-[300px] mx-10">
         <div class="flex flex-col items-center justify-center h-screen">
-            <slot />
+            <slot :apptAccess="appointmentAccess" />
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    emits: ["appointment-access-data"],
+    data() {
+        return {
+            appointmentAccess: {
+                allowedToAppoint: null,
+                ticketStatus: null,
+                fieldToTake: null,
+            },
+        };
+    },
+    provide() {
+        return {
+            appointmentAccess: this.appointmentAccess,
+        };
+    },
     methods: {
         logout() {
             axios.post("/logout").then(() => {
@@ -144,9 +159,19 @@ export default {
                 }
             });
         },
+        checkUserStatus() {
+            axios.get("/checkuserstatus").then(({ data }) => {
+                this.appointmentAccess.ticketStatus = data.ticketStatus;
+                this.appointmentAccess.fieldToTake = data.fieldToTake;
+
+                this.appointmentAccess.allowedToAppoint = data.allowToAppoint;
+                this.$emit("appointment-access-data", this.appointmentAccess);
+            });
+        },
     },
     mounted() {
         this.checkAuth();
+        this.checkUserStatus();
     },
 };
 </script>
