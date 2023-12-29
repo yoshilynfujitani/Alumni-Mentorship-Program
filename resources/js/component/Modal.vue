@@ -12,7 +12,7 @@
 
             <div
                 v-if="isOpen"
-                class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50"
+                class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50 min-h-screen"
             >
                 <div class="p-6 bg-white rounded-md shadow-xl min-w-[400px]">
                     <div class="flex items-center justify-between">

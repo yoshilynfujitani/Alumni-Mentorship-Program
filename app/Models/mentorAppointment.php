@@ -9,5 +9,6 @@ class mentorAppointment extends Model
 {
     use HasFactory;
     protected $connection = 'mentor';
+    protected $primaryKey = 'appointmentId';
     protected $table = 'appointmentdetails';
 }

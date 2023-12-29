@@ -115,7 +115,7 @@ export default {
                                 this.$router.push("/home");
                                 break;
                             case 2:
-                                this.$router.push("/home");
+                                this.$router.push("/mentorhome");
                                 break;
                             case 3:
                                 this.$router.push("/pdchome");

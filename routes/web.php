@@ -37,11 +37,14 @@ Route::post("/logout", [StudentLoginController::class, "logout"]);
 Route::post("/addAppointment", [AppointmentController::class, "requestAppointment"]);
 Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]);
 Route::post("/requestticket", [TicketController::class, "requestTicket"]);
+Route::get("/getchartdata", [AppointmentController::class, "getChartData"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
 Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
 Route::post("/getmentorstudent", [MentorController::class, "getMentorsStudent"]);
+Route::get("/getstudentrequests", [MentorController::class, "getMentorAppointment"]);
+Route::post("/verifyrequest", [MentorController::class, "verifyRequest"]);
 
 //PDC
 Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);

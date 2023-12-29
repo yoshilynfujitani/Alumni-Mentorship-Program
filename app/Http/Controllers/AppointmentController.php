@@ -39,5 +39,36 @@ class AppointmentController extends Controller
         
         return $data;
     }
+
+    public function getChartData(){
+        $appointments = mentorAppointment::
+    join(DB::raw('adminportal.userfields AS field'), 'field.fieldId', '=', 'appointmentdetails.field')
+    ->where('appointmentdetails.studentId', Auth::id())
+    ->select('field.fieldName', 'field.id')
+    ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.studentId = ' . Auth::id() . ') as count'))
+    ->groupBy('field.fieldName', 'field.id')
+    ->get();
+
+ // You may need to adjust this query based on your actual data structure
+       
+        $data = [
+            'labels' => [],
+            'datasets' => [
+                [
+                    'backgroundColor' => ["#41B883", "	#FAFA33", "#00D8FF", "#DD1B16"],
+                    'data' => [],
+                ],
+            ],
+        ];
+
+        // Populate labels and data based on the subject of the appointment
+        foreach ($appointments as $appointment) {
+            $data['labels'][] = $appointment->fieldName;
+            $data['datasets'][0]['data'][] = $appointment->count; // Assuming you have a 'count' field in your Appointment model
+        }
+
+        return response()->json(['chartData' => $data]);
+    }
+    
     
 }

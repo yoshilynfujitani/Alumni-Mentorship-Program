@@ -123,8 +123,8 @@
         </div>
     </aside>
     <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center justify-center h-screen">
-            <slot :apptAccess="appointmentAccess" />
+        <div class="flex flex-col items-center py-20 min-h-screen">
+            <slot />
         </div>
     </div>
 </template>

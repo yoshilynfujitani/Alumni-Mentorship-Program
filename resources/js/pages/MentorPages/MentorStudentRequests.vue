@@ -1,43 +1,7 @@
 <template lang="">
-    <LayoutPDC>
-        <div class="self-start space-x-2">
-            <button
-                @click="handleFilter('active')"
-                :class="{
-                    'bg-green-700 text-white': fetchMentorBy === 'active',
-                    'bg-white text-green-700 border':
-                        fetchMentorBy !== 'active',
-                }"
-                type="button"
-                class="focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
-            >
-                Active Mentors
-            </button>
-            <button
-                @click="handleFilter('pending')"
-                :class="{
-                    'bg-green-700 text-white': fetchMentorBy === 'pending',
-                    'bg-white text-green-700 border':
-                        fetchMentorBy !== 'pending',
-                }"
-                type="button"
-                class="transition-all focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
-            >
-                Pending Mentors
-            </button>
-            <button
-                @click="handleFilter('all')"
-                :class="{
-                    'bg-green-700 text-white': fetchMentorBy === 'all',
-                    'bg-white text-green-700 border': fetchMentorBy !== 'all',
-                }"
-                type="button"
-                class="focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
-            >
-                All Mentors
-            </button>
-
-            <h1>Mentors</h1>
+    <LayoutMentor>
+        <div class="self-start">
+            <h1>Pending Appointments</h1>
         </div>
 
         <!-- <div class="grid grid-cols-4 gap-5 mx-auto my-10">
@@ -51,7 +15,7 @@
         </div>
 
         <div
-            class="self-start overflow-x-auto w-full min-h-full shadow-md sm:rounded-lg"
+            class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg"
             v-else
         >
             <table
@@ -65,9 +29,9 @@
                             scope="col"
                             class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
                         >
-                            Instructor's Name
+                            Student's Name
                         </th>
-                        <th scope="col" class="px-6 py-3">College</th>
+                        <th scope="col" class="px-6 py-3">Course</th>
                         <th
                             scope="col"
                             class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
@@ -77,68 +41,49 @@
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
                         </th>
-                        <th
-                            scope="col"
-                            class="px-16 py-3 text-center"
-                            v-if="
-                                fetchMentorBy == 'all' ||
-                                fetchMentorBy == 'pending'
-                            "
-                        >
-                            Edit
-                        </th>
+                        <th scope="col" class="px-16 py-3 text-center">Edit</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
-                        v-for="Mentor in mentors"
-                        :key="Mentor.id"
+                        v-for="Request in requests"
+                        :key="Request.appointmentId"
                         class="border-b border-gray-200 dark:border-gray-700"
                     >
                         <th
                             scope="row"
-                            class="flex items-center gap-2 px-6 py-7 h-full font-medium text-gray-900 bg-gray-50 dark:text-white dark:bg-gray-800"
+                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
                         >
-                            <img
-                                class="w-7 h-7 rounded-full"
-                                src="../../../../public/DefaultAvatar.webp"
-                                alt="Avatar"
-                            />{{ Mentor.name }}
+                            {{ Request.name }}
                         </th>
-                        <td class="px-6 py-4">{{ Mentor.course }}</td>
+                        <td class="px-6 py-4">{{ Request.course }}</td>
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            {{ Mentor.fieldName }}
+                            {{ Request.fieldName }}
                         </td>
                         <td class="px-6 py-4 flex justify-center">
                             <h1
-                                v-if="Mentor.verified === 0"
+                                v-if="Request.Status === 0"
                                 class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md w-fit"
                             >
-                                {{ Mentor.statusName }}
+                                {{ Request.statusName }}
                             </h1>
                             <h1
-                                v-if="Mentor.verified === 1"
+                                v-if="Request.Status === 1"
                                 class="text-white font-bold bg-green-400 py-2 px-4 rounded-md w-fit"
                             >
-                                {{ Mentor.statusName }}
+                                {{ Request.statusName }}
                             </h1>
                             <h1
-                                v-if="Mentor.verified === 2"
+                                v-if="Request.Status === 2"
                                 class="text-white font-bold bg-red-400 py-2 px-4 rounded-md w-fit text-center"
                             >
-                                {{ Mentor.statusName }}
+                                {{ Request.statusName }}
                             </h1>
                         </td>
-                        <td
-                            class="px-6 py-4 text-center"
-                            v-if="
-                                fetchMentorBy == 'all' ||
-                                fetchMentorBy == 'pending'
-                            "
-                        >
+                        <td class="px-6 py-4 text-center">
                             <button
-                                @click="updateStatus(Mentor)"
-                                v-if="!Mentor.isEdit"
+                                @click="updateStatus(Request)"
+                                v-if="!Request.isEdit"
                             >
                                 <svg
                                     class="w-3 h-3 text-gray-800 dark:text-white"
@@ -152,8 +97,8 @@
                                     />
                                 </svg>
                             </button>
-                            <div class="space-x-5" v-if="Mentor.isEdit">
-                                <button @click="updateStatus(Mentor)">
+                            <div class="space-x-5" v-if="Request.isEdit">
+                                <button @click="updateStatus(Request)">
                                     <svg
                                         class="w-3 h-3 text-gray-800 dark:text-white hover:text-gray-400"
                                         aria-hidden="true"
@@ -170,7 +115,15 @@
                                         />
                                     </svg>
                                 </button>
-                                <button @click="verify(2, Mentor.id)">
+                                <button
+                                    @click="
+                                        verify(
+                                            2,
+                                            Request.studentId,
+                                            Request.appointmentId
+                                        )
+                                    "
+                                >
                                     <svg
                                         class="w-3 h-3 text-gray-800 dark:text-white hover:text-red-500"
                                         aria-hidden="true"
@@ -187,7 +140,15 @@
                                         />
                                     </svg>
                                 </button>
-                                <button @click="verify(1, Mentor.id)">
+                                <button
+                                    @click="
+                                        verify(
+                                            1,
+                                            Request.studentId,
+                                            Request.appointmentId
+                                        )
+                                    "
+                                >
                                     <svg
                                         class="w-3 h-3 text-gray-800 dark:text-white hover:text-green-600"
                                         aria-hidden="true"
@@ -210,7 +171,7 @@
                 </tbody>
             </table>
         </div>
-    </LayoutPDC>
+    </LayoutMentor>
 </template>
 <script>
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
@@ -222,41 +183,41 @@ export default {
     },
     data() {
         return {
-            mentors: [],
-            fetchMentorBy: "active",
-            // ifPendingMentors: false,
+            requests: [],
+
             isLoading: false,
             isEdit: false,
         };
     },
     methods: {
-        handleFilter(filter) {
-            (this.fetchMentorBy = filter), this.getMentors();
-        },
-        getMentors() {
+        getRequests() {
             this.isLoading = true;
-            const { fetchMentorBy } = this;
-            axios.post("/getmentorAPI", { fetchMentorBy }).then(({ data }) => {
+
+            axios.get("/getstudentrequests").then(({ data }) => {
                 console.log(data);
 
-                this.mentors = data;
+                this.requests = data;
                 this.isLoading = false;
             });
         },
-        updateStatus(mentor) {
-            mentor.isEdit = !mentor.isEdit;
+        updateStatus(Request) {
+            Request.isEdit = !Request.isEdit;
         },
-        verify(statusId, mentorId) {
+        verify(requestStatus, studentId, appointmentId) {
             axios
-                .post("/editmentorstatus", { statusId, mentorId })
+                .post("/verifyrequest", {
+                    requestStatus,
+                    studentId,
+                    appointmentId,
+                })
                 .then(({ data }) => {
                     console.log(data);
-                    this.getMentors();
+                    this.getRequests();
                 });
         },
     },
     mounted() {
-        this.getMentors();
+        this.getRequests();
     },
 };
 </script>

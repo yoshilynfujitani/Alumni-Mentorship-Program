@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class MentorController extends Controller
@@ -54,7 +56,7 @@ class MentorController extends Controller
         $query = DB::connection('admin')->table('users')
         ->join('userfields', 'userfields.fieldId', '=', 'users.field')
         ->where('users.role', 2)
-        ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName' );
+        ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id' );
 
         if($request->allowedToAppoint == 0){
             return $query->get();
@@ -65,6 +67,37 @@ class MentorController extends Controller
         
     
        
+    }
+
+    public function getMentorAppointment(){
+        return mentorAppointment::where('appointmentdetails.mentorId', Auth::id())
+        ->join('appointmentstatus', 'appointmentstatus.statusId', '=', 'appointmentdetails.status')
+        ->join(DB::raw('adminportal.users AS users'), 'users.id', '=', 'appointmentdetails.studentId')
+        ->select('appointmentdetails.*', 'appointmentstatus.*', 'users.name', 'users.course')
+        ->get();
+    }
+
+    public function verifyRequest(Request $request){
+        $appointment = mentorAppointment::find($request->appointmentId);
+        $user = User::find($request->studentId);
+
+        if($request->requestStatus == 1){
+            $appointment->Status = 1;
+            $user->allowToAppoint = 0;
+            $user->fieldToTake = null;
+            $user->ticketStatus = null;
+            $user->save();
+            $appointment->save();
+
+        }
+
+        if($request->requestStatus == 2){
+            $appointment->Status = 2;
+            $appointment->save();
+        }
+
+        return;
+
     }
   
 }
