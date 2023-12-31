@@ -37,7 +37,8 @@ Route::post("/logout", [StudentLoginController::class, "logout"]);
 Route::post("/addAppointment", [AppointmentController::class, "requestAppointment"]);
 Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]);
 Route::post("/requestticket", [TicketController::class, "requestTicket"]);
-Route::get("/getchartdata", [AppointmentController::class, "getChartData"]);
+Route::get("/getpiechartdata", [AppointmentController::class, "getPieChartData"]);
+Route::get("/getbarchartdata", [AppointmentController::class, "getBarChartData"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

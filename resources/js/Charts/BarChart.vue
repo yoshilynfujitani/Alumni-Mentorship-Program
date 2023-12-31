@@ -2,11 +2,11 @@
     <div
         class="bg-gray-100/40 rounded-md p-5 w-1/2 flex justify-center shadow-md"
     >
-        <Bar :data="chartData" :options="chartOptions" />
+        <Bar :data="chartData" :options="chartOptions" v-if="loaded" />
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import {
     Chart as ChartJS,
     Title,
@@ -28,12 +28,13 @@ ChartJS.register(
 );
 
 export default {
-    name: "App",
+    name: "BarChart",
     components: {
         Bar,
     },
     data() {
         return {
+            loaded: false,
             chartData: {
                 labels: [
                     "January",
@@ -53,7 +54,7 @@ export default {
                     {
                         label: "Number of Appointments",
                         backgroundColor: "#41B883",
-                        data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+                        data: [],
                     },
                 ],
             },
@@ -61,6 +62,29 @@ export default {
                 responsive: true,
             },
         };
+    },
+    methods: {
+        fetchChartData() {
+            axios
+                .get("/getbarchartdata")
+                .then((response) => {
+                    // Update the chart data with the fetched data
+                    this.chartData.datasets[0].data = Object.values(
+                        response.data
+                    ).map((key) => parseInt(key, 10));
+
+                    this.loaded = true;
+                })
+                .catch((error) => {
+                    console.error("Error fetching chart data:", error);
+                });
+        },
+    },
+    created() {
+        this.fetchChartData();
+    },
+    mounted() {
+        // this.fetchChartData();
     },
 };
 </script>

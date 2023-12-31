@@ -16,7 +16,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default {
-    name: "BarChart",
+    name: "PieChart",
     components: { Pie },
     data() {
         return {
@@ -30,10 +30,10 @@ export default {
     methods: {
         fetchChartData() {
             axios
-                .get("/getchartdata")
+                .get("/getpiechartdata")
                 .then((response) => {
                     this.chartData = response.data.chartData;
-                    console.log(response);
+
                     this.loaded = true;
                 })
                 .catch((error) => {

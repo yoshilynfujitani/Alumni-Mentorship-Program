@@ -40,7 +40,7 @@ class AppointmentController extends Controller
         return $data;
     }
 
-    public function getChartData(){
+    public function getPieChartData(){
         $appointments = mentorAppointment::
     join(DB::raw('adminportal.userfields AS field'), 'field.fieldId', '=', 'appointmentdetails.field')
     ->where('appointmentdetails.studentId', Auth::id())
@@ -68,6 +68,30 @@ class AppointmentController extends Controller
         }
 
         return response()->json(['chartData' => $data]);
+    }
+    public function getBarChartData()
+    {
+        $currentYear = now()->year; // Get the current year
+        $appointments = MentorAppointment::whereYear('created_at', $currentYear)
+            ->orderBy('created_at')
+            ->where('studentId', Auth::id())
+            ->get();
+
+        $monthlyAppointments = [];
+
+        // Initialize counts for all months to zero
+        foreach (range(1, 12) as $month) {
+            $monthName = Carbon::createFromDate($currentYear, $month, 1)->format('F');
+            $monthlyAppointments[$monthName] = 0;
+        }
+
+        // Count appointments for each month
+        foreach ($appointments as $appointment) {
+            $month = Carbon::parse($appointment->created_at)->format('F');
+            $monthlyAppointments[$month]++;
+        }
+
+        return array_values($monthlyAppointments);
     }
     
     
