@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-100/40 rounded-md p-5 w-1/2 flex justify-center shadow-md"
+        class="bg-gray-100/40 rounded-md p-5 w-full flex justify-center shadow-md"
     >
         <Bar :data="chartData" :options="chartOptions" v-if="loaded" />
     </div>
@@ -37,18 +37,18 @@ export default {
             loaded: false,
             chartData: {
                 labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
                     "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
                 ],
                 datasets: [
                     {
@@ -58,8 +58,22 @@ export default {
                     },
                 ],
             },
+
             chartOptions: {
                 responsive: true,
+                scales: {
+                    y: {
+                        max: 10,
+                        // Add min if needed
+                        // min: 0,
+                    },
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Your number of appointment for the year ${new Date().getFullYear()}`,
+                    },
+                },
             },
         };
     },

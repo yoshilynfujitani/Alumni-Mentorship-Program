@@ -49,8 +49,7 @@ class AppointmentController extends Controller
     ->groupBy('field.fieldName', 'field.id')
     ->get();
 
- // You may need to adjust this query based on your actual data structure
-       
+
         $data = [
             'labels' => [],
             'datasets' => [
@@ -61,17 +60,17 @@ class AppointmentController extends Controller
             ],
         ];
 
-        // Populate labels and data based on the subject of the appointment
+    
         foreach ($appointments as $appointment) {
             $data['labels'][] = $appointment->fieldName;
-            $data['datasets'][0]['data'][] = $appointment->count; // Assuming you have a 'count' field in your Appointment model
+            $data['datasets'][0]['data'][] = $appointment->count; 
         }
 
         return response()->json(['chartData' => $data]);
     }
     public function getBarChartData()
     {
-        $currentYear = now()->year; // Get the current year
+        $currentYear = now()->year; 
         $appointments = MentorAppointment::whereYear('created_at', $currentYear)
             ->orderBy('created_at')
             ->where('studentId', Auth::id())

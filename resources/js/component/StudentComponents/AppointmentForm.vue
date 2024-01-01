@@ -33,20 +33,40 @@
                             />
                         </div>
 
-                        <label
-                            for="field"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >Select Subject</label
-                        >
-                        <select
-                            v-model="field"
-                            id="field"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        >
-                            <option>English</option>
-                            <option>Science</option>
-                            <option>Math</option>
-                        </select>
+                        <div class="my-4">
+                            <label
+                                for="field"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >Select a field to request</label
+                            >
+                            <select
+                                v-model="field"
+                                id="field"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                            >
+                                <option selected>Choose a Field</option>
+                                <option value="1">Business Management</option>
+                                <option value="2">Creative Arts</option>
+                                <option value="3">
+                                    Engineering and Mathematics
+                                </option>
+                                <option value="4">
+                                    Humanities Arts and Social Sciences
+                                </option>
+                                <option value="5">
+                                    IT and Computer Science
+                                </option>
+                                <option value="6">
+                                    Medical and Health Science
+                                </option>
+                                <option value="7">
+                                    Teaching and Education
+                                </option>
+                                <option value="8">
+                                    Leadership and Team Building
+                                </option>
+                            </select>
+                        </div>
                     </div>
                     <!-- Mentor Profile -->
                     <div class="flex flex-col w-1/2">

@@ -1,6 +1,8 @@
 <template>
-    <div class="bg-gray-100/40 rounded-md p-5 flex justify-center shadow-md">
-        <Pie
+    <div
+        class="bg-gray-100/40 rounded-md flex justify-center items-center shadow-md"
+    >
+        <Doughnut
             v-if="loaded"
             id="my-chart-id"
             :options="chartOptions"
@@ -10,20 +12,26 @@
 </template>
 
 <script>
-import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "vue-chartjs";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default {
     name: "PieChart",
-    components: { Pie },
+    components: { Doughnut },
     data() {
         return {
             loaded: false,
             chartData: null,
             chartOptions: {
                 responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Your most frequent Field of Appointment`,
+                    },
+                },
             },
         };
     },

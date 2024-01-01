@@ -123,7 +123,7 @@
         </div>
     </aside>
     <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center py-20 min-h-screen">
+        <div class="flex flex-col items-center pb-20 pt-10 min-h-screen">
             <slot />
         </div>
     </div>
