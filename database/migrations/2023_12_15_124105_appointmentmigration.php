@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('Status')->default(0);
             $table->string("mentorId");
             $table->string("studentId");
+            $table->integer('convoId');
             $table->datetime('startSchedule');
         
             $table->timestamp('created_at')->nullable();

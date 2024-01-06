@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::connection('admin')->create('ticketlogs', function (Blueprint $table) {
+        Schema::connection('admin')->create('conversations', function (Blueprint $table) {
             $table->id();
             $table->integer('studentId');
             $table->integer('field');

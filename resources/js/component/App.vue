@@ -12,8 +12,8 @@
                 Welcome Back!
             </div>
             <div class="flex gap-10 mb-10 w-full">
-                <PieChart />
-                <BarChart />
+                <div class="w-1/3"><PieChart /></div>
+                <div class="w-2/3"><BarChart /></div>
             </div>
             <p
                 class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400"
@@ -102,7 +102,7 @@
                     </div>
                 </Modal>
             </div>
-            <div class="w-full overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="w-full overflow-x-clip shadow-md sm:rounded-lg">
                 <div class="mx-52">
                     <DatePicker expanded borderless :attributes="attributes" />
                 </div>
@@ -170,11 +170,9 @@
                                 </h1>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a
-                                    href="#"
-                                    class="font-medium text-green-600 dark:text-green-500 hover:underline"
-                                    >Chat</a
-                                >
+                                <Chat
+                                    :appointmentId="appointment.appointmentId"
+                                />
                             </td>
                         </tr>
                     </tbody>
@@ -190,6 +188,7 @@ import PieChart from "../Charts/PieChart.vue";
 import BarChart from "../Charts/BarChart.vue";
 import "v-calendar/style.css";
 import Modal from "./Modal.vue";
+import Chat from "./Chat.vue";
 import { FlFilledWarning } from "@kalimahapps/vue-icons";
 import { AkCircleCheck } from "@kalimahapps/vue-icons";
 import { AnOutlinedCloseCircle } from "@kalimahapps/vue-icons";
@@ -203,6 +202,7 @@ export default {
         AnOutlinedCloseCircle,
         PieChart,
         BarChart,
+        Chat,
     },
     data() {
         return {

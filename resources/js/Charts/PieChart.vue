@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-100/40 rounded-md flex justify-center items-center shadow-md"
+        class="bg-gray-100/40 rounded-md flex justify-center items-center p-5 h-full shadow-md"
     >
         <Doughnut
             v-if="loaded"
