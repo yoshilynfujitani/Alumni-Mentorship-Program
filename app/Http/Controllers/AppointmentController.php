@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Convo;
 use App\Models\Mentor;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
@@ -19,11 +20,10 @@ class AppointmentController extends Controller
         $newAppointment->mentorId = $request->mentorId;
         $newAppointment->title = $request->title;
         $newAppointment->field = $request->field;
-        
-       
         $newAppointment->startSchedule = Carbon::parse($request->date);
     
         $res = $newAppointment->save();
+
     
         return $res;
     }

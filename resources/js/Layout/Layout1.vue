@@ -138,6 +138,7 @@ export default {
                 allowedToAppoint: null,
                 ticketStatus: null,
                 fieldToTake: null,
+                userId: null,
             },
         };
     },
@@ -163,6 +164,7 @@ export default {
             axios.get("/checkuserstatus").then(({ data }) => {
                 this.appointmentAccess.ticketStatus = data.ticketStatus;
                 this.appointmentAccess.fieldToTake = data.fieldToTake;
+                this.appointmentAccess.userId = data.userId;
 
                 this.appointmentAccess.allowedToAppoint = data.allowToAppoint;
                 this.$emit("appointment-access-data", this.appointmentAccess);

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDCController;
 
 
+use App\Http\Controllers\ConvoController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AppointmentController;
@@ -39,6 +40,8 @@ Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]
 Route::post("/requestticket", [TicketController::class, "requestTicket"]);
 Route::get("/getpiechartdata", [AppointmentController::class, "getPieChartData"]);
 Route::get("/getbarchartdata", [AppointmentController::class, "getBarChartData"]);
+Route::post("/getconvo", [ConvoController::class, "getChat"]);
+Route::post("/sendconvo", [ConvoController::class, "sendChat"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

@@ -9,6 +9,7 @@ class Convo extends Model
 {
     use HasFactory;
     protected $connection = 'admin';
+    protected $primaryKey = 'convoId';
     protected $table = 'conversations';
 
 }

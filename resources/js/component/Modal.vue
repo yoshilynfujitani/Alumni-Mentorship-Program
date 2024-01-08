@@ -60,6 +60,9 @@ export default {
             type: String,
             default: "Save",
         },
+        saveOption: {
+            type: Boolean,
+        },
     },
     data() {
         return {
@@ -70,7 +73,9 @@ export default {
         saveData() {
             this.$emit("save");
 
-            this.isOpen = false;
+            if (this.saveOption) {
+                this.isOpen = false;
+            }
         },
     },
 };

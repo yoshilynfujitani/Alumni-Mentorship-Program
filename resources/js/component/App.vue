@@ -172,6 +172,7 @@
                             <td class="px-6 py-4 text-right">
                                 <Chat
                                     :appointmentId="appointment.appointmentId"
+                                    :userId="this.userId"
                                 />
                             </td>
                         </tr>
@@ -224,6 +225,7 @@ export default {
             userName: "",
             ticketStatus: null,
             ticketIsLoading: true,
+            userId: null,
         };
     },
     methods: {
@@ -249,6 +251,7 @@ export default {
         },
         handleAppointmentAccessData(data) {
             this.ticketStatus = data.ticketStatus;
+            this.userId = data.userId;
             this.ticketIsLoading = false;
         },
         forceRerender() {
