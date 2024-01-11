@@ -30,11 +30,11 @@ export const routes = [
         component: Signup,
     },
 
-    {
-        path: "/appointment/:id",
-        name: "appointment",
-        component: AppointmentForm,
-    },
+    // {
+    //     path: "/appointment/:id",
+    //     name: "appointment",
+    //     component: AppointmentForm,
+    // },
     {
         path: "/mentors",
         name: "mentors",

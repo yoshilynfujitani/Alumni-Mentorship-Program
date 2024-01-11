@@ -1,5 +1,14 @@
 <template lang="">
-    <Layout>
+    <Modal
+        :modalContent="{
+            title: 'Appointment',
+            // content: 'Please fill out the form below:',
+        }"
+        buttonLabel="Make Appointment"
+        cancelLabel="Back"
+        saveLabel="Submit Appointment"
+        @save="submitAppointment"
+    >
         <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
             >Appointment Date</label
         >
@@ -69,35 +78,29 @@
                         </div>
                     </div>
                     <!-- Mentor Profile -->
-                    <div class="flex flex-col w-1/2">
-                        Mentor Profile
-                        <button
-                            type="submit"
-                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                        >
-                            Make Appointment
-                        </button>
-                    </div>
                 </div>
 
                 <input type="text" v-model="mentorId" hidden />
             </form>
         </div>
-    </Layout>
+    </Modal>
 </template>
 <script>
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
+import Modal from "../Modal.vue";
 
 export default {
+    props: ["MentorDetails"],
     components: {
         Calendar,
         DatePicker,
+        Modal,
     },
     data() {
         return {
-            name: this.$route.query.mentor,
-            mentorId: this.$route.params.id,
+            name: this.MentorDetails.name,
+            mentorId: this.MentorDetails.id,
             color: "green",
             date: new Date(),
 

@@ -22,29 +22,19 @@
                 >{{ MentorDetails.fieldName }}</span
             >
             <div class="flex mt-4 md:mt-6" v-if="displaybtn">
-                <a
-                    @click="
-                        makeAppointment(MentorDetails.id, MentorDetails.name)
-                    "
-                    href="#"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                    >Make Appointment</a
-                >
+                <AppointmentForm :MentorDetails="MentorDetails" />
             </div>
         </div>
     </div>
 </template>
 <script>
+import AppointmentForm from "../StudentComponents/AppointmentForm.vue";
 export default {
     props: ["MentorDetails", "displaybtn"],
-    methods: {
-        makeAppointment(id, name) {
-            this.$router.push({
-                path: `/appointment/${id}`,
-                query: { mentor: name },
-            });
-        },
+    components: {
+        AppointmentForm,
     },
+    methods: {},
 };
 </script>
 <style lang=""></style>

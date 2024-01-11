@@ -131,6 +131,7 @@
 
 <script>
 export default {
+    emits: ["userStatus"],
     methods: {
         logout() {
             axios.post("/logout").then(() => {
@@ -141,6 +142,11 @@ export default {
             axios.get("/checkUser").then(({ data }) => {
                 if (!data) {
                     this.$router.push("/");
+                } else {
+                    this.$emit("userStatus", {
+                        userName: data.userName,
+                        userId: data.userId,
+                    });
                 }
             });
         },

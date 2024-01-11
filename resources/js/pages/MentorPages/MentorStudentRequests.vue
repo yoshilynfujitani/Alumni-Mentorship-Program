@@ -1,5 +1,5 @@
 <template lang="">
-    <LayoutMentor>
+    <LayoutMentor @userStatus="handleUserData">
         <div class="self-start">
             <h1>Pending Appointments</h1>
         </div>
@@ -32,16 +32,12 @@
                             Student's Name
                         </th>
                         <th scope="col" class="px-6 py-3">Course</th>
-                        <th
-                            scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
-                        >
-                            Field
-                        </th>
+
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
                         </th>
                         <th scope="col" class="px-16 py-3 text-center">Edit</th>
+                        <th scope="col" class="px-16 py-3 text-center">Chat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,9 +53,7 @@
                             {{ Request.name }}
                         </th>
                         <td class="px-6 py-4">{{ Request.course }}</td>
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            {{ Request.fieldName }}
-                        </td>
+
                         <td class="px-6 py-4 flex justify-center">
                             <h1
                                 v-if="Request.Status === 0"
@@ -167,6 +161,12 @@
                                 </button>
                             </div>
                         </td>
+                        <td>
+                            <Chat
+                                :appointmentId="Request.appointmentId"
+                                :userId="this.userId"
+                            />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -175,11 +175,13 @@
 </template>
 <script>
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
+import Chat from "../../component/Chat.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
 export default {
     components: {
         MentorCard,
         UnSpinnerAlt,
+        Chat,
     },
     data() {
         return {
@@ -187,6 +189,7 @@ export default {
 
             isLoading: false,
             isEdit: false,
+            userId: null,
         };
     },
     methods: {
@@ -194,8 +197,6 @@ export default {
             this.isLoading = true;
 
             axios.get("/getstudentrequests").then(({ data }) => {
-                console.log(data);
-
                 this.requests = data;
                 this.isLoading = false;
             });
@@ -211,9 +212,11 @@ export default {
                     appointmentId,
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.getRequests();
                 });
+        },
+        handleUserData(data) {
+            this.userId = data.userId;
         },
     },
     mounted() {

@@ -61,6 +61,7 @@ class StudentLoginController extends Controller
             return [
                 'loggedIn' => true,
                 'userName' => $userName,
+                'userId' => Auth::id()
                
             ];
         } else {

@@ -15,15 +15,16 @@
             </div>
 
             <div
-                class="min-h-[200px] max-h-[300px] px-2 overflow-y-scroll"
+                class="min-h-[200px] max-h-[300px] px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
                 v-else
             >
                 <div class="h-full flex flex-col" v-for="chats in chat">
                     <h1
-                        class="w-auto text-gray-900 my-1"
+                        class="w-auto text-gray-900 my-1 max-w-xs"
                         :class="{
-                            'self-start': chats.userId !== this.userId,
-                            'self-end': chats.userId === this.userId,
+                            'self-start text-left':
+                                chats.userId !== this.userId,
+                            'self-end text-right': chats.userId === this.userId,
                             'bg-gray-200 w-fit px-4 py-2 rounded-full ':
                                 chats.userId !== this.userId,
                             'bg-green-200 w-fit px-4 py-2 rounded-full ':
@@ -92,7 +93,6 @@ export default {
             axios
                 .post("/getconvo", { appointmentId: this.appointmentId })
                 .then(({ data }) => {
-                    console.log(data);
                     this.chat = data;
                     this.chatLoading = false;
                 });
@@ -105,7 +105,6 @@ export default {
                     message,
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.getChat();
                 });
         },
