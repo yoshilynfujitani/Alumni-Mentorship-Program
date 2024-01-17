@@ -1,15 +1,12 @@
 <template>
-    <Layout
-        @appointment-access-data="handleAppointmentAccessData"
-        :key="refetchData"
-    >
+    <Layout :key="refetchData">
         <!-- <h1>{{ console.log(props.fieldToTake) }}</h1> -->
 
         <div class="" v-if="loading"><h1>Loading...</h1></div>
 
         <div class="w-full">
             <div class="h-20 bg-green-700 rounded-md mb-5 shadow-md">
-                Welcome Back!
+                Welcome Back! {{ this.userId }}
             </div>
             <div class="flex gap-10 mb-10 w-full">
                 <div class="w-1/3"><PieChart /></div>
@@ -22,7 +19,7 @@
                 request a ticket to PDC. Once approve you will be recommended to
                 mentors with your requested field and make appointments
             </p>
-            <div class="" v-if="this.ticketIsLoading">Loading...</div>
+            <div class="" v-if="this.ticketStatus">Loading...</div>
             <div class="flex justify-center items-center" v-else>
                 <div
                     class="text-center text-sm my-5 shadow-sm"
@@ -224,11 +221,11 @@ export default {
                 },
             ],
             userName: "",
-            ticketStatus: null,
+            // ticketStatus: null,
             ticketIsLoading: true,
-            userId: null,
-            fieldToTake: null,
-            allowToAppoint: null,
+            // userId: null,
+            // fieldToTake: null,
+            // allowToAppoint: null,
         };
     },
     computed: {
@@ -260,11 +257,11 @@ export default {
                 this.forceRerender();
             });
         },
-        handleAppointmentAccessData(data) {
-            this.ticketStatus = data.ticketStatus;
-            this.userId = data.userId;
-            this.ticketIsLoading = false;
-        },
+        // handleAppointmentAccessData(data) {
+        //     this.ticketStatus = data.ticketStatus;
+        //     this.userId = data.userId;
+        //     this.ticketIsLoading = false;
+        // },
         forceRerender() {
             this.refetchData += 1;
         },
@@ -275,7 +272,7 @@ export default {
     },
     mounted() {
         this.refecthAppointments();
-
+        // console.log(this.$store.state.userId);
         // console.log(this.$store.state.userId);
         // console.log(this.$store.getters.userDetails);
     },

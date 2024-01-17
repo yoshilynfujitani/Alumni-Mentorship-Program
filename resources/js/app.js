@@ -10,6 +10,7 @@ import { routes } from "./routes";
 import Layout1 from "@/Layout/Layout1.vue";
 import LayoutMentor from "@/Layout/LayoutMentor.vue";
 import LayoutEmployee from "@/Layout/LayoutEmployee.vue";
+import axios from "axios";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -36,11 +37,11 @@ const store = createStore({
     },
     mutations: {
         ["SET_USER_DETAILS"](state, payload) {
-            console.log(payload);
             state.ticketStatus = payload.ticketStatus;
             state.fieldToTake = payload.fieldToTake;
             state.userId = payload.userId;
             state.allowToAppoint = payload.allowToAppoint;
+            localStorage.setItem("vuex_state", JSON.stringify(state));
         },
         ["SET_VAR_ITEMS"](state, payload) {
             state = { ...state, ...payload };
@@ -48,15 +49,23 @@ const store = createStore({
     },
     actions: {
         setUserDetails({ commit }, data) {
-            commit("SET_USER_DETAILS");
+            // commit("SET_USER_DETAILS");
             axios
                 .get("/checkuserstatus")
-                .then(({ res }) => {
-                    commit("SET_VAR_ITEMS", res);
+                .then(({ data }) => {
+                    console.log(data);
+                    commit("SET_USER_DETAILS", data);
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+        },
+        initializeStore({ commit }) {
+            const storedState = localStorage.getItem("vuex_state");
+            if (storedState) {
+                const parsedState = JSON.parse(storedState);
+                commit("SET_USER_DETAILS", parsedState);
+            }
         },
     },
 });
@@ -71,4 +80,6 @@ app.component("LayoutMentor", LayoutMentor);
 app.component("LayoutPDC", LayoutEmployee);
 app.use(setupCalendar, {});
 
-app.mount("#app");
+store.dispatch("initializeStore").then(() => {
+    app.mount("#app");
+});
