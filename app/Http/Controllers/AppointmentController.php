@@ -44,7 +44,7 @@ class AppointmentController extends Controller
         $appointments = mentorAppointment::
     join(DB::raw('adminportal.userfields AS field'), 'field.fieldId', '=', 'appointmentdetails.field')
     ->where('appointmentdetails.studentId', Auth::id())
-    ->where('appointmentdetails.Status',1)
+    // ->where('appointmentdetails.Status',1)
     ->select('field.fieldName', 'field.id')
     ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.studentId = ' . Auth::id() . ') as count'))
     ->groupBy('field.fieldName', 'field.id')

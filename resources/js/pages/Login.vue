@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -103,13 +104,14 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["setUserDetails"]),
         login() {
             const { email, password } = this;
             axios
                 .post("/login", { email, password })
                 .then((res) => {
-                    console.log(res.data.user.role);
                     if (res.status == 200) {
+                        this.setUserDetails;
                         switch (res.data.user.role) {
                             case 1:
                                 this.$router.push("/home");
@@ -130,6 +132,17 @@ export default {
         clearErrMsg() {
             this.errorMsg = "";
         },
+        // checkUserStatus() {
+        //     axios.get("/checkuserstatus").then(({ data }) => {
+        //         this.$store.commit({
+        //             type: "updateUserDetails",
+        //             ticketstatus: data.ticketStatus,
+        //             fieldToTake: data.fieldToTake,
+        //             userId: data.userId,
+        //             allowedToAppoint: data.allowToAppoint,
+        //         });
+        //     });
+        // },
     },
 };
 </script>

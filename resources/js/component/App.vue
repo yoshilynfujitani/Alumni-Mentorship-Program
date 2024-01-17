@@ -185,6 +185,7 @@
 
 <script>
 import { Calendar, DatePicker } from "v-calendar";
+import { mapState } from "vuex";
 import PieChart from "../Charts/PieChart.vue";
 import BarChart from "../Charts/BarChart.vue";
 import "v-calendar/style.css";
@@ -226,7 +227,17 @@ export default {
             ticketStatus: null,
             ticketIsLoading: true,
             userId: null,
+            fieldToTake: null,
+            allowToAppoint: null,
         };
+    },
+    computed: {
+        ...mapState([
+            "userId",
+            "ticketStatus",
+            "fieldToTake",
+            "allowToAppoint",
+        ]),
     },
     methods: {
         getAppointments() {
@@ -264,6 +275,9 @@ export default {
     },
     mounted() {
         this.refecthAppointments();
+
+        // console.log(this.$store.state.userId);
+        // console.log(this.$store.getters.userDetails);
     },
     watch: {
         authenticated(newValue) {
