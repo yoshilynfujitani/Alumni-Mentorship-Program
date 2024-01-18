@@ -28,6 +28,6 @@ app.component("LayoutMentor", LayoutMentor);
 app.component("LayoutPDC", LayoutEmployee);
 app.use(setupCalendar, {});
 
-store.dispatch("initializeStore").then(() => {
+store.dispatch("initializeStoreAction").then(() => {
     app.mount("#app");
 });

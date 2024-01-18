@@ -12,7 +12,7 @@
         <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
             >Appointment Date</label
         >
-        <div class="w-full bg-green-50/40 p-5 rounded-md">
+        <div class="w-full flex bg-green-50/40 p-5 rounded-md">
             <form @submit.prevent="submitAppointment" class="">
                 <div class="flex gap-5">
                     <div class="flex flex-col w-1/2">
@@ -24,8 +24,8 @@
                             borderless
                         />
                     </div>
-                    <div class="w-2/3">
-                        <div class="mb-5">
+                    <div class="mx-5">
+                        <div class="">
                             <label
                                 for="text"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -41,7 +41,7 @@
                             />
                         </div>
 
-                        <div class="my-4">
+                        <!-- <div class="my-4">
                             <label
                                 for="field"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -74,13 +74,13 @@
                                     Leadership and Team Building
                                 </option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
-                    <!-- Mentor Profile -->
                 </div>
 
                 <input type="text" v-model="mentorId" hidden />
             </form>
+            <div class=""><StudentSearch /></div>
         </div>
     </Modal>
 </template>
@@ -88,6 +88,7 @@
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 import Modal from "../Modal.vue";
+import StudentSearch from "../PDCComponents/StudentSearch.vue";
 
 export default {
     props: {
@@ -102,6 +103,7 @@ export default {
         Calendar,
         DatePicker,
         Modal,
+        StudentSearch,
     },
     data() {
         return {

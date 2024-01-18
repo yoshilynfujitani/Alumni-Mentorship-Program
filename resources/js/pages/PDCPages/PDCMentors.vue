@@ -1,7 +1,5 @@
 <template lang="">
     <LayoutPDC>
-        <input type="text" v-model="searchQuery" />
-        <button @click="findUser">Search</button>
         <div class="self-start space-x-2">
             <button
                 @click="handleFilter('active')"
@@ -246,7 +244,6 @@ export default {
             // ifPendingMentors: false,
             isLoading: false,
             isEdit: false,
-            searchQuery: "",
         };
     },
     methods: {
@@ -273,12 +270,6 @@ export default {
                     console.log(data);
                     this.getMentors();
                 });
-        },
-        findUser() {
-            const { searchQuery } = this;
-            axios.post("/searchuser", { searchQuery }).then(({ data }) => {
-                console.log(data);
-            });
         },
     },
     mounted() {

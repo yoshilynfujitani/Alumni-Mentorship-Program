@@ -36,7 +36,9 @@ class PDCController extends Controller
 
     public function searchUser(Request $request){                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
          
-        $users = User::where('name','LIKE',"%{$request->searchQuery}%")->get();
+        $users = User::where('name','LIKE',"%{$request->searchQuery}%")
+        ->where('role', 1)
+        ->get();
 
         return $users;
     }
