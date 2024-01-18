@@ -143,10 +143,10 @@ export default {
                 if (!data) {
                     this.$router.push("/");
                 } else {
-                    this.$emit("userStatus", {
-                        userName: data.userName,
-                        userId: data.userId,
-                    });
+                    // this.$emit("userStatus", {
+                    //     userName: data.userName,
+                    //     userId: data.userId,
+                    // });
                 }
             });
         },

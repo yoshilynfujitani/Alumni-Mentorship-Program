@@ -31,9 +31,10 @@ class AppointmentController extends Controller
         $data = DB::table(DB::raw('adminportal.users AS users'))
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
+        ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy','=','reqby.id')
         ->where("studentId",Auth::id())
         ->orderBy("appt.created_at")
-        ->select('users.name', 'appt.*', 'status.*') 
+        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
         ->get();
        
         
@@ -93,6 +94,8 @@ class AppointmentController extends Controller
 
         return array_values($monthlyAppointments);
     }
+
+    
     
     
 }

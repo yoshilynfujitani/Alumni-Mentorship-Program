@@ -1,5 +1,7 @@
 <template lang="">
     <LayoutPDC>
+        <input type="text" v-model="searchQuery" />
+        <button @click="findUser">Search</button>
         <div class="self-start space-x-2">
             <button
                 @click="handleFilter('active')"
@@ -76,6 +78,13 @@
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
+                        </th>
+                        <th
+                            v-if="fetchMentorBy == 'active'"
+                            scope="col"
+                            class="px-6 py-3 text-center"
+                        >
+                            Appoint
                         </th>
                         <th
                             scope="col"
@@ -206,6 +215,12 @@
                                 </button>
                             </div>
                         </td>
+                        <td class="text-center">
+                            <AppointmentForm
+                                :MentorDetails="Mentor"
+                                type="pdc"
+                            />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -215,10 +230,14 @@
 <script>
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+import AppointmentForm from "../../component/StudentComponents/AppointmentForm.vue";
+import Modal from "../../component/Modal.vue";
+
 export default {
     components: {
         MentorCard,
         UnSpinnerAlt,
+        AppointmentForm,
     },
     data() {
         return {
@@ -227,6 +246,7 @@ export default {
             // ifPendingMentors: false,
             isLoading: false,
             isEdit: false,
+            searchQuery: "",
         };
     },
     methods: {
@@ -253,6 +273,12 @@ export default {
                     console.log(data);
                     this.getMentors();
                 });
+        },
+        findUser() {
+            const { searchQuery } = this;
+            axios.post("/searchuser", { searchQuery }).then(({ data }) => {
+                console.log(data);
+            });
         },
     },
     mounted() {

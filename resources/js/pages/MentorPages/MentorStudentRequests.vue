@@ -1,5 +1,5 @@
 <template lang="">
-    <LayoutMentor @userStatus="handleUserData">
+    <LayoutMentor>
         <div class="self-start">
             <h1>Pending Appointments</h1>
         </div>
@@ -35,6 +35,10 @@
 
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
+                        </th>
+
+                        <th scope="col" class="px-16 py-3 text-center">
+                            Requested By
                         </th>
                         <th scope="col" class="px-16 py-3 text-center">Edit</th>
                         <th scope="col" class="px-16 py-3 text-center">Chat</th>
@@ -73,6 +77,9 @@
                             >
                                 {{ Request.statusName }}
                             </h1>
+                        </td>
+                        <td class="py-4 text-center">
+                            {{ Request.requestor }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <button
@@ -162,10 +169,7 @@
                             </div>
                         </td>
                         <td>
-                            <Chat
-                                :appointmentId="Request.appointmentId"
-                                :userId="this.userId"
-                            />
+                            <Chat :appointmentId="Request.appointmentId" />
                         </td>
                     </tr>
                 </tbody>
@@ -189,7 +193,6 @@ export default {
 
             isLoading: false,
             isEdit: false,
-            userId: null,
         };
     },
     methods: {
@@ -197,6 +200,7 @@ export default {
             this.isLoading = true;
 
             axios.get("/getstudentrequests").then(({ data }) => {
+                console.log(data);
                 this.requests = data;
                 this.isLoading = false;
             });
@@ -214,9 +218,6 @@ export default {
                 .then(({ data }) => {
                     this.getRequests();
                 });
-        },
-        handleUserData(data) {
-            this.userId = data.userId;
         },
     },
     mounted() {

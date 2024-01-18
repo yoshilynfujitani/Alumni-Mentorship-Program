@@ -76,8 +76,12 @@
 </template>
 <script>
 import Modal from "./Modal.vue";
+import { mapState, mapActions } from "vuex";
 export default {
-    props: ["appointmentId", "userId"],
+    computed: {
+        ...mapState(["userId"]),
+    },
+    props: ["appointmentId"],
     components: { Modal },
     data() {
         return {

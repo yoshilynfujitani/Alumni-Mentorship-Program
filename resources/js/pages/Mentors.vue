@@ -1,13 +1,13 @@
 <template lang="">
-    <Layout @appointment-access-data="handleAppointmentAccessData">
-        <div class="" v-if="!apptAccessData">Loading...</div>
-        <div class="" v-else>
+    <Layout>
+        <!-- <div class="" v-if="!apptAccessData">Loading...</div> -->
+        <div class="">
             <h1>Mentors</h1>
             <div class="grid grid-cols-4 gap-5 mx-auto my-10">
                 <div class="mx-auto" v-for="Mentor in mentors">
                     <MentorCard
                         :MentorDetails="Mentor"
-                        :displaybtn="apptAccessData.allowedToAppoint"
+                        :displaybtn="this.allowToAppoint"
                     />
                 </div>
             </div>
@@ -16,7 +16,7 @@
 </template>
 <script>
 import MentorCard from "../component/MentorComponents/MentorCard.vue";
-
+import { mapState, mapActions } from "vuex";
 export default {
     components: {
         MentorCard,
@@ -24,27 +24,29 @@ export default {
     data() {
         return {
             mentors: [],
-            apptAccessData: null,
         };
     },
+    computed: {
+        ...mapState([
+            "userId",
+            "ticketStatus",
+            "fieldToTake",
+            "allowToAppoint",
+        ]),
+    },
     methods: {
+        ...mapActions(["setUserDetails"]),
         getMentors() {
-            if (this.apptAccessData) {
-                const { fieldToTake, allowedToAppoint } = this.apptAccessData;
-                axios
-                    .post("/getmentorstudent", {
-                        fieldToTake,
-                        allowedToAppoint,
-                    })
-                    .then(({ data }) => {
-                        console.log(data);
-                        this.mentors = data;
-                    });
-            } else {
-                console.warn(
-                    "apptAccessData is not available yet. Skipping getMentors call."
-                );
-            }
+            const { fieldToTake, allowToAppoint } = this;
+            axios
+                .post("/getmentorstudent", {
+                    fieldToTake,
+                    allowToAppoint,
+                })
+                .then(({ data }) => {
+                    console.log(this.fieldToTake);
+                    this.mentors = data;
+                });
         },
         handleAppointmentAccessData(data) {
             console.log(data);
@@ -55,6 +57,7 @@ export default {
 
     mounted() {
         this.getMentors();
+        this.setUserDetails();
     },
 };
 </script>

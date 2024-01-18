@@ -58,10 +58,11 @@ class MentorController extends Controller
         ->where('users.role', 2)
         ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id' );
 
-        if($request->allowedToAppoint == 0){
+        if($request->allowToAppoint == 0){
             return $query->get();
         }
-        if($request->allowedToAppoint == 1){
+        if($request->allowToAppoint == 1){
+            // dd($request->fieldToTake);
             return $query ->where('users.field', $request->fieldToTake)->get();
         }
         
@@ -73,7 +74,8 @@ class MentorController extends Controller
         return mentorAppointment::where('appointmentdetails.mentorId', Auth::id())
         ->join('appointmentstatus', 'appointmentstatus.statusId', '=', 'appointmentdetails.status')
         ->join(DB::raw('adminportal.users AS users'), 'users.id', '=', 'appointmentdetails.studentId')
-        ->select('appointmentdetails.*', 'appointmentstatus.*', 'users.name', 'users.course')
+        ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appointmentdetails.requestedBy','=','reqby.id')
+        ->select('appointmentdetails.*', 'appointmentstatus.*', 'users.name', 'users.course', 'reqby.requestor')
         ->get();
     }
 

@@ -43,6 +43,9 @@ Route::get("/getbarchartdata", [AppointmentController::class, "getBarChartData"]
 Route::post("/getconvo", [ConvoController::class, "getChat"]);
 Route::post("/sendconvo", [ConvoController::class, "sendChat"]);
 
+Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
+Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
+
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
 Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
@@ -55,6 +58,7 @@ Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);
 Route::get("/gettickets", [TicketController::class, "getTickets"]);
 Route::get("/gettickets", [TicketController::class, "getTickets"]);
 Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
+Route::post("/searchuser", [PDCController::class, "searchUser"]);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

@@ -19,8 +19,8 @@
                 request a ticket to PDC. Once approve you will be recommended to
                 mentors with your requested field and make appointments
             </p>
-            <div class="" v-if="this.ticketStatus">Loading...</div>
-            <div class="flex justify-center items-center" v-else>
+            <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
+            <div class="flex justify-center items-center">
                 <div
                     class="text-center text-sm my-5 shadow-sm"
                     v-if="this.ticketStatus === 1"
@@ -182,7 +182,7 @@
 
 <script>
 import { Calendar, DatePicker } from "v-calendar";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import PieChart from "../Charts/PieChart.vue";
 import BarChart from "../Charts/BarChart.vue";
 import "v-calendar/style.css";
@@ -237,6 +237,7 @@ export default {
         ]),
     },
     methods: {
+        ...mapActions(["setUserTicketStatus"]),
         getAppointments() {
             this.loading = true;
             axios.get("/getAppointments").then(({ data }) => {
@@ -254,6 +255,7 @@ export default {
         sendTicket() {
             const fieldId = parseInt(this.selectedField);
             axios.post("/requestticket", { fieldId }).then(({ data }) => {
+                this.setUserTicketStatus();
                 this.forceRerender();
             });
         },
@@ -272,7 +274,7 @@ export default {
     },
     mounted() {
         this.refecthAppointments();
-        // console.log(this.$store.state.userId);
+        this.setUserTicketStatus();
         // console.log(this.$store.state.userId);
         // console.log(this.$store.getters.userDetails);
     },

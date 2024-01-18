@@ -43,8 +43,21 @@ class StudentLoginController extends Controller
    
         $ticketStatus = $user->ticketStatus;
         $fieldToTake = $user->fieldToTake;
-        $allowedToAppoint = $user->allowToAppoint;
-        return ['ticketStatus' =>$ticketStatus, 'fieldToTake'=>$fieldToTake, 'allowToAppoint'=>$allowedToAppoint, 'userId'=>Auth::id()];
+        $allowToAppoint = $user->allowToAppoint;
+        return ['ticketStatus' =>$ticketStatus, 'fieldToTake'=>$fieldToTake, 'allowToAppoint'=>$allowToAppoint, 'userId'=>Auth::id()];
+    }
+
+    public function getUserTicketStatus(){
+        $user = Auth::user();
+
+        $ticketStatus = $user->ticketStatus;
+        return ['ticketStatus' => $ticketStatus];
+    }
+
+    public function getUserAllowToAppointStatus(){
+        $user = Auth::user();
+        $allowToAppoint = $user->allowToAppoint;
+        return ['allowToAppoint' => $allowToAppoint];
     }
 
     public function checkLogin()

@@ -19,7 +19,6 @@
                         <DatePicker
                             v-model="date"
                             :color="color"
-                            mode="dateTime"
                             hide-time-header
                             expanded
                             borderless
@@ -91,7 +90,14 @@ import "v-calendar/style.css";
 import Modal from "../Modal.vue";
 
 export default {
-    props: ["MentorDetails"],
+    props: {
+        type: {
+            type: String,
+        },
+        MentorDetails: {
+            type: Object,
+        },
+    },
     components: {
         Calendar,
         DatePicker,
@@ -120,15 +126,25 @@ export default {
         submitAppointment() {
             const { field, title, date, mentorId } = this;
 
-            axios
-                .post("/addAppointment", { title, field, date, mentorId })
-                .then(this.$router.push("/home"));
+            if (this.type === "pdc") {
+                axios
+                    .post("/addAppointment", { title, field, date, mentorId })
+                    .then(this.$router.push("/home"));
+            }
+            if (this.type === "student") {
+                axios
+                    .post("/addAppointment", { title, field, date, mentorId })
+                    .then(this.$router.push("/home"));
+            }
         },
     },
     watch: {
         selectedDate(newDate) {
             console.log(this.date);
         },
+    },
+    mounted() {
+        console.log(this.type);
     },
 };
 </script>

@@ -7,10 +7,12 @@
 <script>
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
+import AppointmentForm from "../../component/StudentComponents/AppointmentForm.vue";
 export default {
     components: {
         Calendar,
         DatePicker,
+        AppointmentForm,
     },
     data() {
         return {
@@ -52,7 +54,6 @@ export default {
 
         checkAuth() {
             axios.get("/checkUser").then(({ data }) => {
-                console.log(data);
                 if (!data) {
                     this.$router.push("/");
                 }
