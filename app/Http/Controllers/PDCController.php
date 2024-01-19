@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
+use Carbon\Carbon;
+use App\Models\Convo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class PDCController extends Controller
 {
@@ -26,6 +32,7 @@ class PDCController extends Controller
         $newAppointment->title = $request->title;
         $newAppointment->field = $request->field;
         $newAppointment->startSchedule = Carbon::parse($request->date);
+        $newAppointment->requestedBy = 2;
 
 
     

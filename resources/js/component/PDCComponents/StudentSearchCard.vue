@@ -15,7 +15,7 @@
                 </h1>
             </div>
         </div>
-        <div class="">Add</div>
+        <div class="" @click="handleQueryData">Add</div>
     </div>
 </template>
 <script>
@@ -27,6 +27,11 @@ export default {
             students: null,
             searchQuery: "",
         };
+    },
+    methods: {
+        handleQueryData() {
+            this.$emit("clicked", this.studentDetails);
+        },
     },
 };
 </script>

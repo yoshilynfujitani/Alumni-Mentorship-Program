@@ -40,6 +40,12 @@
                                 required
                             />
                         </div>
+                        <div class="">
+                            <h1>Student To Assign To Mentor</h1>
+                            <h1 class="text-start">
+                                {{ this.selectedStudent.name }}
+                            </h1>
+                        </div>
 
                         <!-- <div class="my-4">
                             <label
@@ -80,7 +86,7 @@
 
                 <input type="text" v-model="mentorId" hidden />
             </form>
-            <div class=""><StudentSearch /></div>
+            <div class=""><StudentSearch @query="handleQueryData" /></div>
         </div>
     </Modal>
 </template>
@@ -120,24 +126,36 @@ export default {
                     milliseconds: 0,
                 },
             ],
-            field: "",
+            field: 7,
             title: "",
+            selectedStudent: "",
         };
     },
     methods: {
         submitAppointment() {
             const { field, title, date, mentorId } = this;
+            const { id } = this.selectedStudent;
 
             if (this.type === "pdc") {
                 axios
-                    .post("/addAppointment", { title, field, date, mentorId })
-                    .then(this.$router.push("/home"));
+                    .post("/assignappointment", {
+                        title,
+                        field,
+                        date,
+                        mentorId,
+                        studentId: id,
+                    })
+                    .then(this.$router.push("/pdcmentors"));
             }
             if (this.type === "student") {
                 axios
                     .post("/addAppointment", { title, field, date, mentorId })
                     .then(this.$router.push("/home"));
             }
+        },
+        handleQueryData(data) {
+            this.selectedStudent = data;
+            console.log(this.selectedStudent);
         },
     },
     watch: {

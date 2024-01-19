@@ -59,6 +59,7 @@ Route::get("/gettickets", [TicketController::class, "getTickets"]);
 Route::get("/gettickets", [TicketController::class, "getTickets"]);
 Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
+Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);
 
 //kababaan amin
 Route::get('/{vue?}', function(){

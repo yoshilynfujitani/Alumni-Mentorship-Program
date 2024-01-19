@@ -9,7 +9,10 @@
         <div class="" v-if="this.students === null">Enter Student Name...</div>
         <div class="" v-else>
             <div class="" v-for="Student in students">
-                <StudentSearchCard :studentDetails="Student" />
+                <StudentSearchCard
+                    :studentDetails="Student"
+                    @clicked="handleQueryData"
+                />
             </div>
         </div>
     </div>
@@ -33,6 +36,9 @@ export default {
                 console.log(data);
                 this.students = data;
             });
+        },
+        handleQueryData(data) {
+            this.$emit("query", data);
         },
     },
 };
