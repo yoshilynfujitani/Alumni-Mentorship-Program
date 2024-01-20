@@ -4,18 +4,18 @@
             title: 'Appointment',
             // content: 'Please fill out the form below:',
         }"
-        buttonLabel="Make Appointment"
+        buttonLabel="Appoint Student"
         cancelLabel="Back"
         saveLabel="Submit Appointment"
         @save="submitAppointment"
     >
-        <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
+        <!-- <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
             >Appointment Date</label
-        >
-        <div class="w-full flex bg-green-50/40 p-5 rounded-md">
+        > -->
+        <div class="flex border border-gray-200 p-10 rounded-md my-10 gap-5">
             <form @submit.prevent="submitAppointment" class="">
-                <div class="flex gap-5">
-                    <div class="flex flex-col w-1/2">
+                <div class="">
+                    <div class="flex flex-col">
                         <DatePicker
                             v-model="date"
                             :color="color"
@@ -24,11 +24,11 @@
                             borderless
                         />
                     </div>
-                    <div class="mx-5">
+                    <div class="">
                         <div class="">
                             <label
                                 for="text"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                class="block mb-2 text-sm font-medium text-start text-gray-900 dark:text-white"
                                 >Request Header</label
                             >
                             <input
@@ -41,46 +41,13 @@
                             />
                         </div>
                         <div class="">
-                            <h1>Student To Assign To Mentor</h1>
+                            <h1 class="text-start text-black font-medium">
+                                Student To Assign To Mentor
+                            </h1>
                             <h1 class="text-start">
                                 {{ this.selectedStudent.name }}
                             </h1>
                         </div>
-
-                        <!-- <div class="my-4">
-                            <label
-                                for="field"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >Select a field to request</label
-                            >
-                            <select
-                                v-model="field"
-                                id="field"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                            >
-                                <option selected>Choose a Field</option>
-                                <option value="1">Business Management</option>
-                                <option value="2">Creative Arts</option>
-                                <option value="3">
-                                    Engineering and Mathematics
-                                </option>
-                                <option value="4">
-                                    Humanities Arts and Social Sciences
-                                </option>
-                                <option value="5">
-                                    IT and Computer Science
-                                </option>
-                                <option value="6">
-                                    Medical and Health Science
-                                </option>
-                                <option value="7">
-                                    Teaching and Education
-                                </option>
-                                <option value="8">
-                                    Leadership and Team Building
-                                </option>
-                            </select>
-                        </div> -->
                     </div>
                 </div>
 

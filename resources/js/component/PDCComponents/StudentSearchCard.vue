@@ -15,13 +15,21 @@
                 </h1>
             </div>
         </div>
-        <div class="" @click="handleQueryData">Add</div>
+        <div
+            class="transition-all p-2.5 text-xl bg-green-600 rounded-md text-white hover:cursor-pointer hover:bg-green-500"
+            @click="handleQueryData"
+        >
+            <BsPersonFillAdd />
+        </div>
     </div>
 </template>
 <script>
-import AppointmentForm from "../StudentComponents/AppointmentForm.vue";
+import { BsPersonFillAdd } from "@kalimahapps/vue-icons";
 export default {
     props: ["studentDetails"],
+    components: {
+        BsPersonFillAdd,
+    },
     data() {
         return {
             students: null,

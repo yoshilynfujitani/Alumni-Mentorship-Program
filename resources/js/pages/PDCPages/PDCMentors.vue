@@ -74,7 +74,14 @@
                         >
                             Field
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center">
+                        <th
+                            scope="col"
+                            class="px-6 py-3 text-center"
+                            v-if="
+                                fetchMentorBy == 'pending' ||
+                                fetchMentorBy == 'all'
+                            "
+                        >
                             Status
                         </th>
                         <th
@@ -116,7 +123,13 @@
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {{ Mentor.fieldName }}
                         </td>
-                        <td class="px-6 py-4 flex justify-center">
+                        <td
+                            class="px-6 py-4 flex justify-center"
+                            v-if="
+                                fetchMentorBy == 'pending' ||
+                                fetchMentorBy == 'all'
+                            "
+                        >
                             <h1
                                 v-if="Mentor.verified === 0"
                                 class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md w-fit"
@@ -213,7 +226,10 @@
                                 </button>
                             </div>
                         </td>
-                        <td class="text-center">
+                        <td
+                            class="text-center"
+                            v-if="fetchMentorBy === 'active'"
+                        >
                             <AppointmentForm
                                 :MentorDetails="Mentor"
                                 type="pdc"
@@ -222,6 +238,27 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="flex gap-5">
+                <div v-if="pagination.total > 0">
+                    <button
+                        @click="goToPrevPage"
+                        :disabled="pagination.current_page === 1"
+                    >
+                        Previous
+                    </button>
+                </div>
+                <h1>{{ this.pagination.current_page }}</h1>
+                <div v-if="pagination.total > 0">
+                    <button
+                        @click="goToNextPage"
+                        :disabled="
+                            pagination.current_page === pagination.last_page
+                        "
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
         </div>
     </LayoutPDC>
 </template>
@@ -240,6 +277,7 @@ export default {
     data() {
         return {
             mentors: [],
+            pagination: {},
             fetchMentorBy: "active",
             // ifPendingMentors: false,
             isLoading: false,
@@ -256,7 +294,8 @@ export default {
             axios.post("/getmentorAPI", { fetchMentorBy }).then(({ data }) => {
                 console.log(data);
 
-                this.mentors = data;
+                this.mentors = data.data;
+                this.pagination = data;
                 this.isLoading = false;
             });
         },
@@ -269,6 +308,36 @@ export default {
                 .then(({ data }) => {
                     console.log(data);
                     this.getMentors();
+                });
+        },
+        goToPrevPage() {
+            if (this.pagination.current_page > 1) {
+                const prevPage = this.pagination.current_page - 1;
+                this.fetchMentors(prevPage);
+            }
+        },
+        goToNextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                const nextPage = this.pagination.current_page + 1;
+                this.fetchMentors(nextPage);
+            }
+        },
+        fetchMentors(page) {
+            this.isLoading = true;
+            const { fetchMentorBy } = this;
+            axios
+                .post(`/getmentorAPI?page=${page}`, { fetchMentorBy })
+                .then(({ data }) => {
+                    console.log(data);
+
+                    this.mentors = data.data;
+                    this.pagination = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         },
     },

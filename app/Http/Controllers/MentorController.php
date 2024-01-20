@@ -30,7 +30,8 @@ class MentorController extends Controller
 
         return $res;
     }
-    public function getMentors(Request $request){
+    public function getMentors(Request $request ){
+        $queryPerPage = 5;
         $query = DB::connection('admin')->table('users')
             ->orderBy('created_at')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
@@ -39,15 +40,15 @@ class MentorController extends Controller
             ->where('users.role', 2);
     
         if ($request->fetchMentorBy == "active") {
-            return $query->where('users.verified', 1)->get();
+            return $query->where('users.verified', 1)->paginate($queryPerPage);
         }
     
         if ($request->fetchMentorBy == "pending") {
-            return $query->where('users.verified', 0)->get();
+            return $query->where('users.verified', 0)->paginate($queryPerPage);
         }
     
         if ($request->fetchMentorBy == "all") {
-            return $query->get();
+            return $query->paginate($queryPerPage);
         }
     }
     
