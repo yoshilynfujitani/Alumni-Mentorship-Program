@@ -104,12 +104,12 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["setUserDetails"]),
+        ...mapActions(["setUserDetailsAction"]),
         login() {
             const { email, password } = this;
             axios.post("/login", { email, password }).then((res) => {
                 if (res.status == 200) {
-                    this.setUserDetails();
+                    this.setUserDetailsAction();
                     switch (res.data.user.role) {
                         case 1:
                             this.$router.push("/home");

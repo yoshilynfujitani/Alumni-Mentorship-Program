@@ -237,7 +237,7 @@ export default {
         ]),
     },
     methods: {
-        ...mapActions(["setUserTicketStatus"]),
+        ...mapActions(["setUserTicketStatusAction"]),
         getAppointments() {
             this.loading = true;
             axios.get("/getAppointments").then(({ data }) => {
@@ -255,7 +255,7 @@ export default {
         sendTicket() {
             const fieldId = parseInt(this.selectedField);
             axios.post("/requestticket", { fieldId }).then(({ data }) => {
-                this.setUserTicketStatus();
+                this.setUserTicketStatusAction();
                 this.forceRerender();
             });
         },
@@ -274,8 +274,8 @@ export default {
     },
     mounted() {
         this.refecthAppointments();
-        this.setUserTicketStatus();
-        // console.log(this.$store.state.userId);
+        this.setUserTicketStatusAction();
+        console.log(this.userId);
         // console.log(this.$store.getters.userDetails);
     },
     watch: {
