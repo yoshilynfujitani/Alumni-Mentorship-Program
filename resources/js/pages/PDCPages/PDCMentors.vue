@@ -291,13 +291,15 @@ export default {
         getMentors() {
             this.isLoading = true;
             const { fetchMentorBy } = this;
-            axios.post("/getmentorAPI", { fetchMentorBy }).then(({ data }) => {
-                console.log(data);
+            axios
+                .get(`/getmentorAPI?searchBy=${fetchMentorBy}`)
+                .then(({ data }) => {
+                    console.log(data);
 
-                this.mentors = data.data;
-                this.pagination = data;
-                this.isLoading = false;
-            });
+                    this.mentors = data.data;
+                    this.pagination = data;
+                    this.isLoading = false;
+                });
         },
         updateStatus(mentor) {
             mentor.isEdit = !mentor.isEdit;
@@ -326,7 +328,7 @@ export default {
             this.isLoading = true;
             const { fetchMentorBy } = this;
             axios
-                .post(`/getmentorAPI?page=${page}`, { fetchMentorBy })
+                .get(`/getmentorAPI?searchBy=${fetchMentorBy}&page=${page}`)
                 .then(({ data }) => {
                     console.log(data);
 

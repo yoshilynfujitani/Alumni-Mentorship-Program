@@ -48,10 +48,12 @@ Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserA
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
-Route::post("/getmentorAPI/:page", [MentorController::class, "getMentors"]);
+Route::get("/getmentorAPI", [MentorController::class, "getMentors"]);
 Route::post("/getmentorstudent", [MentorController::class, "getMentorsStudent"]);
 Route::get("/getstudentrequests", [MentorController::class, "getMentorAppointment"]);
 Route::post("/verifyrequest", [MentorController::class, "verifyRequest"]);
+Route::post("/getAppointment", [AppointmentController::class, "getAppointment"]);
+
 
 //PDC
 Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);

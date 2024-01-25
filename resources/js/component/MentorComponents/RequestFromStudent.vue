@@ -9,70 +9,147 @@
         buttonIcon="FlPeopleSettings"
         cancelLabel="Back"
         :saveOption="false"
+        @modalopen="getAppointmentDetails"
     >
-        <div class="flex flex-col items-start w-full py-5">
-            <div
-                class="grid grid-cols-2 content-between text-start w-full my-5"
-            >
-                <div class="">
-                    <h1 class="font-medium">Student's Name</h1>
-                    <p>{{ this.requestDetails.name }}</p>
+        <div class="" v-if="!this.requestDetails">Loading...</div>
+        <div class="flex items-start w-full" v-else>
+            <div class="flex flex-col mr-5 justify-between h-full">
+                <div class="text-start text-lg">
+                    <h1 class="font-medium">Request header</h1>
+                    <p>{{ this.requestDetails.title }}</p>
                 </div>
-                <div class="">
-                    <h1 class="font-medium">Student's Course</h1>
-                    <p>{{ this.requestDetails.course }}</p>
+                <div
+                    class="grid grid-cols-2 content-between text-start w-full my-5"
+                >
+                    <div class="">
+                        <h1 class="font-medium">Student's Name</h1>
+                        <p>{{ this.requestDetails.name }}</p>
+                    </div>
+                    <div class="">
+                        <h1 class="font-medium">Student's Course</h1>
+                        <p>{{ this.requestDetails.course }}</p>
+                    </div>
+                    <div class="">
+                        <h1 class="font-medium">Start Date</h1>
+                        <p>
+                            {{ this.date }}
+                            <span
+                                class="text-green-500 font-medium"
+                                :class="{
+                                    'text-red-400':
+                                        startSchedule?.isBefore(now),
+                                }"
+                            >
+                                <span v-if="startSchedule?.isBefore(now)"
+                                    >Started {{ reminderdate }}
+                                </span>
+                                <span v-else
+                                    >To start in {{ reminderdate }}
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div
+                    v-if="this.requestDetails.statusId === 0"
+                    class="flex items-center w-full justify-around gap-2 self-end"
+                >
+                    <div
+                        @click="
+                            verify(
+                                2,
+                                this.requestDetails.studentId,
+                                this.requestDetails.appointmentId
+                            )
+                        "
+                        class="transition-all border border-red-400 rounded-md w-full py-2 font-semibold text-red-500 hover:bg-red-400 hover:text-white"
+                    >
+                        Reject
+                    </div>
+                    <div
+                        @click="
+                            verify(
+                                1,
+                                this.requestDetails.studentId,
+                                this.requestDetails.appointmentId
+                            )
+                        "
+                        class="transition-all border border-green-400 rounded-md w-full py-2 font-semibold text-green-500 hover:bg-green-400 hover:text-white"
+                    >
+                        Accept
+                    </div>
+                </div>
+                <div class="" v-else>
+                    <div class="" v-if="this.requestDetails.statusId === 1">
+                        Appointment Accepted
+                    </div>
+                    <div class="" v-if="this.requestDetails.statusId === 2">
+                        Appointment Rejected
+                    </div>
                 </div>
             </div>
-            <h1 class="font-medium">Start Date</h1>
-            <p>
-                {{ this.date }}
-                <span
-                    class="text-green-500 font-medium"
-                    :class="{
-                        'text-red-400': startSchedule.isBefore(now),
-                    }"
-                >
-                    <span v-if="startSchedule.isBefore(now)"
-                        >Started {{ reminderdate }}
-                    </span>
-                    <span v-else>To start in {{ reminderdate }} </span>
-                </span>
-            </p>
+
+            <Calendar />
         </div>
     </Modal>
 </template>
 <script>
 import Modal from "../Modal.vue";
 import moment from "moment";
+import { Calendar, DatePicker } from "v-calendar";
 
 export default {
-    props: ["requestDetails"],
+    props: ["requestId"],
     components: {
         Modal,
+        Calendar,
+        DatePicker,
     },
     data() {
-        const startSchedule = moment(this.requestDetails.startSchedule);
-        const now = moment();
         return {
-            date: moment(this.requestDetails.startSchedule).format(
+            now: moment(),
+            date: moment(this.requestDetails?.startSchedule).format(
                 "YYYY-MM-DD"
             ),
+            requestDetails: null,
         };
     },
     computed: {
         startSchedule() {
-            return moment(this.requestDetails.startSchedule);
+            return moment(this.requestDetails?.startSchedule);
         },
         now() {
             return moment();
         },
         reminderdate() {
-            return this.startSchedule.isBefore(this.now)
-                ? this.startSchedule.fromNow()
-                : this.startSchedule.toNow(true);
+            return this.startSchedule?.isBefore(this.now)
+                ? this.startSchedule?.fromNow()
+                : this.startSchedule?.toNow(true);
         },
     },
-    methods: {},
+    methods: {
+        getAppointmentDetails() {
+            axios
+                .post("/getAppointment", { appointmentId: this.requestId })
+                .then(({ data }) => {
+                    this.requestDetails = data;
+                    console.log(data);
+                });
+        },
+        verify(requestStatus, studentId, appointmentId) {
+            console.log(studentId);
+            axios
+                .post("/verifyrequest", {
+                    requestStatus,
+                    studentId,
+                    appointmentId,
+                })
+                .then(({ data }) => {
+                    this.getAppointmentDetails();
+                });
+        },
+    },
+    mounted() {},
 };
 </script>
 <style lang=""></style>

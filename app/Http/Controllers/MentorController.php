@@ -31,6 +31,7 @@ class MentorController extends Controller
         return $res;
     }
     public function getMentors(Request $request ){
+      
         $queryPerPage = 5;
         $query = DB::connection('admin')->table('users')
             ->orderBy('created_at')
@@ -39,15 +40,15 @@ class MentorController extends Controller
             ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
             ->where('users.role', 2);
     
-        if ($request->fetchMentorBy == "active") {
+        if ($request->searchBy== "active") {
             return $query->where('users.verified', 1)->paginate($queryPerPage);
         }
     
-        if ($request->fetchMentorBy == "pending") {
+        if ($request->searchBy == "pending") {
             return $query->where('users.verified', 0)->paginate($queryPerPage);
         }
     
-        if ($request->fetchMentorBy == "all") {
+        if ($request->searchBy == "all") {
             return $query->paginate($queryPerPage);
         }
     }
@@ -81,6 +82,7 @@ class MentorController extends Controller
     }
 
     public function verifyRequest(Request $request){
+        
         $appointment = mentorAppointment::find($request->appointmentId);
         $user = User::find($request->studentId);
 

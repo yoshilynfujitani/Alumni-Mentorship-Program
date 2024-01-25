@@ -2,7 +2,7 @@
     <div class="">
         <div class="flex justify-center">
             <button
-                @click="isOpen = true"
+                @click="modalopened"
                 class="transition-all bg-green-500 px-3 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
                 type="button"
                 :class="{
@@ -88,6 +88,11 @@ export default {
                 this.isOpen = false;
             }
         },
+        modalopened() {
+            this.isOpen = true;
+            this.$emit("modalopen");
+        },
     },
+    mounted() {},
 };
 </script>
