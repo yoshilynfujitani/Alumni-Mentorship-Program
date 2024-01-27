@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::connection('mentor')->create('mentorDetails', function (Blueprint $table) {
-            $table->id("mentorId");
-
-            $table->string('name');
-            $table->string('email');
-            $table->boolean('verified')->default(0);
-            $table->string('field');
-            $table->string('password');
-            $table->integer('role')->default(1);
+        Schema::connection('mentor')->create('feedback', function (Blueprint $table) {
+            $table->id();
+            $table->integer('appointmendId');
+            $table->integer('studentId');
+            $table->integer('mentorId');
+            $table->integer('rating');
+            $table->string('comments');
+          
+            
+        
+  
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
            
@@ -33,7 +35,6 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::connection('mentor')->dropIfExists('mentorDetails');
-    
+        Schema::connection('mentor')->dropIfExists('feedback');
     }
 };

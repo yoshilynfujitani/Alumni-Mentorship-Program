@@ -40,8 +40,8 @@
                         <th scope="col" class="px-16 py-3 text-center">
                             Requested By
                         </th>
-                        <th scope="col" class="px-16 py-3 text-center">Edit</th>
-                        <th scope="col" class="px-16 py-3 text-center">Chat</th>
+                        <th scope="col" class="px-8 py-3 text-center">Edit</th>
+                        <th scope="col" class="px-8 py-3 text-center">Chat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,7 +58,9 @@
                         </th>
                         <td class="px-6 py-4">{{ Request.course }}</td>
 
-                        <td class="px-6 py-4 flex justify-center">
+                        <td
+                            class="flex flex-col items-center justify-center h-24"
+                        >
                             <h1
                                 v-if="Request.Status === 0"
                                 class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md w-fit"
@@ -74,6 +76,12 @@
                             <h1
                                 v-if="Request.Status === 2"
                                 class="text-white font-bold bg-red-400 py-2 px-4 rounded-md w-fit text-center"
+                            >
+                                {{ Request.statusName }}
+                            </h1>
+                            <h1
+                                v-if="Request.Status === 3"
+                                class="bg-gradient-to-r from-green-500 via-yellow-300 to-yellow-500 bg-clip-text text-transparent font-bold border-2 border-green-200 py-2 px-4 rounded-md w-fit text-center"
                             >
                                 {{ Request.statusName }}
                             </h1>

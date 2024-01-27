@@ -58,7 +58,7 @@ class MentorController extends Controller
         $query = DB::connection('admin')->table('users')
         ->join('userfields', 'userfields.fieldId', '=', 'users.field')
         ->where('users.role', 2)
-        ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id' );
+        ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating' );
 
         if($request->allowToAppoint == 0){
             return $query->get();
@@ -98,6 +98,11 @@ class MentorController extends Controller
 
         if($request->requestStatus == 2){
             $appointment->Status = 2;
+            $appointment->save();
+        }
+
+        if($request->requestStatus == 3){
+            $appointment->Status = 3;
             $appointment->save();
         }
 

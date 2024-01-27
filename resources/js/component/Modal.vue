@@ -5,13 +5,22 @@
                 @click="modalopened"
                 class="transition-all bg-green-500 px-3 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
                 type="button"
+                :disabled="modalContent.disablebtn"
                 :class="{
                     'cursor-not-allowed': modalContent.disablebtn,
                     'bg-yellow-300 hover:bg-yellow-400': type === 'edit',
+                    'bg-blue-300 hover:bg-blue-400': type === 'rate',
                 }"
             >
                 <span v-if="buttonLabel">{{ buttonLabel }}</span>
-                <component :is="buttonIcon" v-if="buttonIcon" class="text-xl" />
+                <div class="flex items-center gap-1">
+                    <component
+                        :is="buttonIcon"
+                        v-if="buttonIcon"
+                        class="text-xl"
+                    />
+                    <h1>{{ iconLabel }}</h1>
+                </div>
             </button>
 
             <div
@@ -69,6 +78,12 @@ export default {
             type: Boolean,
         },
         type: {
+            type: String,
+        },
+        iconLabel: {
+            type: String,
+        },
+        color: {
             type: String,
         },
     },

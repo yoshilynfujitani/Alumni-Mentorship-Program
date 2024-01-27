@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('course')->nullable();
             $table->string('field')->nullable();
             $table->integer('role');
+            $table->integer('rating')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

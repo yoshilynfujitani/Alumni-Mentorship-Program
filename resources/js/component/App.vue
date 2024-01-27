@@ -78,7 +78,9 @@
                             id="field"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                         >
-                            <option selected>Choose a Field</option>
+                            <option value="0" disabled selected>
+                                Choose a field
+                            </option>
                             <option value="1">Business Management</option>
                             <option value="2">Creative Arts</option>
                             <option value="3">
@@ -120,9 +122,11 @@
                             <th scope="col" class="px-6 py-3">Field</th>
                             <th scope="col" class="px-6 py-3">Start Date</th>
                             <th scope="col" class="px-6 py-3">Mentor</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="sr-only">Edit</span>
+                            <th scope="col" class="px-6 py-3 text-center">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center">
+                                Others
                             </th>
                         </tr>
                     </thead>
@@ -165,12 +169,34 @@
                                 >
                                     {{ appointment.statusName }}
                                 </h1>
+                                <h1
+                                    v-if="appointment.Status === 3"
+                                    class="bg-gradient-to-r from-green-500 via-yellow-300 to-yellow-500 bg-clip-text text-transparent font-bold border-2 border-green-200 py-2 px-4 rounded-md text-center"
+                                >
+                                    {{ appointment.statusName }}
+                                </h1>
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td
+                                class="px-6 py-4 flex items-center justify-center gap-2"
+                            >
                                 <Chat
                                     :appointmentId="appointment.appointmentId"
                                     :userId="this.userId"
                                 />
+                                <button
+                                    :disabled="appointment.Status !== 3"
+                                    :class="{
+                                        'cursor-not-allowed':
+                                            appointment.Status !== 3,
+                                    }"
+                                >
+                                    <FeedbackForm
+                                        :appointmentId="
+                                            appointment.appointmentId
+                                        "
+                                        :disable="appointment.Status !== 3"
+                                    />
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -188,6 +214,7 @@ import BarChart from "../Charts/BarChart.vue";
 import "v-calendar/style.css";
 import Modal from "./Modal.vue";
 import Chat from "./Chat.vue";
+import FeedbackForm from "./StudentComponents/FeedbackForm.vue";
 import { FlFilledWarning } from "@kalimahapps/vue-icons";
 import { AkCircleCheck } from "@kalimahapps/vue-icons";
 import { AnOutlinedCloseCircle } from "@kalimahapps/vue-icons";
@@ -202,13 +229,14 @@ export default {
         PieChart,
         BarChart,
         Chat,
+        FeedbackForm,
     },
     data() {
         return {
             refetchData: 0,
             appointments: [],
             loading: false,
-            selectedField: null,
+            selectedField: "0",
             attributes: [
                 {
                     key: 1,

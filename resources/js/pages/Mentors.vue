@@ -35,7 +35,7 @@ export default {
         ]),
     },
     methods: {
-        ...mapActions(["setUserDetails"]),
+        ...mapActions(["setUserDetailsAction"]),
         getMentors() {
             const { fieldToTake, allowToAppoint } = this;
             axios
@@ -57,7 +57,7 @@ export default {
 
     mounted() {
         this.getMentors();
-        this.setUserDetails();
+        this.setUserDetailsAction();
     },
 };
 </script>

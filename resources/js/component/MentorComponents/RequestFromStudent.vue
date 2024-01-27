@@ -9,6 +9,7 @@
         buttonIcon="FlPeopleSettings"
         cancelLabel="Back"
         :saveOption="false"
+        iconLabel="Details"
         @modalopen="getAppointmentDetails"
     >
         <div class="" v-if="!this.requestDetails">Loading...</div>
@@ -19,7 +20,7 @@
                     <p>{{ this.requestDetails.title }}</p>
                 </div>
                 <div
-                    class="grid grid-cols-2 content-between text-start w-full my-5"
+                    class="grid grid-cols-2 gap-x-2 content-between text-start w-full my-5"
                 >
                     <div class="">
                         <h1 class="font-medium">Student's Name</h1>
@@ -29,6 +30,7 @@
                         <h1 class="font-medium">Student's Course</h1>
                         <p>{{ this.requestDetails.course }}</p>
                     </div>
+
                     <div class="">
                         <h1 class="font-medium">Start Date</h1>
                         <p>
@@ -49,10 +51,14 @@
                             </span>
                         </p>
                     </div>
+                    <div class="">
+                        <h1 class="font-medium">Status</h1>
+                        <p>{{ this.requestDetails.statusName }}</p>
+                    </div>
                 </div>
                 <div
                     v-if="this.requestDetails.statusId === 0"
-                    class="flex items-center w-full justify-around gap-2 self-end"
+                    class="flex items-center w-full justify-around gap-2 self-end mt-5"
                 >
                     <div
                         @click="
@@ -81,10 +87,36 @@
                 </div>
                 <div class="" v-else>
                     <div class="" v-if="this.requestDetails.statusId === 1">
-                        Appointment Accepted
+                        <div
+                            class="border rounded-md border-green-400 py-2 mt-5 font-semibold text-green-500"
+                        >
+                            Appointment Accepted
+                        </div>
+                        <div class="">
+                            <button
+                                @click="
+                                    verify(
+                                        3,
+                                        this.requestDetails.studentId,
+                                        this.requestDetails.appointmentId
+                                    )
+                                "
+                            >
+                                Mark Session as Finished
+                            </button>
+                        </div>
                     </div>
-                    <div class="" v-if="this.requestDetails.statusId === 2">
+                    <div
+                        class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500"
+                        v-if="this.requestDetails.statusId === 2"
+                    >
                         Appointment Rejected
+                    </div>
+                    <div
+                        class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500"
+                        v-if="this.requestDetails.statusId === 3"
+                    >
+                        View Feedback
                     </div>
                 </div>
             </div>

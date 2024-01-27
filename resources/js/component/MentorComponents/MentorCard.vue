@@ -22,9 +22,16 @@
                     class="text-sm text-center text-gray-500 dark:text-gray-400"
                     >{{ MentorDetails.fieldName }}</span
                 >
+                <span
+                    class="text-sm text-center text-gray-500 dark:text-gray-400"
+                    >{{ MentorDetails.rating }}</span
+                >
             </div>
             <div class="flex mt-4 md:mt-6" v-if="displaybtn">
-                <AppointmentForm :MentorDetails="MentorDetails" />
+                <AppointmentForm
+                    :MentorDetails="MentorDetails"
+                    type="student"
+                />
             </div>
         </div>
     </div>
