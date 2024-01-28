@@ -1,15 +1,16 @@
 <template>
     <div class="">
-        <div class="flex justify-center">
+        <div class="flex justify-center cursor-auto">
             <button
                 @click="modalopened"
-                class="transition-all bg-green-500 px-3 py-2 rounded-md text-white my-4 text-sm hover:bg-green-600"
+                class="transition-all px-3 py-2 rounded-md text-white my-4 text-sm"
                 type="button"
                 :disabled="modalContent.disablebtn"
                 :class="{
+                    'bg-green-500 hover:bg-green-600': !type,
+                    'bg-blue-500 hover:bg-lblue-600': type === 'rate',
                     'cursor-not-allowed': modalContent.disablebtn,
                     'bg-yellow-300 hover:bg-yellow-400': type === 'edit',
-                    'bg-blue-300 hover:bg-blue-400': type === 'rate',
                 }"
             >
                 <span v-if="buttonLabel">{{ buttonLabel }}</span>
@@ -57,6 +58,8 @@
 </template>
 <script>
 import { FlPeopleSettings } from "@kalimahapps/vue-icons";
+import { AkChatDots } from "@kalimahapps/vue-icons";
+import { FlFilledPersonStar } from "@kalimahapps/vue-icons";
 export default {
     props: {
         modalContent: {
@@ -89,6 +92,8 @@ export default {
     },
     components: {
         FlPeopleSettings,
+        AkChatDots,
+        FlFilledPersonStar,
     },
     data() {
         return {

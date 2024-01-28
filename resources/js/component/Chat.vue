@@ -4,8 +4,9 @@
             title: 'Chat',
             // content: 'Please fill out the form below:',
         }"
-        buttonLabel="Chat"
         cancelLabel="Back"
+        buttonIcon="AkChatDots"
+        iconLabel="Chat"
         saveLabel="Send"
         :saveOption="false"
         @save="sendChat"
@@ -76,6 +77,7 @@
 </template>
 <script>
 import Modal from "./Modal.vue";
+
 import { mapState, mapActions } from "vuex";
 export default {
     computed: {

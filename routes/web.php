@@ -8,6 +8,7 @@ use App\Http\Controllers\PDCController;
 use App\Http\Controllers\ConvoController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\StudentLoginController;
 use App\Http\Controllers\StudentSignUpController;
@@ -42,7 +43,7 @@ Route::get("/getpiechartdata", [AppointmentController::class, "getPieChartData"]
 Route::get("/getbarchartdata", [AppointmentController::class, "getBarChartData"]);
 Route::post("/getconvo", [ConvoController::class, "getChat"]);
 Route::post("/sendconvo", [ConvoController::class, "sendChat"]);
-
+Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);
 Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
 Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
 

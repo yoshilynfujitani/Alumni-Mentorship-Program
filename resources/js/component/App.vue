@@ -194,6 +194,7 @@
                                         :appointmentId="
                                             appointment.appointmentId
                                         "
+                                        :mentorId="appointment.mentorId"
                                         :disable="appointment.Status !== 3"
                                     />
                                 </button>
