@@ -81,7 +81,7 @@
                             </h1>
                             <h1
                                 v-if="Request.Status === 3"
-                                class="bg-gradient-to-r from-green-500 via-yellow-300 to-yellow-500 bg-clip-text text-transparent font-bold border-2 border-green-200 py-2 px-4 rounded-md w-fit text-center"
+                                class="text-white font-bold bg-green-600 py-2 px-4 rounded-md w-fit text-center"
                             >
                                 {{ Request.statusName }}
                             </h1>
@@ -102,12 +102,20 @@
                     </tr>
                 </tbody>
             </table>
+            <Pagination
+                @next="goToNextPage"
+                @back="goToPrevPage"
+                :total="this.pagination.total"
+                :current_page="this.pagination.current_page"
+                :last_page="this.pagination.last_page"
+            />
         </div>
     </LayoutMentor>
 </template>
 <script>
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 import RequestFromStudent from "../../component/MentorComponents/RequestFromStudent.vue";
+import Pagination from "../../utils/Pagination.vue";
 import Chat from "../../component/Chat.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
 
@@ -117,11 +125,12 @@ export default {
         UnSpinnerAlt,
         Chat,
         RequestFromStudent,
+        Pagination,
     },
     data() {
         return {
             requests: [],
-
+            pagination: {},
             isLoading: false,
             isEdit: false,
         };
@@ -132,7 +141,8 @@ export default {
 
             axios.get("/getstudentrequests").then(({ data }) => {
                 console.log(data);
-                this.requests = data;
+                this.requests = data.data;
+                this.pagination = data;
                 this.isLoading = false;
             });
         },
@@ -148,6 +158,36 @@ export default {
                 })
                 .then(({ data }) => {
                     this.getRequests();
+                });
+        },
+        goToPrevPage() {
+            if (this.pagination.current_page > 1) {
+                const prevPage = this.pagination.current_page - 1;
+                this.fetchRequests(prevPage);
+            }
+        },
+        goToNextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                const nextPage = this.pagination.current_page + 1;
+                this.fetchRequests(nextPage);
+            }
+        },
+        fetchRequests(page) {
+            this.isLoading = true;
+
+            axios
+                .get(`/getstudentrequests?page=${page}`)
+                .then(({ data }) => {
+                    console.log(data);
+
+                    this.requests = data.data;
+                    this.pagination = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         },
     },

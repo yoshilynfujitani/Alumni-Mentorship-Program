@@ -38,7 +38,6 @@
                         class="space-y-4 md:space-y-6"
                         action="#"
                         @submit.prevent="login"
-                        @click="clearErrMsg"
                     >
                         <div>
                             <label
@@ -106,26 +105,29 @@ export default {
     methods: {
         ...mapActions(["setUserDetailsAction"]),
         login() {
+            this.clearErrMsg();
             const { email, password } = this;
-            axios.post("/login", { email, password }).then((res) => {
-                if (res.status == 200) {
-                    this.setUserDetailsAction();
-                    switch (res.data.user.role) {
-                        case 1:
-                            this.$router.push("/home");
-                            break;
-                        case 2:
-                            this.$router.push("/mentorhome");
-                            break;
-                        case 3:
-                            this.$router.push("/pdchome");
-                            break;
+            axios
+                .post("/login", { email, password })
+                .then((res) => {
+                    if (res.status == 200) {
+                        this.setUserDetailsAction();
+                        switch (res.data.user.role) {
+                            case 1:
+                                this.$router.push("/home");
+                                break;
+                            case 2:
+                                this.$router.push("/mentorhome");
+                                break;
+                            case 3:
+                                this.$router.push("/pdchome");
+                                break;
+                        }
                     }
-                }
-            });
-            // .catch((err) => {
-            //     this.errorMsg = err.response.data.message;
-            // });
+                })
+                .catch((err) => {
+                    this.errorMsg = err.response.data.message;
+                });
         },
         clearErrMsg() {
             this.errorMsg = "";

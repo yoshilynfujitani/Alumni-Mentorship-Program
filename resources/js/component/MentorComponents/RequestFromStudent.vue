@@ -123,13 +123,21 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col mr-5 justify-between h-full" v-else>
-                <button @click="setShowFeedback">View Details</button>
+            <div
+                class="flex flex-col mr-5 justify-between h-full w-full"
+                v-else
+            >
+                <button
+                    @click="setShowFeedback"
+                    class="self-start px-4 py-2 rounded-md border border-gray-500"
+                >
+                    View Details
+                </button>
 
                 <div class="text-start">
                     <div class="flex gap-5">
                         <div
-                            class="border flex items-center gap-2 my-2 border-gray-100 rounded-md px-4 py-2"
+                            class="border flex items-center gap-2 my-2 border-gray-100 rounded-md px-4 py-2 w-full"
                         >
                             <img
                                 class="w-12 h-12 rounded-full shadow-lg"
@@ -146,19 +154,32 @@
                             </div>
                         </div>
                         <div
-                            class="border flex items-center gap-2 my-2 border-gray-100 rounded-md px-4 py-2"
+                            class="border flex items-center gap-2 my-2 border-gray-100 rounded-md px-4 py-2 w-full"
                         >
-                            <div class="">
+                            <div class="w-full">
                                 <h1 class="font-medium">Rating</h1>
-                                <h1 class="text-sm text-gray-400">
+                                <h1
+                                    class="text-sm text-gray-400"
+                                    v-if="!this.requestDetails.rating"
+                                >
+                                    No rating.
+                                </h1>
+                                <h1 class="text-sm text-gray-400" v-else>
                                     {{ this.requestDetails.rating }}/5
                                 </h1>
                             </div>
                         </div>
                     </div>
-                    <div class="border border-gray-200 rounded-md p-5 w-full">
+                    <div
+                        class="border border-gray-200 rounded-md p-5 w-full h-full"
+                    >
                         <h1 class="font-medium">Comments</h1>
-                        <h1>{{ this.requestDetails.comments }}</h1>
+                        <h1 v-if="!this.requestDetails.comments">
+                            Student have not yet submitted any feedback.
+                        </h1>
+                        <h1 class="overflow-y-scroll" v-else>
+                            {{ this.requestDetails.comments }}
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -186,7 +207,7 @@ export default {
                 "YYYY-MM-DD"
             ),
             requestDetails: null,
-            showFeedback: true,
+            showFeedback: false,
         };
     },
     computed: {

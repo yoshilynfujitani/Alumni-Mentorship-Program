@@ -78,7 +78,7 @@ class MentorController extends Controller
         ->join(DB::raw('adminportal.users AS users'), 'users.id', '=', 'appointmentdetails.studentId')
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appointmentdetails.requestedBy','=','reqby.id')
         ->select('appointmentdetails.*', 'appointmentstatus.*', 'users.name', 'users.course', 'reqby.requestor')
-        ->get();
+        ->paginate(5);
     }
 
     public function verifyRequest(Request $request){

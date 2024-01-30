@@ -238,27 +238,13 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="flex gap-5">
-                <div v-if="pagination.total > 0">
-                    <button
-                        @click="goToPrevPage"
-                        :disabled="pagination.current_page === 1"
-                    >
-                        Previous
-                    </button>
-                </div>
-                <h1>{{ this.pagination.current_page }}</h1>
-                <div v-if="pagination.total > 0">
-                    <button
-                        @click="goToNextPage"
-                        :disabled="
-                            pagination.current_page === pagination.last_page
-                        "
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
+            <Pagination
+                @next="goToNextPage"
+                @back="goToPrevPage"
+                :total="this.pagination.total"
+                :current_page="this.pagination.current_page"
+                :last_page="this.pagination.last_page"
+            />
         </div>
     </LayoutPDC>
 </template>
@@ -266,6 +252,7 @@
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
 import AppointmentForm from "../../component/StudentComponents/AppointmentForm.vue";
+import Pagination from "../../utils/Pagination.vue";
 import Modal from "../../component/Modal.vue";
 
 export default {
@@ -273,6 +260,7 @@ export default {
         MentorCard,
         UnSpinnerAlt,
         AppointmentForm,
+        Pagination,
     },
     data() {
         return {
