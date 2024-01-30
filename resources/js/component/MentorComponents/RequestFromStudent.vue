@@ -13,8 +13,11 @@
         @modalopen="getAppointmentDetails"
     >
         <div class="" v-if="!this.requestDetails">Loading...</div>
-        <div class="flex items-start w-full" v-else>
-            <div class="flex flex-col mr-5 justify-between h-full">
+        <div class="flex items-start w-[700px] justify-between" v-else>
+            <div
+                class="flex flex-col mr-5 justify-between h-full"
+                v-if="!this.showFeedback"
+            >
                 <div class="text-start text-lg">
                     <h1 class="font-medium">Request header</h1>
                     <p>{{ this.requestDetails.title }}</p>
@@ -116,7 +119,46 @@
                         class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500"
                         v-if="this.requestDetails.statusId === 3"
                     >
-                        View Feedback
+                        <button @click="setShowFeedback">View Feedback</button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col mr-5 justify-between h-full" v-else>
+                <button @click="setShowFeedback">View Details</button>
+
+                <div class="text-start">
+                    <div class="flex gap-5">
+                        <div
+                            class="border flex items-center gap-2 my-2 border-gray-100 rounded-md px-4 py-2"
+                        >
+                            <img
+                                class="w-12 h-12 rounded-full shadow-lg"
+                                src="../../../../public/DefaultAvatar.webp"
+                                alt="Avatar"
+                            />
+                            <div class="">
+                                <h1 class="">
+                                    {{ this.requestDetails.name }}
+                                </h1>
+                                <h1 class="text-sm text-gray-400">
+                                    {{ this.requestDetails.course }}
+                                </h1>
+                            </div>
+                        </div>
+                        <div
+                            class="border flex items-center gap-2 my-2 border-gray-100 rounded-md px-4 py-2"
+                        >
+                            <div class="">
+                                <h1 class="font-medium">Rating</h1>
+                                <h1 class="text-sm text-gray-400">
+                                    {{ this.requestDetails.rating }}/5
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-gray-200 rounded-md p-5 w-full">
+                        <h1 class="font-medium">Comments</h1>
+                        <h1>{{ this.requestDetails.comments }}</h1>
                     </div>
                 </div>
             </div>
@@ -144,6 +186,7 @@ export default {
                 "YYYY-MM-DD"
             ),
             requestDetails: null,
+            showFeedback: true,
         };
     },
     computed: {
@@ -167,6 +210,10 @@ export default {
                     this.requestDetails = data;
                     console.log(data);
                 });
+        },
+        setShowFeedback() {
+            console.log("click");
+            this.showFeedback = !this.showFeedback;
         },
         verify(requestStatus, studentId, appointmentId) {
             console.log(studentId);

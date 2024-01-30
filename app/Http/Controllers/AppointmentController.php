@@ -47,9 +47,10 @@ class AppointmentController extends Controller
         $data = DB::table(DB::raw('adminportal.users AS users'))
             ->join(DB::raw('mentorportal.appointmentdetails AS appt'), 'users.id', '=', 'appt.mentorId')
             ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
+            ->join(DB::raw('mentorportal.feedback AS feedback'), 'appt.appointmentId', '=', 'feedback.appointmentId')
             ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy', '=', 'reqby.id')
             ->where("appt.appointmentId", $appointmentId) // Add this line to filter by appointmentId
-            ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'users.course') 
+            ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'users.course', 'feedback.*') 
             ->first(); // Use first() to retrieve a single record
     
         return $data;

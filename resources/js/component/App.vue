@@ -271,6 +271,7 @@ export default {
             this.loading = true;
             axios.get("/getAppointments").then(({ data }) => {
                 this.appointments = data;
+                console.log(data);
                 this.attributes[0].dates = data.map(
                     (appointment) => new Date(appointment.startSchedule)
                 );
