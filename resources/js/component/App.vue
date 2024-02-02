@@ -101,107 +101,130 @@
                     </div>
                 </Modal>
             </div>
-            <div class="w-full overflow-x-clip shadow-md sm:rounded-lg">
-                <div class="mx-52">
-                    <DatePicker expanded borderless :attributes="attributes" />
-                </div>
-                <table
-                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                >
-                    <caption
-                        class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+            <div
+                class="w-full overflow-x-clip min-h-[975px] flex flex-col justify-between shadow-md sm:rounded-lg"
+            >
+                <div class="">
+                    <div class="mx-52">
+                        <DatePicker
+                            expanded
+                            borderless
+                            :attributes="attributes"
+                        />
+                    </div>
+                    <table
+                        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                     >
-                        Your Appointments
-                    </caption>
-                    <thead
-                        v-if="this.appointments.length > 0"
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-                    >
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Request Title</th>
-                            <th scope="col" class="px-6 py-3">Field</th>
-                            <th scope="col" class="px-6 py-3">Start Date</th>
-                            <th scope="col" class="px-6 py-3">Mentor</th>
-                            <th scope="col" class="px-6 py-3 text-center">
-                                Status
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-center">
-                                Others
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="appointment in appointments"
-                            class="bg-white dark:bg-gray-800 dark:border-gray-700"
+                        <caption
+                            class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
                         >
-                            <th
-                                scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            Your Appointments
+                        </caption>
+                        <thead
+                            v-if="this.appointments.length > 0"
+                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                        >
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Request Title
+                                </th>
+                                <th scope="col" class="px-6 py-3">Field</th>
+                                <th scope="col" class="px-6 py-3">
+                                    Start Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">Mentor</th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Status
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Others
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="appointment in appointments"
+                                class="bg-white dark:bg-gray-800 dark:border-gray-700"
                             >
-                                {{ appointment.title }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ appointment.field }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ appointment.startSchedule }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ appointment.name }}
-                            </td>
-                            <td class="">
-                                <h1
-                                    v-if="appointment.Status === 0"
-                                    class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md text-center"
+                                <th
+                                    scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                 >
-                                    {{ appointment.statusName }}
-                                </h1>
-                                <h1
-                                    v-if="appointment.Status === 1"
-                                    class="text-white font-bold bg-green-400 py-2 px-4 rounded-md text-center"
+                                    {{ appointment.title }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ appointment.field }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ appointment.startSchedule }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ appointment.name }}
+                                </td>
+                                <td class="">
+                                    <h1
+                                        v-if="appointment.Status === 0"
+                                        class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md text-center"
+                                    >
+                                        {{ appointment.statusName }}
+                                    </h1>
+                                    <h1
+                                        v-if="appointment.Status === 1"
+                                        class="text-white font-bold bg-green-400 py-2 px-4 rounded-md text-center"
+                                    >
+                                        {{ appointment.statusName }}
+                                    </h1>
+                                    <h1
+                                        v-if="appointment.Status === 2"
+                                        class="text-white font-bold bg-red-400 py-2 px-4 rounded-md text-center"
+                                    >
+                                        {{ appointment.statusName }}
+                                    </h1>
+                                    <h1
+                                        v-if="appointment.Status === 3"
+                                        class="bg-gradient-to-r from-green-500 via-yellow-300 to-yellow-500 bg-clip-text text-transparent font-bold border-2 border-green-200 py-2 px-4 rounded-md text-center"
+                                    >
+                                        {{ appointment.statusName }}
+                                    </h1>
+                                </td>
+                                <td
+                                    class="px-6 py-4 flex items-center justify-center gap-2"
                                 >
-                                    {{ appointment.statusName }}
-                                </h1>
-                                <h1
-                                    v-if="appointment.Status === 2"
-                                    class="text-white font-bold bg-red-400 py-2 px-4 rounded-md text-center"
-                                >
-                                    {{ appointment.statusName }}
-                                </h1>
-                                <h1
-                                    v-if="appointment.Status === 3"
-                                    class="bg-gradient-to-r from-green-500 via-yellow-300 to-yellow-500 bg-clip-text text-transparent font-bold border-2 border-green-200 py-2 px-4 rounded-md text-center"
-                                >
-                                    {{ appointment.statusName }}
-                                </h1>
-                            </td>
-                            <td
-                                class="px-6 py-4 flex items-center justify-center gap-2"
-                            >
-                                <Chat
-                                    :appointmentId="appointment.appointmentId"
-                                    :userId="this.userId"
-                                />
-                                <button
-                                    :disabled="appointment.Status !== 3"
-                                    :class="{
-                                        'cursor-not-allowed':
-                                            appointment.Status !== 3,
-                                    }"
-                                >
-                                    <FeedbackForm
+                                    <Chat
                                         :appointmentId="
                                             appointment.appointmentId
                                         "
-                                        :mentorId="appointment.mentorId"
-                                        :disable="appointment.Status !== 3"
+                                        :userId="this.userId"
                                     />
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                    <button
+                                        :disabled="appointment.Status !== 3"
+                                        :class="{
+                                            'cursor-not-allowed':
+                                                appointment.Status !== 3,
+                                        }"
+                                    >
+                                        <FeedbackForm
+                                            :appointmentId="
+                                                appointment.appointmentId
+                                            "
+                                            :mentorId="appointment.mentorId"
+                                            :disable="appointment.Status !== 3"
+                                        />
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="my-5">
+                    <Pagination
+                        @next="goToNextPage"
+                        @back="goToPrevPage"
+                        :total="this.pagination?.total"
+                        :current_page="this.pagination?.current_page"
+                        :last_page="this.pagination?.last_page"
+                    />
+                </div>
             </div>
         </div>
     </Layout>
@@ -212,6 +235,7 @@ import { Calendar, DatePicker } from "v-calendar";
 import { mapState, mapActions } from "vuex";
 import PieChart from "../Charts/PieChart.vue";
 import BarChart from "../Charts/BarChart.vue";
+import Pagination from "../utils/Pagination.vue";
 import "v-calendar/style.css";
 import Modal from "./Modal.vue";
 import Chat from "./Chat.vue";
@@ -231,6 +255,7 @@ export default {
         BarChart,
         Chat,
         FeedbackForm,
+        Pagination,
     },
     data() {
         return {
@@ -250,7 +275,7 @@ export default {
                 },
             ],
             userName: "",
-            // ticketStatus: null,
+            pagination: null,
             ticketIsLoading: true,
             // userId: null,
             // fieldToTake: null,
@@ -270,32 +295,59 @@ export default {
         getAppointments() {
             this.loading = true;
             axios.get("/getAppointments").then(({ data }) => {
-                this.appointments = data;
+                this.appointments = data.data;
+                this.pagination = data;
                 console.log(data);
-                this.attributes[0].dates = data.map(
+                this.attributes[0].dates = data.data.map(
                     (appointment) => new Date(appointment.startSchedule)
                 );
                 this.loading = false;
             });
         },
 
-        refecthAppointments() {
-            this.getAppointments();
-        },
+        // refecthAppointments() {
+        //     this.getAppointments();
+        // },
         sendTicket() {
             const fieldId = parseInt(this.selectedField);
             axios.post("/requestticket", { fieldId }).then(({ data }) => {
                 this.setUserTicketStatusAction();
-                this.forceRerender();
+                // this.forceRerender();
             });
         },
-        // handleAppointmentAccessData(data) {
-        //     this.ticketStatus = data.ticketStatus;
-        //     this.userId = data.userId;
-        //     this.ticketIsLoading = false;
+
+        // forceRerender() {
+        //     this.refetchData += 1;
         // },
-        forceRerender() {
-            this.refetchData += 1;
+        goToPrevPage() {
+            if (this.pagination.current_page > 1) {
+                const prevPage = this.pagination.current_page - 1;
+                this.fetchRequests(prevPage);
+            }
+        },
+        goToNextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                const nextPage = this.pagination.current_page + 1;
+                this.fetchRequests(nextPage);
+            }
+        },
+        fetchRequests(page) {
+            this.isLoading = true;
+
+            axios
+                .get(`/getAppointments?page=${page}`)
+                .then(({ data }) => {
+                    console.log(data);
+
+                    this.appointments = data.data;
+                    this.pagination = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         },
     },
 
@@ -303,7 +355,7 @@ export default {
         this.getAppointments();
     },
     mounted() {
-        this.refecthAppointments();
+        // this.refecthAppointments();
         this.setUserTicketStatusAction();
         console.log(this.userId);
         // console.log(this.$store.getters.userDetails);

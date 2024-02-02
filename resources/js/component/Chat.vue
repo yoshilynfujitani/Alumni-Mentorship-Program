@@ -1,5 +1,5 @@
 <template lang="">
-    <Modal
+    <ChatModal
         :modalContent="{
             title: 'Chat',
             // content: 'Please fill out the form below:',
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <form class="my-2">
+            <form class="my-2" v-on:keyup.enter="sendChat" @submit.prevent>
                 <label
                     for="search"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -73,10 +73,10 @@
                     />
                 </div>
             </form></div
-    ></Modal>
+    ></ChatModal>
 </template>
 <script>
-import Modal from "./Modal.vue";
+import ChatModal from "./Modal.vue";
 
 import { mapState, mapActions } from "vuex";
 export default {
@@ -84,7 +84,7 @@ export default {
         ...mapState(["userId"]),
     },
     props: ["appointmentId"],
-    components: { Modal },
+    components: { ChatModal },
     data() {
         return {
             chatLoading: false,
@@ -112,6 +112,7 @@ export default {
                 })
                 .then(({ data }) => {
                     this.getChat();
+                    this.message = "";
                 });
         },
     },

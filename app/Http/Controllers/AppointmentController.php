@@ -35,7 +35,7 @@ class AppointmentController extends Controller
         ->where("studentId",Auth::id())
         ->orderBy("appt.created_at")
         ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
-        ->get();
+        ->paginate(5);
        
         
         return $data;

@@ -105,9 +105,9 @@
             <Pagination
                 @next="goToNextPage"
                 @back="goToPrevPage"
-                :total="this.pagination.total"
-                :current_page="this.pagination.current_page"
-                :last_page="this.pagination.last_page"
+                :total="this.pagination?.total"
+                :current_page="this.pagination?.current_page"
+                :last_page="this.pagination?.last_page"
             />
         </div>
     </LayoutMentor>
