@@ -4,6 +4,7 @@
             title: 'Chat',
             // content: 'Please fill out the form below:',
         }"
+        @modalopen="getChat"
         cancelLabel="Back"
         buttonIcon="AkChatDots"
         iconLabel="Chat"
@@ -16,12 +17,15 @@
             </div>
 
             <div
-                class="min-h-[200px] max-h-[300px] px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
+                class="px-2 overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
                 v-else
             >
-                <div class="h-full flex flex-col" v-for="chats in chat">
+                <div class="flex flex-col h-96" id="chats" ref="chats">
                     <h1
+                        v-for="chats in chat"
+                        :key="chats.id"
                         class="w-auto text-gray-900 my-1 max-w-xs"
+                        :ref="'chatIndex' + chats.id"
                         :class="{
                             'self-start text-left':
                                 chats.userId !== this.userId,
@@ -92,6 +96,7 @@ export default {
             message: "",
         };
     },
+
     methods: {
         getChat() {
             this.chatLoading = true;
@@ -100,6 +105,8 @@ export default {
                 .post("/getconvo", { appointmentId: this.appointmentId })
                 .then(({ data }) => {
                     this.chat = data;
+
+                    this.$nextTick(() => this.scrollToEnd());
                     this.chatLoading = false;
                 });
         },
@@ -112,14 +119,33 @@ export default {
                 })
                 .then(({ data }) => {
                     this.getChat();
+
                     this.message = "";
                 });
         },
+        scrollToEnd() {
+            this.$nextTick(() => {
+                const chatContainer = this.$refs?.chats;
+                if (chatContainer && this.chat.length > 0) {
+                    const lastMessage =
+                        this.$refs[
+                            "chatIndex" + this.chat[this.chat.length - 1].id
+                        ];
+
+                    if (lastMessage) {
+                        // Scroll to the last element within the chat container
+                        lastMessage[0].scrollIntoView({
+                            behavior: "smooth",
+                            block: "end",
+                            inline: "nearest",
+                        });
+                    }
+                }
+            });
+        },
     },
 
-    mounted() {
-        this.getChat();
-    },
+    mounted() {},
 };
 </script>
 <style lang=""></style>
