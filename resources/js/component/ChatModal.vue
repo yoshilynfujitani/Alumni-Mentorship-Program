@@ -26,17 +26,34 @@
 
             <div
                 v-if="isOpen"
-                class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-50 min-h-screen"
+                class="fixed inset-0 flex items-center flex-reverse bg-gray-700 bg-opacity-20 z-50 min-h-screen w-screen py-10"
             >
-                <div class="p-6 bg-white rounded-md shadow-xl min-w-[400px]">
+                <div
+                    class="p-6 bg-white rounded-md self-end shadow-xl min-w-[400px] relative h-full mx-5"
+                >
+                    <!-- Move the rounded div inside the modal content -->
+                    <div
+                        class="absolute -top-7 left-1/2 transform -translate-x-1/2"
+                    >
+                        <div
+                            class="border rounded-full bg-transparent border-transparent"
+                        >
+                            <img
+                                src="../../../public/mmsu_logo.png"
+                                alt=""
+                                class="w-14 h-14 rounded-full"
+                            />
+                        </div>
+                    </div>
+
                     <div class="flex items-center justify-between">
                         <h3 class="text-2xl">{{ modalContent.title }}</h3>
                     </div>
-                    <div class="mt-4">
+                    <div class="">
                         <p class="mb-4 text-sm">
                             {{ modalContent.content }}
                         </p>
-                        <slot />
+                        <div class=""><slot /></div>
                         <button
                             @click="isOpen = false"
                             class="px-4 py-2 text-green-800 border border-green-600 rounded-md text-sm"

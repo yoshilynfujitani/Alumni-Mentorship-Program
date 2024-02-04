@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Convo;
-use Illuminate\Http\Request;
-
 use Auth;
+use App\Models\Convo;
+
+use Illuminate\Http\Request;
+use App\Models\mentorAppointment;
+use Illuminate\Support\Facades\DB;
 
 class ConvoController extends Controller
 {
@@ -27,6 +29,17 @@ class ConvoController extends Controller
         $newConvo->save();
 
         return;
+    }
+
+    public function getConvoId(){
+        $ConvoId = mentorAppointment::where('studentId', Auth::id())
+        ->join(DB::raw('adminportal.users AS user'), 'user.id', '=', 'mentorId')
+        ->where('Status', 1)
+        ->orWhere('Status', 3)
+        ->select("appointmentId", "title", "user.name")
+        ->get();
+
+        return  $ConvoId;
     }
 
 }

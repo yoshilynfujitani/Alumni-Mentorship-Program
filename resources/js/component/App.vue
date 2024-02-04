@@ -182,7 +182,7 @@
                                     </h1>
                                     <h1
                                         v-if="appointment.Status === 3"
-                                        class="bg-gradient-to-r from-green-500 via-yellow-300 to-yellow-500 bg-clip-text text-transparent font-bold border-2 border-green-200 py-2 px-4 rounded-md text-center"
+                                        class="text-white font-bold bg-green-600 py-2 px-4 rounded-md text-center"
                                     >
                                         {{ appointment.statusName }}
                                     </h1>
