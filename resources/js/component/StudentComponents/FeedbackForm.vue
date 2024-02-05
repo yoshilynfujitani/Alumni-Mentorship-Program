@@ -111,6 +111,7 @@ export default {
                 })
                 .then(({ data }) => {
                     this.getAppointmentDetails();
+                    this.updateMentorRating();
                 });
         },
         getAppointmentDetails() {
@@ -118,6 +119,14 @@ export default {
                 .post("/getAppointment", { appointmentId: this.appointmentId })
                 .then(({ data }) => {
                     this.appointmentDetails = data;
+                    console.log(data);
+                });
+        },
+        updateMentorRating() {
+            const { mentorId } = this;
+            axios
+                .post("/updateMentorRating", { mentorId: mentorId })
+                .then(({ data }) => {
                     console.log(data);
                 });
         },

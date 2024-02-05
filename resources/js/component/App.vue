@@ -4,7 +4,7 @@
 
         <div class="" v-if="loading"><h1>Loading...</h1></div>
 
-        <div class="w-full">
+        <div class="w-full my-10">
             <div class="h-20 bg-green-700 rounded-md mb-5 shadow-md">
                 Welcome Back! {{ this.userId }}
             </div>
@@ -61,6 +61,7 @@
                     :modalContent="{
                         title: 'Request Ticket',
                         content: 'Please fill out the form below:',
+                        disableSaveBtn: this.selectedField === 0,
                     }"
                     buttonLabel="Request to PDC"
                     cancelLabel="Cancel Ticket"
@@ -102,7 +103,7 @@
                 </Modal>
             </div>
             <div
-                class="w-full overflow-x-clip min-h-[975px] flex flex-col justify-between shadow-md sm:rounded-lg"
+                class="w-full overflow-x-clip min-h-[975px] py-10 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
             >
                 <div class="">
                     <div class="mx-52">
@@ -262,7 +263,7 @@ export default {
             refetchData: 0,
             appointments: [],
             loading: false,
-            selectedField: "0",
+            selectedField: 0,
             attributes: [
                 {
                     key: 1,

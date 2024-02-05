@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-50 rounded-md h-full p-5 w-full flex justify-center shadow-md"
+        class="bg-gray-50 rounded-md h-full p-5 w-full flex justify-center shadow-sm border border-gray-200"
     >
         <Bar :data="chartData" :options="chartOptions" v-if="loaded" />
     </div>

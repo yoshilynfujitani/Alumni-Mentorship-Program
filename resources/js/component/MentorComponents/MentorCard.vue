@@ -1,9 +1,9 @@
 <template lang="">
     <div
-        class="min-w-[225px] bg-white border p-5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        class="min-w-[225px] max-w-[225px] bg-white border py-5 px-2.5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
         :class="{
-            'min-h-[250px]': displaybtn === 0,
-            'min-h-[320px]': displaybtn === 1,
+            'min-h-[280px] max-h-[280px]': displaybtn === 0,
+            'min-h-[320px] max-h-[320px]': displaybtn === 1,
         }"
     >
         <div class="flex flex-col justify-end h-full items-center">

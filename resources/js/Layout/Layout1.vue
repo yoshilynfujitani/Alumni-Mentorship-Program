@@ -28,7 +28,7 @@
         aria-label="Sidebar"
     >
         <div
-            class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
+            class="h-full px-3 py-4 overflow-y-auto bg-gray-50 border-r border-gray-200 shadow-sm text-sm"
         >
             <div class="flex items-center ps-2.5 mb-5 gap-2">
                 <img

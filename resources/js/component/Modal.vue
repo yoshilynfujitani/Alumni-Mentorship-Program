@@ -44,9 +44,14 @@
                             {{ cancelLabel }}
                         </button>
                         <button
+                            :disabled="modalContent.disableSaveBtn"
                             v-if="saveLabel"
                             @click="saveData"
                             class="px-4 py-2 ml-2 text-white bg-green-600 rounded-md text-sm"
+                            :class="{
+                                'cursor-not-allowed':
+                                    modalContent.disableSaveBtn,
+                            }"
                         >
                             {{ saveLabel }}
                         </button>
