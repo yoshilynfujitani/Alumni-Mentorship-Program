@@ -28,7 +28,7 @@
         aria-label="Sidebar"
     >
         <div
-            class="h-full px-3 py-4 overflow-y-auto bg-gray-50 border-r border-gray-200 shadow-sm text-sm"
+            class="h-full px-3 py-4 overflow-y-auto bg-gray-50 border-r border-gray-200 shadow-sm"
         >
             <div class="flex items-center ps-2.5 mb-5 gap-2">
                 <img
@@ -94,7 +94,7 @@
                     </li>
 
                     <li>
-                        <router-link to="/mentors">
+                        <router-link to="/appointments">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"

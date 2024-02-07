@@ -7,6 +7,7 @@ use App\Http\Controllers\PDCController;
 
 use App\Http\Controllers\ConvoController;
 use App\Http\Controllers\MentorController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AppointmentController;
@@ -37,6 +38,7 @@ Route::post("/logout", [StudentLoginController::class, "logout"]);
 
 //Student
 Route::post("/addAppointment", [AppointmentController::class, "requestAppointment"]);
+Route::get("/getOngoingAppointments", [AppointmentController::class, "getOngoingAppointments"]);
 Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]);
 Route::post("/requestticket", [TicketController::class, "requestTicket"]);
 Route::get("/getpiechartdata", [AppointmentController::class, "getPieChartData"]);
@@ -47,7 +49,7 @@ Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);
 Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
 Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
 Route::get("/getConvoId", [ConvoController::class, "getConvoId"]);
-Route::post("/updateMentorRating", [FeedbackController::class, "calculateRating"]);
+Route::post("/updateMentorRating", [RatingController::class, "calculateRating"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

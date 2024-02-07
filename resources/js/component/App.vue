@@ -295,7 +295,7 @@ export default {
         ...mapActions(["setUserTicketStatusAction"]),
         getAppointments() {
             this.loading = true;
-            axios.get("/getAppointments").then(({ data }) => {
+            axios.get("/getOngoingAppointments").then(({ data }) => {
                 this.appointments = data.data;
                 this.pagination = data;
                 console.log(data);
@@ -336,7 +336,7 @@ export default {
             this.isLoading = true;
 
             axios
-                .get(`/getAppointments?page=${page}`)
+                .get(`/getOngoingAppointments?page=${page}`)
                 .then(({ data }) => {
                     console.log(data);
 

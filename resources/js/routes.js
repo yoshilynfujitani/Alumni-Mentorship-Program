@@ -12,6 +12,7 @@ import PDCStudentTickets from "@/pages/PDCPages/PDCStudentTickets.vue";
 import MentorStudentRequests from "@/pages/MentorPages/MentorStudentRequests.vue";
 import MentorApp from "@/pages/MentorPages/MentorApp.vue";
 import Conversation from "@/pages/Conversation.vue";
+import Appointments from "@/pages/Appointments.vue";
 export const routes = [
     {
         path: "/",
@@ -35,6 +36,11 @@ export const routes = [
         path: "/chat",
         name: "chat",
         component: Conversation,
+    },
+    {
+        path: "/appointments",
+        name: "appointments",
+        component: Appointments,
     },
     {
         path: "/mentors",
