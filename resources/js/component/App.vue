@@ -104,6 +104,7 @@
             </div>
             <div
                 class="w-full overflow-x-clip min-h-[975px] py-10 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
+                :class="{ 'min-h-[100px]': this.appointments?.length === 0 }"
             >
                 <div class="">
                     <div class="mx-52">
@@ -121,8 +122,9 @@
                         >
                             Your Appointments
                         </caption>
+
                         <thead
-                            v-if="this.appointments.length > 0"
+                            v-if="this.appointments?.length > 0"
                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                         >
                             <tr>
@@ -191,12 +193,6 @@
                                 <td
                                     class="px-6 py-4 flex items-center justify-center gap-2"
                                 >
-                                    <Chat
-                                        :appointmentId="
-                                            appointment.appointmentId
-                                        "
-                                        :userId="this.userId"
-                                    />
                                     <button
                                         :disabled="appointment.Status !== 3"
                                         :class="{
@@ -217,7 +213,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="my-5">
+                <div class="my-5" v-if="this.appointments?.length > 0">
                     <Pagination
                         @next="goToNextPage"
                         @back="goToPrevPage"

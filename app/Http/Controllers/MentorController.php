@@ -63,11 +63,12 @@ class MentorController extends Controller
         if($request->allowToAppoint == 0){
             return $query->get();
         }
-        if($request->allowToAppoint == 1){
+        if($request->allowToAppoint == 1 || $request->allowToAppoint == 2 ){
             // dd($request->fieldToTake);
             return $query ->where('users.field', $request->fieldToTake)->get();
         }
-        
+
+     
     
        
     }
@@ -98,7 +99,9 @@ class MentorController extends Controller
 
         if($request->requestStatus == 2){
             $appointment->Status = 2;
+            $user->allowToAppoint = 1;
             $appointment->save();
+            $user->save();
         }
 
         if($request->requestStatus == 3){

@@ -78,10 +78,10 @@
                             <td
                                 class="px-6 py-4 flex items-center justify-center gap-2"
                             >
-                                <Chat
+                                <!-- <Chat
                                     :appointmentId="appointment.appointmentId"
                                     :userId="this.userId"
-                                />
+                                /> -->
                                 <button
                                     :disabled="appointment.Status !== 3"
                                     :class="{

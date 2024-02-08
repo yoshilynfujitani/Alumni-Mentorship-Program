@@ -3,13 +3,19 @@
         <!-- <div class="" v-if="!apptAccessData">Loading...</div> -->
         <div class="">
             <h1>Mentors</h1>
+            <div class="" v-if="this.allowToAppoint === 2">
+                <h1>
+                    You have already sent an appointment request to a mentor.
+                    Please wait before sending another one.
+                </h1>
+            </div>
             <div
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 mx-auto my-10"
             >
                 <div class="mx-auto" v-for="Mentor in mentors">
                     <MentorCard
                         :MentorDetails="Mentor"
-                        :displaybtn="this.allowToAppoint"
+                        :displaybtn="this.allowToAppoint === 1"
                     />
                 </div>
             </div>

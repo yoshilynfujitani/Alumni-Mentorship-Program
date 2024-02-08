@@ -15,12 +15,18 @@ class AppointmentController extends Controller
     //
     public function requestAppointment(Request $request){
         $newAppointment = new mentorAppointment();
+        $student = DB::connection('admin')->table('users')->where('id', Auth::id())->first();
+
        
         $newAppointment->studentId = Auth::id();
         $newAppointment->mentorId = $request->mentorId;
         $newAppointment->title = $request->title;
         $newAppointment->field = $request->field;
         $newAppointment->startSchedule = Carbon::parse($request->date);
+
+        DB::connection('admin')->table('users')->where('id', Auth::id())->update(['allowToAppoint' => 2]);
+
+
     
         $res = $newAppointment->save();
 
@@ -64,9 +70,9 @@ class AppointmentController extends Controller
             ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
             ->leftJoin(DB::raw('mentorportal.feedback AS feedback'), 'appt.appointmentId', '=', 'feedback.appointmentId')
             ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy', '=', 'reqby.id')
-            ->where("appt.appointmentId", $appointmentId) // Add this line to filter by appointmentId
+            ->where("appt.appointmentId", $appointmentId) 
             ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'users.course', 'feedback.rating', 'feedback.comments') 
-            ->first(); // Use first() to retrieve a single record
+            ->first(); 
     
         return $data;
     }
