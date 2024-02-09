@@ -18,12 +18,12 @@
             <form @submit.prevent="submitAppointment" class="">
                 <div class="w-[550px]">
                     <div class="flex flex-col">
-                        <DatePicker
+                        <Calendar
                             v-model="date"
-                            :color="color"
-                            hide-time-header
-                            expanded
-                            borderless
+                            inline
+                            showWeek
+                            :numberOfMonths="1"
+                            :minDate="minDate"
                         />
                         <div class="">
                             <label
@@ -108,19 +108,21 @@
                         required
                     />
                 </div>
-                <h1>
+
+                <Message severity="warn">
                     Confirm all details are correct before submitting
-                    appointment.
-                </h1>
+                    appointment.</Message
+                >
             </div>
         </div>
     </Modal>
 </template>
 <script>
-import { Calendar, DatePicker } from "v-calendar";
-import "v-calendar/style.css";
 import Modal from "../Modal.vue";
 import StudentSearch from "../PDCComponents/StudentSearch.vue";
+import Calendar from "primevue/calendar";
+
+import Message from "primevue/message";
 
 export default {
     props: {
@@ -133,7 +135,7 @@ export default {
     },
     components: {
         Calendar,
-        DatePicker,
+        Message,
         Modal,
         StudentSearch,
     },
@@ -155,6 +157,7 @@ export default {
             field: 7,
             title: "",
             selectedStudent: "",
+            minDate: null,
         };
     },
     methods: {
@@ -181,8 +184,20 @@ export default {
         handleQueryData(data) {
             this.selectedStudent = data;
         },
+        getToday() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return today;
+        },
     },
 
-    mounted() {},
+    mounted() {
+        this.minDate = this.getToday();
+    },
 };
 </script>
+<style>
+.p-message-text {
+    font-size: 12px;
+}
+</style>

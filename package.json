@@ -20,6 +20,8 @@
         "lodash": "^4.17.21",
         "moment": "^2.30.1",
         "postcss": "^8.4.31",
+        "primeicons": "^6.0.1",
+        "primevue": "^3.48.1",
         "tailwind": "^4.0.0",
         "tailwind-scrollbar": "^3.0.5",
         "v-calendar": "^3.1.2",

@@ -47,6 +47,11 @@ class AppointmentController extends Controller
         
         return $data;
     }
+    public function getCountTotalAppointments(){
+        $data = mentorAppointment::where("studentId", Auth::id())->count();
+    
+        return $data;
+    }
     public function getAppointments(){
         $data = DB::table(DB::raw('adminportal.users AS users'))
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')

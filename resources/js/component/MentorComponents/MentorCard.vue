@@ -2,7 +2,7 @@
     <div
         class="min-w-[225px] max-w-[225px] bg-white border py-5 px-2.5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
         :class="{
-            'min-h-[280px] max-h-[280px]': displaybtn === 0,
+            'min-h-[500px] max-h-[500px]': displaybtn === 0,
             'min-h-[320px] max-h-[320px]': displaybtn === 1,
         }"
     >

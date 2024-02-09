@@ -1,6 +1,6 @@
 <template>
-    <div
-        class="bg-gray-50 rounded-md flex justify-center items-center p-5 h-full shadow-sm border border-gray-200"
+    <!-- <div
+        class="bg-white rounded-md flex justify-center items-center p-5 h-full shadow-sm border border-gray-200"
     >
         <Doughnut
             v-if="loaded"
@@ -8,24 +8,35 @@
             :options="chartOptions"
             :data="chartData"
         />
+    </div> -->
+    <div
+        class="bg-white rounded-md flex justify-center items-center shadow-sm border border-gray-200 h-[400px]"
+    >
+        <Chart
+            type="doughnut"
+            :data="chartData"
+            :options="chartOptions"
+            class="w-[200px] h-[350px]"
+        />
     </div>
 </template>
 
 <script>
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "vue-chartjs";
+import Chart from "primevue/chart";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default {
     name: "PieChart",
-    components: { Doughnut },
+    components: { Doughnut, Chart },
     data() {
         return {
             loaded: false,
             chartData: null,
             chartOptions: {
-                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     title: {
                         display: true,

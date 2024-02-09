@@ -39,6 +39,7 @@ Route::post("/logout", [StudentLoginController::class, "logout"]);
 //Student
 Route::post("/addAppointment", [AppointmentController::class, "requestAppointment"]);
 Route::get("/getOngoingAppointments", [AppointmentController::class, "getOngoingAppointments"]);
+Route::get("/getCountTotalAppointments", [AppointmentController::class, "getCountTotalAppointments"]);
 Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]);
 Route::post("/requestticket", [TicketController::class, "requestTicket"]);
 Route::get("/getpiechartdata", [AppointmentController::class, "getPieChartData"]);

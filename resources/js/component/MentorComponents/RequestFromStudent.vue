@@ -71,7 +71,7 @@
                                 this.requestDetails.appointmentId
                             )
                         "
-                        class="transition-all border border-red-400 rounded-md w-full py-2 font-semibold text-red-500 hover:bg-red-400 hover:text-white"
+                        class="transition-all border border-red-400 rounded-md w-full py-2 font-semibold text-red-500 hover:bg-red-400 hover:text-white hover:cursor-pointer"
                     >
                         Reject
                     </div>
@@ -83,7 +83,7 @@
                                 this.requestDetails.appointmentId
                             )
                         "
-                        class="transition-all border border-green-400 rounded-md w-full py-2 font-semibold text-green-500 hover:bg-green-400 hover:text-white"
+                        class="transition-all border border-green-400 rounded-md w-full py-2 font-semibold text-green-500 hover:bg-green-400 hover:text-white hover:cursor-pointer"
                     >
                         Accept
                     </div>
@@ -184,21 +184,26 @@
                 </div>
             </div>
 
-            <Calendar />
+            <Calendar
+                v-model="date"
+                inline
+                showWeek
+                :numberOfMonths="1"
+                :minDate="minDate"
+            />
         </div>
     </Modal>
 </template>
 <script>
 import Modal from "../Modal.vue";
 import moment from "moment";
-import { Calendar, DatePicker } from "v-calendar";
+import Calendar from "primevue/calendar";
 
 export default {
     props: ["requestId"],
     components: {
         Modal,
         Calendar,
-        DatePicker,
     },
     data() {
         return {
@@ -208,6 +213,7 @@ export default {
             ),
             requestDetails: null,
             showFeedback: false,
+            minDate: null,
         };
     },
     computed: {
@@ -248,8 +254,16 @@ export default {
                     this.getAppointmentDetails();
                 });
         },
+
+        getToday() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set hours to 00:00:00 for accurate comparison
+            return today;
+        },
     },
-    mounted() {},
+    mounted() {
+        this.minDate = this.getToday();
+    },
 };
 </script>
 <style lang=""></style>

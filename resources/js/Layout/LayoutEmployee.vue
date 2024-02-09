@@ -126,17 +126,8 @@
 </template>
 
 <script>
-import { FaUserGraduate } from "@kalimahapps/vue-icons";
-import { FaUserTie } from "@kalimahapps/vue-icons";
-import { MdRoundSpaceDashboard } from "@kalimahapps/vue-icons";
-import { FaUserPlus } from "@kalimahapps/vue-icons";
 export default {
-    components: {
-        FaUserGraduate,
-        FaUserTie,
-        MdRoundSpaceDashboard,
-        FaUserPlus,
-    },
+    components: {},
     methods: {
         logout() {
             axios.post("/logout").then(() => {
