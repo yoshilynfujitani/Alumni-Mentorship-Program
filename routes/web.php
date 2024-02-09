@@ -6,6 +6,7 @@ use App\Http\Controllers\PDCController;
 
 
 use App\Http\Controllers\ConvoController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TicketController;
@@ -28,6 +29,8 @@ use App\Http\Controllers\StudentSignUpController;
 // Route::get('/', function () {
 //     return view('app');
 // });
+//Mail
+Route::get('sendEmail', [EmailController::class, 'sendEmail']);
 
 //Student Auth
 Route::post("/login", [StudentLoginController::class, "login"]);
