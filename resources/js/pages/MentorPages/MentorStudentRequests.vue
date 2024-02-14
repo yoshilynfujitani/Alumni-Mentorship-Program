@@ -97,7 +97,13 @@
                             </button>
                         </td>
                         <td>
-                            <Chat :appointmentId="Request.appointmentId" />
+                            <!-- <Chat :appointmentId="Request.appointmentId" /> -->
+                            <FeedbackForm
+                                :appointmentId="Request.appointmentId"
+                                :userToRateId="Request.studentId"
+                                userRole="Mentor"
+                                :disable="Request.Status !== 3"
+                            />
                         </td>
                     </tr>
                 </tbody>
@@ -118,6 +124,7 @@ import RequestFromStudent from "../../component/MentorComponents/RequestFromStud
 import Pagination from "../../utils/Pagination.vue";
 import Chat from "../../component/Chat.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+import FeedbackForm from "../../component/StudentComponents/FeedbackForm.vue";
 
 export default {
     components: {
@@ -126,6 +133,7 @@ export default {
         Chat,
         RequestFromStudent,
         Pagination,
+        FeedbackForm,
     },
     data() {
         return {

@@ -16,12 +16,18 @@ class FeedbackController extends Controller
         $feedback = new Feedback();
         $appointmentDetails = mentorAppointment::find($request->appointmentId);
         
-        $appointmentDetails->feedback_sent = 1;
+        if($request->userRole == 'Student'){
+            $appointmentDetails->feedback_sent_student = 1;
+        }
+        else{
+            $appointmentDetails->feedback_sent_mentor = 1;
+        }
+            
         $appointmentDetails->save();
 
         $feedback->appointmentId = $request-> appointmentId;
-        $feedback->studentId = Auth::id();
-        $feedback->mentorId = $request-> mentorId;
+        $feedback->userId = Auth::id();
+        $feedback->userToRateId = $request-> userToRateId;
         $feedback->rating = $request->rating;
         $feedback->comments = $request->comments;
 

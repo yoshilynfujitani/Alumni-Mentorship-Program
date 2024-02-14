@@ -21,7 +21,10 @@ return new class extends Migration
             $table->string("studentId");
             $table->integer('convoId');
             $table->datetime('startSchedule');
-            $table->tinyInt('Requestor')->default(1);
+            $table->tinyInt('RequestedBy')->default(1);
+            $table->tinyInt('feedback_sent_student')->default(0);
+            $table->tinyInt('feedback_sent_mentor')->default(0);
+
             //1 is for student and 2 is for Employee
         
             $table->timestamp('created_at')->nullable();

@@ -28,12 +28,7 @@ class HelloEmail extends Mailable
      */
     public function build()
     {
-        /**
-         * Replace the "from" field with your valid sender email address.
-         * The "email-template" is the name of the file present inside
-         * "resources/views" folder. If you don't have this file, then
-         * create it.
-         */
-        return $this->from("support@example.com")->view('email-template');
+       
+        return $this->from("kosakishin06@gmail.com")->view('email-template');
     }
 }

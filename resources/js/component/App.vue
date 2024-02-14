@@ -8,51 +8,17 @@
             <!-- <div class="w-full mb-2.5 bg-gray-50">
                 <Menubar :model="items" />
             </div> -->
-            <div
-                class="bg-white mb-5 p-2.5 rounded-md flex justify-center items-center w-full gap-5"
+
+            <h1
+                class="gap-1 flex items-center text-2xl font-medium text-green-700 pb-2.5"
             >
-                <Message severity="info" :closable="false"
-                    >To be able to request appointments from a mentor you must
-                    first request a ticket to PDC. Once approve you will be
-                    recommended to mentors with your requested field and make
-                    appointments
-                </Message>
-                <Modal
-                    v-if="this.ticketStatus === 2 || this.ticketStatus === null"
-                    :modalContent="{
-                        title: 'Request Ticket',
-                        content: 'Please fill out the form below:',
-                        disableSaveBtn: this.selectedField === 0,
-                    }"
-                    buttonLabel="Request to PDC"
-                    cancelLabel="Cancel Ticket"
-                    saveLabel="Submit Ticket"
-                    @save="sendTicket"
-                >
-                    <div class="my-4">
-                        <label
-                            for="field"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >Select a field to request</label
-                        >
-                        <div class="card flex justify-content-center">
-                            <Dropdown
-                                v-model="selectedField"
-                                :options="this.courses"
-                                :highlightOnSelect="false"
-                                optionLabel="name"
-                                placeholder="Select a field"
-                                class="w-full md:w-14rem"
-                            />
-                        </div>
-                    </div>
-                </Modal>
-            </div>
-            <h1>Dashboard</h1>
-            <div class="flex gap-10 mb-10 w-full">
-                <div class="w-1/3"><PieChart /></div>
-                <div class="w-2/3"><BarChart /></div>
-            </div>
+                <span
+                    ><i
+                        class="pi pi-chart-pie text-2xl text-yellow-400"
+                        style="font-size: 1rem"
+                    ></i></span
+                >Dashboard
+            </h1>
 
             <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
             <div class="flex justify-center items-center">
@@ -94,7 +60,7 @@
             </div>
             <h1>Overview</h1>
             <div
-                class="bg-white w-full overflow-x-clip min-h-[975px] py-10 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
+                class="bg-white w-full overflow-x-clip py-10 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
                 :class="{ 'min-h-[100px]': this.appointments?.length === 0 }"
             >
                 <div class="w-full">
@@ -114,33 +80,83 @@
                             :numberOfMonths="1"
                             :minDate="minDate"
                         />
-                        <div class="">
-                            <h1 class="pb-5">User Statistics</h1>
+                        <div class="border p-5 rounded border-gray-200">
+                            <h1 class="pb-5 font-medium text-green-700 text-xl">
+                                <span
+                                    ><i
+                                        class="pi pi-chart-bar text-xl rounded-full text-yellow-400"
+                                        style="font-size: 1rem"
+                                    ></i
+                                ></span>
+                                User Statistics
+                                <span
+                                    class="text-xs text-gray-400 font-normal italic"
+                                    >as of
+                                    {{
+                                        this.minDate?.toLocaleDateString(
+                                            "en-US"
+                                        )
+                                    }}</span
+                                >
+                            </h1>
                             <div
                                 class="grid lg:grid-cols-2 gap-5 w-full h-full grid-cols-1"
                             >
                                 <div
-                                    class="border border-gray-200 rounded-md p-5 h-full"
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
                                 >
-                                    <h1>Total Appointments</h1>
-                                    <p>{{ this.TotalAppointments }}</p>
+                                    <div class="">
+                                        <i
+                                            class="pi pi-briefcase text-2xl bg-green-100 rounded-full px-2 py-1 text-green-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1>Total Appointments</h1>
+                                        <p>{{ this.TotalAppointments }}</p>
+                                    </div>
                                 </div>
                                 <div
-                                    class="border border-gray-200 rounded-md p-5 h-full"
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
                                 >
-                                    <h1>Rating</h1>
-                                    <p>{{ this.TotalAppointments }}</p>
+                                    <div class="">
+                                        <i
+                                            class="pi pi-star text-2xl bg-yellow-100 rounded-full px-2 py-1 text-yellow-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1>Rating</h1>
+                                        <p>{{ this.TotalAppointments }}</p>
+                                    </div>
                                 </div>
                                 <div
-                                    class="border border-gray-200 rounded-md p-5 h-full"
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
                                 >
-                                    <h1>Ongoing Appointments</h1>
-                                    <p>{{ this.TotalAppointments }}</p>
+                                    <div class="">
+                                        <i
+                                            class="pi pi-bell text-2xl bg-blue-100 rounded-full px-2 py-1 text-blue-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1>Ongoing Appointments</h1>
+                                        <p>{{ this.TotalAppointments }}</p>
+                                    </div>
                                 </div>
                                 <div
-                                    class="border border-gray-200 rounded-md p-5 h-full"
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
                                 >
-                                    <h1>View Feedbacks</h1>
+                                    <div class="">
+                                        <i
+                                            class="pi pi-flag text-2xl bg-blue-100 rounded-full px-2 py-1 text-blue-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1>Feedbacks</h1>
+                                        <p>View</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -235,7 +251,8 @@
                                             :appointmentId="
                                                 appointment.appointmentId
                                             "
-                                            :mentorId="appointment.mentorId"
+                                            userRole="Student"
+                                            :userToRateId="appointment.mentorId"
                                             :disable="appointment.Status !== 3"
                                         />
                                     </button>
@@ -253,6 +270,10 @@
                         :last_page="this.pagination?.last_page"
                     />
                 </div>
+            </div>
+            <div class="flex gap-10 my-10 w-full">
+                <div class="w-1/3"><PieChart /></div>
+                <div class="w-2/3"><BarChart /></div>
             </div>
         </div>
     </Layout>

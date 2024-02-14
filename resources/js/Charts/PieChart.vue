@@ -10,7 +10,7 @@
         />
     </div> -->
     <div
-        class="bg-white rounded-md flex justify-center items-center shadow-sm border border-gray-200 h-[400px]"
+        class="bg-white rounded-md flex justify-center items-center shadow-lg border border-gray-200 h-[400px]"
     >
         <Chart
             type="doughnut"

@@ -132,7 +132,7 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[250px] px-10 bg-gray-50">
+    <div class="ml-[250px] px-10 bg-[#fdfdff]">
         <div class="flex flex-col items-center min-h-screen">
             <slot />
         </div>

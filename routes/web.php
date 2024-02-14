@@ -53,7 +53,7 @@ Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);
 Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
 Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
 Route::get("/getConvoId", [ConvoController::class, "getConvoId"]);
-Route::post("/updateMentorRating", [RatingController::class, "calculateRating"]);
+Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

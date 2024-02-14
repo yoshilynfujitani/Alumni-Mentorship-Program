@@ -15,13 +15,12 @@ return new class extends Migration
         Schema::connection('mentor')->create('feedback', function (Blueprint $table) {
             $table->id();
             $table->integer('appointmendId');
-            $table->integer('studentId');
-            $table->integer('mentorId');
+            $table->integer('userId');
+            $table->integer('userToRateId');
             $table->integer('rating');
             $table->string('comments');
           
             
-        
   
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();

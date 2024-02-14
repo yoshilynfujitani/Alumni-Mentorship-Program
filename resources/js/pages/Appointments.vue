@@ -93,7 +93,8 @@
                                         :appointmentId="
                                             appointment.appointmentId
                                         "
-                                        :mentorId="appointment.mentorId"
+                                        userRole="Student"
+                                        :userToRateId="appointment.mentorId"
                                         :disable="appointment.Status !== 3"
                                     />
                                 </button>
