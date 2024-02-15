@@ -73,10 +73,10 @@ class AppointmentController extends Controller
         $data = DB::table(DB::raw('adminportal.users AS users'))
             ->join(DB::raw('mentorportal.appointmentdetails AS appt'), 'users.id', '=', 'appt.mentorId')
             ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
-            ->leftJoin(DB::raw('mentorportal.feedback AS feedback'), 'appt.appointmentId', '=', 'feedback.appointmentId')
+            // ->leftJoin(DB::raw('mentorportal.feedback AS feedback'), 'appt.appointmentId', '=', 'feedback.appointmentId')
             ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy', '=', 'reqby.id')
             ->where("appt.appointmentId", $appointmentId) 
-            ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'users.course', 'feedback.rating', 'feedback.comments') 
+            ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'users.course') 
             ->first(); 
     
         return $data;

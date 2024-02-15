@@ -1,6 +1,8 @@
 import { createStore } from "vuex";
 import setUserDetailsAction from "./Actions/setUserDetails";
 import setUserTicketStatusAction from "./Actions/setUserTicketStatus";
+import setUserUsername from "./Actions/setUserUsername";
+import setUserRatingStatus from "./Actions/setUserRatingStatus";
 import initializeStoreAction from "./Actions/initializeStore";
 import setUserDetails from "./mutations/setUserDetails";
 import updateUserTicketStatus from "./mutations/updateUserTicketStatus";
@@ -12,6 +14,8 @@ export default createStore({
             fieldToTake: null,
             userId: null,
             allowToAppoint: null,
+            rating: null,
+            username: null,
         };
     },
     getters: {
@@ -21,6 +25,8 @@ export default createStore({
                 state.fieldToTake,
                 state.userId,
                 state.allowToAppoint,
+                state.rating,
+                state.username,
             ];
         },
     },
@@ -31,6 +37,8 @@ export default createStore({
     actions: {
         setUserTicketStatusAction,
         setUserDetailsAction,
+        setUserUsername,
+        setUserRatingStatus,
         initializeStoreAction,
     },
 });

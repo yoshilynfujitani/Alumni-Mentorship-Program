@@ -9,56 +9,31 @@
                 <Menubar :model="items" />
             </div> -->
 
-            <h1
-                class="gap-1 flex items-center text-2xl font-medium text-green-700 pb-2.5"
-            >
-                <span
-                    ><i
-                        class="pi pi-chart-pie text-2xl text-yellow-400"
-                        style="font-size: 1rem"
-                    ></i></span
-                >Dashboard
-            </h1>
-
-            <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
-            <div class="flex justify-center items-center">
-                <div
-                    class="text-center text-sm my-5 shadow-sm"
-                    v-if="this.ticketStatus === 1"
-                >
-                    <p
-                        class="bg-green-100 mx-auto text-green-700 px-4 py-2 rounded-md flex items-center gap-2 justify-center"
+            <div class="flex items-center w-full justify-between mb-2">
+                <div class="">
+                    <h1
+                        class="gap-1 flex items-center text-2xl font-medium text-green-700 pb-2.5"
                     >
-                        <AkCircleCheck />Your request was approved.
-                        <span class="underline cursor-pointer"
-                            >Look for mentors.</span
-                        >
-                    </p>
+                        <span
+                            ><i
+                                class="pi pi-chart-pie text-2xl text-yellow-400"
+                                style="font-size: 1rem"
+                            ></i></span
+                        >Dashboard
+                    </h1>
                 </div>
-                <div
-                    class="text-center text-sm my-5 shadow-sm"
-                    v-if="this.ticketStatus === 0"
-                >
-                    <p
-                        class="bg-yellow-100 mx-auto text-yellow-700 px-4 py-2 rounded-md flex items-center gap-2 justify-center"
-                    >
-                        <FlFilledWarning />Your request is being verified.
-                        Please wait
-                    </p>
-                </div>
-                <div
-                    class="text-center text-sm my-5 shadow-sm"
-                    v-if="this.ticketStatus === 2"
-                >
-                    <p
-                        class="bg-red-100 mx-auto text-red-700 px-4 py-2 rounded-md flex items-center gap-2 justify-center"
-                    >
-                        <AkCircleCheck />Your request was rejected. Please make
-                        another request to the PDC or contact them directly.
-                    </p>
+                <div class="flex items-center gap-2">
+                    <img
+                        src="../../../public/DefaultAvatar.webp"
+                        class="w-10 h-10 rounded-full"
+                        alt=""
+                    />
+                    <h1>{{ this.username }}</h1>
                 </div>
             </div>
-            <h1>Overview</h1>
+
+            <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
+
             <div
                 class="bg-white w-full overflow-x-clip py-10 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
                 :class="{ 'min-h-[100px]': this.appointments?.length === 0 }"
@@ -112,8 +87,12 @@
                                         ></i>
                                     </div>
                                     <div class="">
-                                        <h1>Total Appointments</h1>
-                                        <p>{{ this.TotalAppointments }}</p>
+                                        <h1 class="text-gray-800 font-medium">
+                                            Total Appointments
+                                        </h1>
+                                        <p class="text-gray-500">
+                                            {{ this.TotalAppointments }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div
@@ -126,8 +105,20 @@
                                         ></i>
                                     </div>
                                     <div class="">
-                                        <h1>Rating</h1>
-                                        <p>{{ this.TotalAppointments }}</p>
+                                        <h1 class="text-gray-800 font-medium">
+                                            Rating
+                                        </h1>
+                                        <p
+                                            :class="{
+                                                'text-red-400': this.rating < 3,
+                                                'text-yellow-400':
+                                                    this.rating == 3,
+                                                'text-green-400':
+                                                    this.rating > 3,
+                                            }"
+                                        >
+                                            {{ this.rating }}.0
+                                        </p>
                                     </div>
                                 </div>
                                 <div
@@ -140,8 +131,12 @@
                                         ></i>
                                     </div>
                                     <div class="">
-                                        <h1>Ongoing Appointments</h1>
-                                        <p>{{ this.TotalAppointments }}</p>
+                                        <h1 class="text-gray-800 font-medium">
+                                            Ongoing Appointments
+                                        </h1>
+                                        <p class="text-gray-500">
+                                            {{ this.appointments.length }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div
@@ -149,13 +144,22 @@
                                 >
                                     <div class="">
                                         <i
-                                            class="pi pi-flag text-2xl bg-blue-100 rounded-full px-2 py-1 text-blue-400"
+                                            class="pi pi-flag text-2xl bg-gray-100 rounded-full px-2 py-1 text-gray-400"
                                             style="font-size: 1rem"
                                         ></i>
                                     </div>
                                     <div class="">
-                                        <h1>Feedbacks</h1>
-                                        <p>View</p>
+                                        <h1 class="text-gray-800 font-medium">
+                                            Feedbacks
+                                        </h1>
+                                        <p
+                                            class="text-white text-sm bg-green-400 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
+                                        >
+                                            View
+                                            <span
+                                                class="pi pi-arrow-right text-xs"
+                                            ></span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -169,96 +173,121 @@
                         >
                             Your Appointments
                         </caption>
-
-                        <thead
-                            v-if="this.appointments?.length > 0"
-                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                        <div
+                            class="mx-5 flex items center justify-center"
+                            v-if="this.appointments?.length == 0"
                         >
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    Request Title
-                                </th>
-                                <th scope="col" class="px-6 py-3">Field</th>
-                                <th scope="col" class="px-6 py-3">
-                                    Start Date
-                                </th>
-                                <th scope="col" class="px-6 py-3">Mentor</th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Status
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Others
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="appointment in appointments"
-                                class="bg-white dark:bg-gray-800 dark:border-gray-700"
+                            <h1 class="flex flex-col items-center gap-5">
+                                <i
+                                    class="pi pi-calendar-times text-6xl text-gray-300"
+                                ></i
+                                ><span class="text-gray-500"
+                                    >You have no ongoing appointments.</span
+                                >
+                            </h1>
+                        </div>
+                        <div class="" v-else>
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                             >
-                                <th
-                                    scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Request Title
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">Field</th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Start Date
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Mentor
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-center"
+                                    >
+                                        Status
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        class="px-6 py-3 text-center"
+                                    >
+                                        Others
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="appointment in appointments"
+                                    class="bg-white dark:bg-gray-800 dark:border-gray-700"
                                 >
-                                    {{ appointment.title }}
-                                </th>
-                                <td class="px-6 py-4">
-                                    {{ appointment.field }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ appointment.startSchedule }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ appointment.name }}
-                                </td>
-                                <td class="">
-                                    <h1
-                                        v-if="appointment.Status === 0"
-                                        class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md text-center"
+                                    <th
+                                        scope="row"
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {{ appointment.statusName }}
-                                    </h1>
-                                    <h1
-                                        v-if="appointment.Status === 1"
-                                        class="text-white font-bold bg-green-400 py-2 px-4 rounded-md text-center"
+                                        {{ appointment.title }}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {{ appointment.field }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ appointment.startSchedule }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ appointment.name }}
+                                    </td>
+                                    <td class="">
+                                        <h1
+                                            v-if="appointment.Status === 0"
+                                            class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md text-center"
+                                        >
+                                            {{ appointment.statusName }}
+                                        </h1>
+                                        <h1
+                                            v-if="appointment.Status === 1"
+                                            class="text-white font-bold bg-green-400 py-2 px-4 rounded-md text-center"
+                                        >
+                                            {{ appointment.statusName }}
+                                        </h1>
+                                        <h1
+                                            v-if="appointment.Status === 2"
+                                            class="text-white font-bold bg-red-400 py-2 px-4 rounded-md text-center"
+                                        >
+                                            {{ appointment.statusName }}
+                                        </h1>
+                                        <h1
+                                            v-if="appointment.Status === 3"
+                                            class="text-white font-bold bg-green-600 py-2 px-4 rounded-md text-center"
+                                        >
+                                            {{ appointment.statusName }}
+                                        </h1>
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 flex items-center justify-center gap-2"
                                     >
-                                        {{ appointment.statusName }}
-                                    </h1>
-                                    <h1
-                                        v-if="appointment.Status === 2"
-                                        class="text-white font-bold bg-red-400 py-2 px-4 rounded-md text-center"
-                                    >
-                                        {{ appointment.statusName }}
-                                    </h1>
-                                    <h1
-                                        v-if="appointment.Status === 3"
-                                        class="text-white font-bold bg-green-600 py-2 px-4 rounded-md text-center"
-                                    >
-                                        {{ appointment.statusName }}
-                                    </h1>
-                                </td>
-                                <td
-                                    class="px-6 py-4 flex items-center justify-center gap-2"
-                                >
-                                    <button
-                                        :disabled="appointment.Status !== 3"
-                                        :class="{
-                                            'cursor-not-allowed':
-                                                appointment.Status !== 3,
-                                        }"
-                                    >
-                                        <FeedbackForm
-                                            :appointmentId="
-                                                appointment.appointmentId
-                                            "
-                                            userRole="Student"
-                                            :userToRateId="appointment.mentorId"
-                                            :disable="appointment.Status !== 3"
-                                        />
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                                        <button
+                                            :disabled="appointment.Status !== 3"
+                                            :class="{
+                                                'cursor-not-allowed':
+                                                    appointment.Status !== 3,
+                                            }"
+                                        >
+                                            <FeedbackForm
+                                                :appointmentId="
+                                                    appointment.appointmentId
+                                                "
+                                                userRole="Student"
+                                                :userToRateId="
+                                                    appointment.mentorId
+                                                "
+                                                :disable="
+                                                    appointment.Status !== 3
+                                                "
+                                            />
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </div>
                     </table>
                 </div>
                 <div class="my-5" v-if="this.appointments?.length > 0">
@@ -362,6 +391,8 @@ export default {
             "ticketStatus",
             "fieldToTake",
             "allowToAppoint",
+            "rating",
+            "username",
         ]),
     },
     methods: {

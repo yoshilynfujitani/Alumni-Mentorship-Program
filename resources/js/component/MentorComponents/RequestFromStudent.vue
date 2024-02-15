@@ -119,7 +119,15 @@
                         class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500"
                         v-if="this.requestDetails.statusId === 3"
                     >
-                        <button @click="setShowFeedback">View Feedback</button>
+                        <button
+                            @click="
+                                setShowFeedback(
+                                    this.requestDetails.appointmentId
+                                )
+                            "
+                        >
+                            View Feedback
+                        </button>
                     </div>
                 </div>
             </div>
@@ -160,12 +168,12 @@
                                 <h1 class="font-medium">Rating</h1>
                                 <h1
                                     class="text-sm text-gray-400"
-                                    v-if="!this.requestDetails.rating"
+                                    v-if="!this.feedbackDetails.rating"
                                 >
                                     No rating.
                                 </h1>
                                 <h1 class="text-sm text-gray-400" v-else>
-                                    {{ this.requestDetails.rating }}/5
+                                    {{ this.feedbackDetails.rating }}/5
                                 </h1>
                             </div>
                         </div>
@@ -174,11 +182,11 @@
                         class="border border-gray-200 rounded-md p-5 w-full h-full"
                     >
                         <h1 class="font-medium">Comments</h1>
-                        <h1 v-if="!this.requestDetails.comments">
+                        <h1 v-if="!this.feedbackDetails.comments">
                             Student have not yet submitted any feedback.
                         </h1>
                         <h1 class="overflow-y-scroll" v-else>
-                            {{ this.requestDetails.comments }}
+                            {{ this.feedbackDetails.comments }}
                         </h1>
                     </div>
                 </div>
@@ -214,6 +222,7 @@ export default {
             requestDetails: null,
             showFeedback: false,
             minDate: null,
+            feedbackDetails: null,
         };
     },
     computed: {
@@ -238,9 +247,12 @@ export default {
                     console.log(data);
                 });
         },
-        setShowFeedback() {
-            console.log("click");
+        setShowFeedback(appointmentId) {
+            console.log(appointmentId);
             this.showFeedback = !this.showFeedback;
+            this.getFeedback(appointmentId);
+            if (this.showFeedback) {
+            }
         },
         verify(requestStatus, studentId, appointmentId) {
             console.log(studentId);
@@ -259,6 +271,16 @@ export default {
             const today = new Date();
             today.setHours(0, 0, 0, 0); // Set hours to 00:00:00 for accurate comparison
             return today;
+        },
+        getFeedback(appointmentId) {
+            axios
+                .post("/getFeedback", {
+                    appointmentId,
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                    this.feedbackDetails = data[0];
+                });
         },
     },
     mounted() {

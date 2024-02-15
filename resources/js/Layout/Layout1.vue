@@ -132,10 +132,11 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[250px] px-10 bg-[#fdfdff]">
-        <div class="flex flex-col items-center min-h-screen">
+    <div class="ml-[250px] bg-[#fdfdff]">
+        <div class="flex flex-col items-center min-h-screen px-10">
             <slot />
         </div>
+        <div class="bg-green-400 px-10">footer</div>
     </div>
 </template>
 

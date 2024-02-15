@@ -1,7 +1,7 @@
 <template lang="">
     <Layout>
         <div
-            class="w-full overflow-x-clip min-h-[500px] my-5 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
+            class="w-full my-10 overflow-x-clip flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
         >
             <div class="">
                 <table
@@ -98,6 +98,34 @@
                                         :disable="appointment.Status !== 3"
                                     />
                                 </button>
+
+                                <Button
+                                    label="Feedback"
+                                    @click="visible = true"
+                                    class="bg-gray-800 px-4 py-2 text-white"
+                                    type="button"
+                                />
+
+                                <Dialog
+                                    v-model:visible="visible"
+                                    modal
+                                    header="Edit Profile"
+                                    class="bg-gray-400"
+                                >
+                                    <div class="flex justify-content-end gap-2">
+                                        <Button
+                                            type="button"
+                                            label="Cancel"
+                                            severity="secondary"
+                                            @click="visible = false"
+                                        ></Button>
+                                        <Button
+                                            type="button"
+                                            label="Save"
+                                            @click="visible = false"
+                                        ></Button>
+                                    </div>
+                                </Dialog>
                             </td>
                         </tr>
                     </tbody>
@@ -121,6 +149,8 @@ import { mapState, mapActions } from "vuex";
 import Chat from "../component/Chat.vue";
 import FeedbackForm from "../component/StudentComponents/FeedbackForm.vue";
 import Pagination from "../utils/Pagination.vue";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
 
 export default {
     computed: {
@@ -130,6 +160,8 @@ export default {
         FeedbackForm,
         Chat,
         Pagination,
+        Dialog,
+        Button,
     },
 
     data() {
@@ -137,6 +169,7 @@ export default {
             loading: false,
             appointments: null,
             pagination: null,
+            visible: false,
         };
     },
 

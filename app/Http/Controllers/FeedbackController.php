@@ -37,5 +37,14 @@ class FeedbackController extends Controller
         
     }
 
+    public function getFeedback(Request $request){
+       
+        $data = Feedback::where('appointmentId', $request->appointmentId)
+        ->where('userId', '!=', Auth::id())
+        ->get();
+
+        return $data;
+    }
+
   
 }

@@ -62,6 +62,7 @@ Route::post("/getmentorstudent", [MentorController::class, "getMentorsStudent"])
 Route::get("/getstudentrequests", [MentorController::class, "getMentorAppointment"]);
 Route::post("/verifyrequest", [MentorController::class, "verifyRequest"]);
 Route::post("/getAppointment", [AppointmentController::class, "getAppointment"]);
+Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 
 
 //PDC
