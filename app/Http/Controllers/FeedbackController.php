@@ -46,5 +46,17 @@ class FeedbackController extends Controller
         return $data;
     }
 
+    public function getRecentMentorFeedback(Request $request){
+        $data = Feedback::where('userToRateId', $request->mentorId)
+        ->orderBy('created_at', 'desc') 
+        ->take(3)
+        ->select('rating', 'comments')
+        ->get();
+
+   
+    
+        return $data;
+    }
+
   
 }

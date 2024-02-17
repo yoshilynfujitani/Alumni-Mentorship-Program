@@ -3,12 +3,10 @@
         ><div class="flex w-full gap-5 h-screen py-5">
             <!-- Message Headers -->
             <div
-                class="bg-gray-50 rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm"
+                class="bg-gray-50 rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
             >
                 <div class="rounded-md bg-white m-2.5 px-4 py-2">Messages</div>
-                <div
-                    class="overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
-                >
+                <div class="">
                     <div
                         class="rounded-md bg-white px-4 py-2 mx-2.5 my-1 cursor-pointer"
                         v-for="Inbox in inbox"

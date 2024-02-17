@@ -1,5 +1,5 @@
 <template lang="">
-    <Modal
+    <!-- <Modal
         :modalContent="{
             title: 'Appointment',
             // content: 'Please fill out the form below:',
@@ -8,10 +8,13 @@
         cancelLabel="Back"
         saveLabel="Submit Appointment"
         @save="submitAppointment"
-    >
-        <!-- <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
+    > -->
+    <!-- <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
             >Appointment Date</label
         > -->
+    <button label="Show" @click="visible = true">Request Appointment</button>
+    <Toast />
+    <Dialog v-model:visible="visible" modal header="Schedule an Appointment">
         <div
             class="w-[1000px] flex border border-gray-200 p-10 rounded-md my-10 gap-5"
         >
@@ -25,18 +28,6 @@
                             :numberOfMonths="1"
                             :minDate="minDate"
                         />
-                        <div class="">
-                            <label
-                                for="text"
-                                class="block mb-2 text-sm font-medium text-start text-gray-900 dark:text-white"
-                                >Tentative Date</label
-                            >
-                            <h1
-                                class="text-green-500 font-medium border border-gray-200 px-4 py-2 rounded-md shadow-sm"
-                            >
-                                {{ this.date }}
-                            </h1>
-                        </div>
                     </div>
 
                     <div class="" v-if="this.type === 'pdc'">
@@ -108,6 +99,23 @@
                         required
                     />
                 </div>
+                <div class="my-2">
+                    <label
+                        for="text"
+                        class="block mb-2 text-sm font-medium text-start text-gray-900 dark:text-white"
+                        >Tentative Date</label
+                    >
+                    <h1
+                        class="text-green-500 text-sm border border-gray-200 px-4 py-2 rounded-md shadow-sm"
+                    >
+                        {{
+                            moment(
+                                this.date,
+                                "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (Philippine Standard Time)"
+                            ).format("MMMM Do YYYY")
+                        }}
+                    </h1>
+                </div>
 
                 <Message severity="warn">
                     Confirm all details are correct before submitting
@@ -115,12 +123,30 @@
                 >
             </div>
         </div>
-    </Modal>
+        <div class="flex justify-content-end gap-2">
+            <button
+                type="button"
+                label="Cancel"
+                severity="secondary"
+                @click="visible = false"
+            >
+                Cancel
+            </button>
+            <button type="button" label="Save" @click="submitAppointment">
+                Submit
+            </button>
+        </div>
+    </Dialog>
+    <!-- </Modal> -->
 </template>
 <script>
 import Modal from "../Modal.vue";
 import StudentSearch from "../PDCComponents/StudentSearch.vue";
 import Calendar from "primevue/calendar";
+import moment from "moment";
+import Toast from "primevue/toast";
+
+import Dialog from "primevue/dialog";
 
 import Message from "primevue/message";
 
@@ -138,14 +164,17 @@ export default {
         Message,
         Modal,
         StudentSearch,
+        Dialog,
+        Toast,
     },
     data() {
         return {
+            moment: moment,
             name: this.MentorDetails.name,
             mentorId: this.MentorDetails.id,
             color: "green",
             date: new Date(),
-
+            visible: false,
             rules: [
                 {
                     hours: 0,
@@ -175,10 +204,22 @@ export default {
                         studentId: id,
                     })
                     .then(this.$router.push("/pdcmentors"));
+                this.$toast.add({
+                    severity: "info",
+                    summary: "Info",
+                    detail: "Message Content",
+                    life: 3000,
+                });
             } else {
                 axios
                     .post("/addAppointment", { title, field, date, mentorId })
-                    .then(this.$router.push("/home"));
+                    .then(this.$router.push("/appointments"));
+                this.$toast.add({
+                    severity: "info",
+                    summary: "Info",
+                    detail: "Message Content",
+                    life: 3000,
+                });
             }
         },
         handleQueryData(data) {

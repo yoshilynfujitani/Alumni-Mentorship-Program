@@ -59,9 +59,9 @@ class AppointmentController extends Controller
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy','=','reqby.id')
         ->where("studentId",Auth::id())
       
-        ->orderBy("appt.created_at")
+        ->orderBy("appt.created_at", "desc")
         ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
-        ->paginate(5);
+        ->paginate(10);
        
         
         return $data;

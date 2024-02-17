@@ -30,6 +30,12 @@ class MentorController extends Controller
 
         return $res;
     }
+
+    public function getMentorDetail(Request $request){
+        $mentor = User::where('id', $request->mentorId);
+
+        return $mentor;
+    }
     public function getMentors(Request $request ){
       
         $queryPerPage = 5;
@@ -79,7 +85,7 @@ class MentorController extends Controller
         ->join(DB::raw('adminportal.users AS users'), 'users.id', '=', 'appointmentdetails.studentId')
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appointmentdetails.requestedBy','=','reqby.id')
         ->select('appointmentdetails.*', 'appointmentstatus.*', 'users.name', 'users.course', 'reqby.requestor')
-        ->paginate(5);
+        ->paginate(10);
     }
 
     public function verifyRequest(Request $request){

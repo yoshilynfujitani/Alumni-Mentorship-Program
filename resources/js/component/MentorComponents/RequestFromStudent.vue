@@ -1,5 +1,5 @@
 <template lang="">
-    <Modal
+    <!-- <Modal
         :modalContent="{
             title: 'Appointment Details',
 
@@ -11,16 +11,25 @@
         :saveOption="false"
         iconLabel="Details"
         @modalopen="getAppointmentDetails"
+    > -->
+    <button
+        @click="onClickModal"
+        class="flex items-center gap-1 bg-yellow-400 text-white px-2 py-1 rounded-md"
     >
+        <i class="pi pi-eye"></i>View Details
+    </button>
+    <Dialog v-model:visible="visible" modal header="Appointment Details">
         <div class="" v-if="!this.requestDetails">Loading...</div>
         <div class="flex items-start w-[700px] justify-between" v-else>
             <div
                 class="flex flex-col mr-5 justify-between h-full"
                 v-if="!this.showFeedback"
             >
-                <div class="text-start text-lg">
+                <div
+                    class="text-start text-lg border p-2.5 border-gray-200 rounded-md"
+                >
                     <h1 class="font-medium">Request header</h1>
-                    <p>{{ this.requestDetails.title }}</p>
+                    <p class="text-sm">{{ this.requestDetails.title }}</p>
                 </div>
                 <div
                     class="grid grid-cols-2 gap-x-2 content-between text-start w-full my-5"
@@ -37,21 +46,12 @@
                     <div class="">
                         <h1 class="font-medium">Start Date</h1>
                         <p>
-                            {{ this.date }}
-                            <span
-                                class="text-green-500 font-medium"
-                                :class="{
-                                    'text-red-400':
-                                        startSchedule?.isBefore(now),
-                                }"
-                            >
-                                <span v-if="startSchedule?.isBefore(now)"
-                                    >Started {{ reminderdate }}
-                                </span>
-                                <span v-else
-                                    >To start in {{ reminderdate }}
-                                </span>
-                            </span>
+                            {{
+                                moment(
+                                    requestDetails.startSchedule,
+                                    "YYYY-MM-DD HH:mm:ss"
+                                ).format("MMMM Do YYYY")
+                            }}
                         </p>
                     </div>
                     <div class="">
@@ -89,16 +89,23 @@
                     </div>
                 </div>
                 <div class="" v-else>
-                    <div class="" v-if="this.requestDetails.statusId === 1">
+                    <div
+                        class="flex flex-col gap-2"
+                        v-if="this.requestDetails.statusId === 1"
+                    >
                         <div
-                            class="border rounded-md border-green-400 py-2 mt-5 font-semibold text-green-500"
+                            class="border rounded-md border-green-400 py-2 mt-5 font-semibold text-green-500 text-center"
                         >
                             Appointment Accepted
                         </div>
-                        <div class="">
+                        <div
+                            class="text-center text-sm py-4 bg-green-700 rounded-md text-white font-medium"
+                        >
+                            <ConfirmDialog></ConfirmDialog>
                             <button
                                 @click="
-                                    verify(
+                                    confirm1(
+                                        $event,
                                         3,
                                         this.requestDetails.studentId,
                                         this.requestDetails.appointmentId
@@ -110,13 +117,13 @@
                         </div>
                     </div>
                     <div
-                        class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500"
+                        class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500 text-center"
                         v-if="this.requestDetails.statusId === 2"
                     >
                         Appointment Rejected
                     </div>
                     <div
-                        class="border rounded-md border-red-400 py-2 mt-5 font-semibold text-red-500"
+                        class="border rounded-md border-gray-400 py-2 mt-5 font-semibold text-gray-500 text-center"
                         v-if="this.requestDetails.statusId === 3"
                     >
                         <button
@@ -200,25 +207,32 @@
                 :minDate="minDate"
             />
         </div>
-    </Modal>
+    </Dialog>
 </template>
 <script>
 import Modal from "../Modal.vue";
 import moment from "moment";
 import Calendar from "primevue/calendar";
 
+import ConfirmPopup from "primevue/confirmpopup";
+
+import ConfirmDialog from "primevue/confirmdialog";
+
+import Dialog from "primevue/dialog";
+
 export default {
     props: ["requestId"],
     components: {
         Modal,
         Calendar,
+        Dialog,
+        ConfirmPopup,
+        ConfirmDialog,
     },
     data() {
         return {
-            now: moment(),
-            date: moment(this.requestDetails?.startSchedule).format(
-                "YYYY-MM-DD"
-            ),
+            visible: false,
+            moment: moment,
             requestDetails: null,
             showFeedback: false,
             minDate: null,
@@ -239,6 +253,11 @@ export default {
         },
     },
     methods: {
+        onClickModal() {
+            this.visible = true;
+            this.getAppointmentDetails();
+        },
+
         getAppointmentDetails() {
             axios
                 .post("/getAppointment", { appointmentId: this.requestId })
@@ -265,6 +284,23 @@ export default {
                 .then(({ data }) => {
                     this.getAppointmentDetails();
                 });
+        },
+        confirm1(event, requestStatus, studentId, appointmentId) {
+            this.$confirm.require({
+                target: event.currentTarget,
+                message: "Are you sure you want to proceed?",
+                icon: "pi pi-exclamation-triangle text-red-500",
+                rejectClass:
+                    "p-button-secondary p-button-outlined p-button-sm text-red-500 text-sm",
+                acceptClass:
+                    "p-button-sm text-white bg-green-500 px-2 py-1 rounded-md text-sm",
+                rejectLabel: "Cancel",
+                acceptLabel: "Mark as Finished",
+                accept: () => {
+                    this.verify(requestStatus, studentId, appointmentId);
+                    this.$emit("Updated");
+                },
+            });
         },
 
         getToday() {
