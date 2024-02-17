@@ -1,5 +1,5 @@
 <template>
-    <Layout :key="refetchData">
+    <Layout>
         <!-- <h1>{{ console.log(props.fieldToTake) }}</h1> -->
 
         <div class="" v-if="loading"><h1>Loading...</h1></div>
@@ -35,7 +35,61 @@
             <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
 
             <div
-                class="bg-white w-full overflow-x-clip py-10 flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
+                class="bg-white mb-5 p-2.5 rounded-md flex justify-center items-center w-full gap-5"
+            >
+                <Message severity="info" :closable="false"
+                    >To be able to request appointments from a mentor you must
+                    first request a ticket to PDC. Once approve you will be
+                    recommended to mentors with your requested field and make
+                    appointments
+                </Message>
+                <Modal
+                    v-if="this.ticketStatus === 2 || this.ticketStatus === null"
+                    :modalContent="{
+                        title: 'Request Ticket',
+                        content: 'Please fill out the form below:',
+                        disableSaveBtn: this.selectedField === 0,
+                    }"
+                    buttonLabel="Request to PDC"
+                    cancelLabel="Back"
+                    saveLabel="Submit Ticket"
+                    @save="sendTicket"
+                >
+                    <div
+                        class="flex flex-col w-[700px] justify-between gap-5 p-5 my-5"
+                    >
+                        <div class="w-full">
+                            <label
+                                for="field"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >Select a field to request</label
+                            >
+                            <div class="card flex justify-content-center">
+                                <Dropdown
+                                    v-model="selectedField"
+                                    :options="this.courses"
+                                    :highlightOnSelect="false"
+                                    optionLabel="name"
+                                    placeholder="Select a field"
+                                    class="w-full text-xs"
+                                />
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-gray-40 text-sm">Remarks</label>
+                            <Textarea
+                                v-model="ticketRemarks"
+                                autoResize
+                                rows="5"
+                                cols="30"
+                                class="rounded-md border border-green-200 text-sm"
+                            />
+                        </div>
+                    </div>
+                </Modal>
+            </div>
+            <div
+                class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
                 :class="{ 'min-h-[100px]': this.appointments?.length === 0 }"
             >
                 <div class="w-full">
@@ -75,7 +129,7 @@
                                 >
                             </h1>
                             <div
-                                class="grid lg:grid-cols-2 gap-5 w-full h-full grid-cols-1"
+                                class="grid grid-cols-1 laptop:grid-cols-2 gap-5 w-full h-full"
                             >
                                 <div
                                     class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
@@ -153,7 +207,7 @@
                                             Feedbacks
                                         </h1>
                                         <p
-                                            class="text-white text-sm bg-green-400 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
+                                            class="text-white text-sm bg-gray-800 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
                                         >
                                             View
                                             <span
@@ -165,139 +219,111 @@
                             </div>
                         </div>
                     </div>
-                    <table
-                        class="bg-white w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                    >
-                        <caption
-                            class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+                    <div class="w-full flex items-center justify-center mr-20">
+                        <table
+                            class="w-full text-sm text-gray-500 dark:text-gray-400"
                         >
-                            Your Appointments
-                        </caption>
-                        <div
-                            class="mx-5 flex items center justify-center"
-                            v-if="this.appointments?.length == 0"
-                        >
-                            <h1 class="flex flex-col items-center gap-5">
-                                <i
-                                    class="pi pi-calendar-times text-6xl text-gray-300"
-                                ></i
-                                ><span class="text-gray-500"
-                                    >You have no ongoing appointments.</span
-                                >
-                            </h1>
-                        </div>
-                        <div class="" v-else>
-                            <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                            <caption
+                                class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
                             >
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Request Title
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">Field</th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Start Date
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Mentor
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        class="px-6 py-3 text-center"
+                                Your Appointments
+                            </caption>
+                            <div
+                                class="mx-5 flex items-center justify-center"
+                                v-if="this.appointments?.length == 0"
+                            >
+                                <h1 class="flex flex-col items-center gap-5">
+                                    <i
+                                        class="pi pi-calendar-times text-6xl text-gray-300"
+                                    ></i>
+                                    <span class="text-gray-500"
+                                        >You have no ongoing appointments.</span
                                     >
-                                        Status
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        class="px-6 py-3 text-center"
+                                </h1>
+                            </div>
+                            <div class="flex flex-col" v-else>
+                                <table>
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                                     >
-                                        Others
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    v-for="appointment in appointments"
-                                    class="bg-white dark:bg-gray-800 dark:border-gray-700"
-                                >
-                                    <th
-                                        scope="row"
-                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                    >
-                                        {{ appointment.title }}
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.field }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.startSchedule }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.name }}
-                                    </td>
-                                    <td class="">
-                                        <h1
-                                            v-if="appointment.Status === 0"
-                                            class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md text-center"
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                class="py-4 w-header"
+                                            >
+                                                Request Title
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Field
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Start Date
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Mentor
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        <tr
+                                            v-for="appointment in appointments"
+                                            class="bg-white dark:bg-gray-800 dark:border-gray-700"
                                         >
-                                            {{ appointment.statusName }}
-                                        </h1>
-                                        <h1
-                                            v-if="appointment.Status === 1"
-                                            class="text-white font-bold bg-green-400 py-2 px-4 rounded-md text-center"
-                                        >
-                                            {{ appointment.statusName }}
-                                        </h1>
-                                        <h1
-                                            v-if="appointment.Status === 2"
-                                            class="text-white font-bold bg-red-400 py-2 px-4 rounded-md text-center"
-                                        >
-                                            {{ appointment.statusName }}
-                                        </h1>
-                                        <h1
-                                            v-if="appointment.Status === 3"
-                                            class="text-white font-bold bg-green-600 py-2 px-4 rounded-md text-center"
-                                        >
-                                            {{ appointment.statusName }}
-                                        </h1>
-                                    </td>
-                                    <td
-                                        class="px-6 py-4 flex items-center justify-center gap-2"
-                                    >
-                                        <button
-                                            :disabled="appointment.Status !== 3"
-                                            :class="{
-                                                'cursor-not-allowed':
-                                                    appointment.Status !== 3,
-                                            }"
-                                        >
-                                            <FeedbackForm
-                                                :appointmentId="
-                                                    appointment.appointmentId
-                                                "
-                                                userRole="Student"
-                                                :userToRateId="
-                                                    appointment.mentorId
-                                                "
-                                                :disable="
-                                                    appointment.Status !== 3
-                                                "
-                                            />
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </div>
-                    </table>
-                </div>
-                <div class="my-5" v-if="this.appointments?.length > 0">
-                    <Pagination
-                        @next="goToNextPage"
-                        @back="goToPrevPage"
-                        :total="this.pagination?.total"
-                        :current_page="this.pagination?.current_page"
-                        :last_page="this.pagination?.last_page"
-                    />
+                                            <th
+                                                scope="row"
+                                                class="font-medium py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                                            >
+                                                {{ appointment.title }}
+                                            </th>
+                                            <td>{{ appointment.field }}</td>
+                                            <td>
+                                                {{
+                                                    moment(
+                                                        appointment.startSchedule,
+                                                        "YYYY-MM-DD HH:mm:ss"
+                                                    ).format("MMMM Do YYYY")
+                                                }}
+                                            </td>
+                                            <td>{{ appointment.name }}</td>
+                                            <td>
+                                                <h1
+                                                    class="font-bold"
+                                                    :class="{
+                                                        'text-yellow-400':
+                                                            appointment.Status ===
+                                                            0,
+                                                        'text-green-400':
+                                                            appointment.Status ===
+                                                            1,
+                                                        'text-red-400':
+                                                            appointment.Status ===
+                                                            2,
+                                                        'text-green-700':
+                                                            appointment.Status ===
+                                                            3,
+                                                    }"
+                                                >
+                                                    {{ appointment.statusName }}
+                                                </h1>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </table>
+                    </div>
+                    <!-- <div class="my-5" v-if="this.appointments?.length > 0">
+                        <Pagination
+                            @next="goToNextPage"
+                            @back="goToPrevPage"
+                            :total="this.pagination?.total"
+                            :current_page="this.pagination?.current_page"
+                            :last_page="this.pagination?.last_page"
+                        />
+                    </div> -->
                 </div>
             </div>
             <div class="flex gap-10 my-10 w-full">
@@ -317,13 +343,16 @@ import Pagination from "../utils/Pagination.vue";
 import Dropdown from "primevue/dropdown";
 import Menubar from "primevue/menubar";
 import Message from "primevue/message";
-
+import moment from "moment";
 import Modal from "./Modal.vue";
 import Chat from "./Chat.vue";
 import FeedbackForm from "./StudentComponents/FeedbackForm.vue";
 import { FlFilledWarning } from "@kalimahapps/vue-icons";
 import { AkCircleCheck } from "@kalimahapps/vue-icons";
 import { AnOutlinedCloseCircle } from "@kalimahapps/vue-icons";
+import Textarea from "primevue/textarea";
+
+import FloatLabel from "primevue/floatlabel";
 
 export default {
     components: {
@@ -340,25 +369,15 @@ export default {
         Pagination,
         Dropdown,
         Message,
+        Textarea,
+        FloatLabel,
     },
     data() {
         return {
-            refetchData: 0,
             appointments: [],
             loading: false,
             selectedField: null,
-            attributes: [
-                {
-                    key: 1,
-
-                    content: "green",
-
-                    dot: true,
-
-                    order: 0,
-                },
-            ],
-            userName: "",
+            ticketRemarks: "",
             pagination: null,
             ticketIsLoading: true,
             courses: [
@@ -383,6 +402,7 @@ export default {
                     icon: "pi pi-star",
                 },
             ],
+            moment: moment,
         };
     },
     computed: {
@@ -419,10 +439,12 @@ export default {
 
         sendTicket() {
             const fieldId = parseInt(this.selectedField.id);
-            axios.post("/requestticket", { fieldId }).then(({ data }) => {
-                this.setUserTicketStatusAction();
-                // this.forceRerender();
-            });
+            const { ticketRemarks } = this;
+            axios
+                .post("/requestticket", { fieldId, ticketRemarks })
+                .then(({ data }) => {
+                    this.setUserTicketStatusAction();
+                });
         },
 
         goToPrevPage() {

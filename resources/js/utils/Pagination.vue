@@ -5,7 +5,7 @@
                 @click="back"
                 :disabled="current_page === 1"
                 class="border border-green-500 rounded-md px-2 py-1 text-green-600 font-medium"
-                :class="{ 'cursor-not-allowed': current_page === 1 }"
+                :class="{ hidden: current_page === 1 }"
             >
                 Previous
             </button>
@@ -18,7 +18,7 @@
                 @click="next"
                 :disabled="current_page === last_page"
                 class="bg-green-500 rounded-md px-2 py-1 text-white font-medium"
-                :class="{ 'cursor-not-allowed': current_page === last_page }"
+                :class="{ hidden: current_page === last_page }"
             >
                 Next
             </button>

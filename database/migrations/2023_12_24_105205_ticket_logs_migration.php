@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('studentId');
             $table->integer('field');
             $table->boolean('ticketStatus')->default(0);
+            $table->string('ticketRemarks');
             
         
   

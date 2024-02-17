@@ -3,7 +3,7 @@
         <div class="flex justify-center cursor-auto">
             <button
                 @click="modalopened"
-                class="transition-all px-3 py-2 rounded-md text-white my-4 text-sm"
+                class="transition-all px-3 py-2 rounded-md text-white text-sm"
                 type="button"
                 :disabled="modalContent.disablebtn"
                 :class="{

@@ -44,88 +44,59 @@
                                 {{ appointment.field }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ appointment.startSchedule }}
+                                {{
+                                    moment(
+                                        appointment.startSchedule,
+                                        "YYYY-MM-DD HH:mm:ss"
+                                    ).format("MMMM Do YYYY")
+                                }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ appointment.name }}
                             </td>
-                            <td class="">
+                            <td class="px-6 py-4">
                                 <h1
-                                    v-if="appointment.Status === 0"
-                                    class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md text-center"
-                                >
-                                    {{ appointment.statusName }}
-                                </h1>
-                                <h1
-                                    v-if="appointment.Status === 1"
-                                    class="text-white font-bold bg-green-400 py-2 px-4 rounded-md text-center"
-                                >
-                                    {{ appointment.statusName }}
-                                </h1>
-                                <h1
-                                    v-if="appointment.Status === 2"
-                                    class="text-white font-bold bg-red-400 py-2 px-4 rounded-md text-center"
-                                >
-                                    {{ appointment.statusName }}
-                                </h1>
-                                <h1
-                                    v-if="appointment.Status === 3"
-                                    class="text-white font-bold bg-green-600 py-2 px-4 rounded-md text-center"
+                                    class="text-center font-bold"
+                                    :class="{
+                                        'text-yellow-400':
+                                            appointment.Status === 0,
+                                        'text-green-400 ':
+                                            appointment.Status === 1,
+                                        'text-red-400':
+                                            appointment.Status === 2,
+                                        'text-green-700':
+                                            appointment.Status === 3,
+                                    }"
                                 >
                                     {{ appointment.statusName }}
                                 </h1>
                             </td>
                             <td
-                                class="px-6 py-4 flex items-center justify-center gap-2"
+                                class="px-6 py-2 flex items-center justify-center gap-2"
                             >
-                                <!-- <Chat
-                                    :appointmentId="appointment.appointmentId"
-                                    :userId="this.userId"
-                                /> -->
-                                <button
-                                    :disabled="appointment.Status !== 3"
-                                    :class="{
-                                        'cursor-not-allowed':
-                                            appointment.Status !== 3,
-                                    }"
+                                <div
+                                    class="px-4 py-2 border-dashed border rounded border-gray-300 text-gray-300 font-thin"
+                                    v-if="appointment.Status !== 3"
                                 >
-                                    <FeedbackForm
-                                        :appointmentId="
-                                            appointment.appointmentId
-                                        "
-                                        userRole="Student"
-                                        :userToRateId="appointment.mentorId"
-                                        :disable="appointment.Status !== 3"
-                                    />
-                                </button>
-
-                                <Button
-                                    label="Feedback"
-                                    @click="visible = true"
-                                    class="bg-gray-800 px-4 py-2 text-white"
-                                    type="button"
-                                />
-
-                                <Dialog
-                                    v-model:visible="visible"
-                                    modal
-                                    header="Edit Profile"
-                                    class="bg-gray-400"
-                                >
-                                    <div class="flex justify-content-end gap-2">
-                                        <Button
-                                            type="button"
-                                            label="Cancel"
-                                            severity="secondary"
-                                            @click="visible = false"
-                                        ></Button>
-                                        <Button
-                                            type="button"
-                                            label="Save"
-                                            @click="visible = false"
-                                        ></Button>
-                                    </div>
-                                </Dialog>
+                                    Unavailable
+                                </div>
+                                <div class="" v-else>
+                                    <button
+                                        :disabled="appointment.Status !== 3"
+                                        :class="{
+                                            hidden: appointment.Status !== 3,
+                                        }"
+                                    >
+                                        <FeedbackForm
+                                            :appointmentId="
+                                                appointment.appointmentId
+                                            "
+                                            userRole="Student"
+                                            :userToRateId="appointment.mentorId"
+                                            :disable="appointment.Status !== 3"
+                                        />
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -151,6 +122,7 @@ import FeedbackForm from "../component/StudentComponents/FeedbackForm.vue";
 import Pagination from "../utils/Pagination.vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
+import moment from "moment";
 
 export default {
     computed: {
@@ -170,6 +142,7 @@ export default {
             appointments: null,
             pagination: null,
             visible: false,
+            moment: moment,
         };
     },
 

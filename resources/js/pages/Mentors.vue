@@ -1,7 +1,7 @@
 <template lang="">
     <Layout>
         <!-- <div class="" v-if="!apptAccessData">Loading...</div> -->
-        <div class="my-10 flex justify-center flex-col items-center">
+        <div class="my-10 flex justify-center flex-col items-center w-full">
             <div class="self-start">
                 <h1 class="flex items-center text-2xl gap-1 font-medium">
                     <i class="pi pi-users text-2xl text-yellow-400"></i>
@@ -14,12 +14,14 @@
                     Please wait before sending another one.</Message
                 >
             </div>
-            <div class="bg-white border border-gray-200 rounded-md p-5 my-5">
+            <div
+                class="bg-white border border-gray-200 rounded-md p-5 my-5 w-full"
+            >
                 <div class="">
                     <div class=""><h1>Business</h1></div>
                 </div>
                 <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 mx-auto"
+                    class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 gap-5 mx-auto h-full w-full auto-rows-fr"
                 >
                     <div class="mx-auto" v-for="Mentor in mentors">
                         <MentorCard

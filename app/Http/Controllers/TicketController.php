@@ -17,6 +17,7 @@ class TicketController extends Controller
        
         $newTicket->studentId = Auth::id();
         $newTicket->field = $request->fieldId;
+        $newTicket->ticketRemarks = $request->ticketRemarks;
         $newTicket->save();
 
         $currentUser = User::find(Auth::id());

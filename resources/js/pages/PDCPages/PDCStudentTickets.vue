@@ -27,21 +27,22 @@
                     <tr>
                         <th
                             scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
+                            class="pl-6 py-2 bg-gray-50 dark:bg-gray-800"
                         >
                             Student's Name
                         </th>
-                        <th scope="col" class="px-6 py-3">Course</th>
+                        <th scope="col" class="text-center">
+                            Student's Detail
+                        </th>
                         <th
                             scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
+                            class="pl-6 bg-gray-50 dark:bg-gray-800"
                         >
                             Field
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            Status
-                        </th>
-                        <th scope="col" class="px-16 py-3 text-center">Edit</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Remarks</th>
+                        <th scope="col" class="text-center">Verify</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,119 +57,133 @@
                         >
                             {{ Ticket.name }}
                         </th>
-                        <td class="px-6 py-4">{{ Ticket.course }}</td>
+                        <td class="px-6 py-4 flex items-center justify-center">
+                            <Button
+                                @click="
+                                    RejectTicket(
+                                        $event,
+                                        2,
+                                        Ticket.studentId,
+                                        Ticket.field,
+                                        Ticket.id
+                                    )
+                                "
+                                label="Delete"
+                                severity="danger"
+                                outlined
+                            ></Button>
+                        </td>
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {{ Ticket.fieldName }}
                         </td>
-                        <td class="px-6 py-4 flex justify-center">
+                        <td class="px-6 py-4 justify-center">
                             <h1
-                                v-if="Ticket.ticketStatus === 0"
-                                class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md w-fit"
-                            >
-                                {{ Ticket.statusName }}
-                            </h1>
-                            <h1
-                                v-if="Ticket.ticketStatus === 1"
-                                class="text-white font-bold bg-green-400 py-2 px-4 rounded-md w-fit"
-                            >
-                                {{ Ticket.statusName }}
-                            </h1>
-                            <h1
-                                v-if="Ticket.ticketStatus === 2"
-                                class="text-white font-bold bg-red-400 py-2 px-4 rounded-md w-fit text-center"
+                                class="font-bold text-center"
+                                :class="{
+                                    'text-yellow-400':
+                                        Ticket.ticketStatus === 0,
+                                    'text-green-400 ':
+                                        Ticket.ticketStatus === 1,
+                                    'text-red-400': Ticket.ticketStatus === 2,
+                                    'text-green-700': Ticket.ticketStatus === 3,
+                                }"
                             >
                                 {{ Ticket.statusName }}
                             </h1>
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-6 py-4 items-center flex justify-center">
                             <button
-                                @click="updateStatus(Ticket)"
-                                v-if="!Ticket.isEdit"
+                                label="View"
+                                @click="viewTicket(Ticket)"
+                                class="text-sm"
                             >
-                                <svg
-                                    class="w-3 h-3 text-gray-800 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 16 3"
-                                >
-                                    <path
-                                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
-                                    />
-                                </svg>
+                                View
                             </button>
-                            <div class="space-x-5" v-if="Ticket.isEdit">
-                                <button @click="updateStatus(Ticket)">
-                                    <svg
-                                        class="w-3 h-3 text-gray-800 dark:text-white hover:text-gray-400"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 8 14"
+                            <Dialog
+                                v-model:visible="visible"
+                                modal
+                                header="Ticket Remarks"
+                                :style="{ width: '25rem' }"
+                            >
+                                <div class="">
+                                    <h1 class="text-sm font-medium">
+                                        {{
+                                            moment(
+                                                selectedTicket.created_at,
+                                                "YYYY-MM-DD HH:mm:ss"
+                                            ).format("MMMM Do YYYY")
+                                        }}
+                                    </h1>
+                                    <div
+                                        class="my-2.5 min-h-[200px] rounded-md border border-gray-200 p-4"
                                     >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
-                                        />
-                                    </svg>
-                                </button>
-                                <button
-                                    @click="
-                                        verify(
-                                            2,
-                                            Ticket.studentId,
-
-                                            Ticket.field,
-                                            Ticket.id
-                                        )
-                                    "
+                                        {{ selectedTicket.ticketRemarks }}
+                                    </div>
+                                </div>
+                                <div class="flex justify-content-end gap-2">
+                                    <Button
+                                        type="button"
+                                        label="Cancel"
+                                        severity="secondary"
+                                        @click="visible = false"
+                                    ></Button>
+                                </div>
+                            </Dialog>
+                        </td>
+                        <td class="px-6 py-4 items-center justify-center">
+                            <div class="" v-if="Ticket.ticketStatus !== 0">
+                                <h1
+                                    class="font-bold text-center"
+                                    :class="{
+                                        'text-yellow-400':
+                                            Ticket.ticketStatus === 0,
+                                        'text-green-400 ':
+                                            Ticket.ticketStatus === 1,
+                                        'text-red-400':
+                                            Ticket.ticketStatus === 2,
+                                        'text-green-700':
+                                            Ticket.ticketStatus === 3,
+                                    }"
                                 >
-                                    <svg
-                                        class="w-3 h-3 text-gray-800 dark:text-white hover:text-red-500"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 14 14"
+                                    {{ Ticket.statusName }}
+                                </h1>
+                            </div>
+                            <div
+                                class="flex items-center justify-center"
+                                v-else
+                            >
+                                <Toast />
+                                <ConfirmPopup></ConfirmPopup>
+                                <div class="flex gap-2 justify-content-center">
+                                    <button
+                                        @click="
+                                            AcceptTicket(
+                                                $event,
+                                                1,
+                                                Ticket.studentId,
+                                                Ticket.field,
+                                                Ticket.id
+                                            )
+                                        "
+                                        class="px-2 py-1 bg-green-400 text-white rounded font-medium"
                                     >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                        />
-                                    </svg>
-                                </button>
-                                <button
-                                    @click="
-                                        verify(
-                                            1,
-                                            Ticket.studentId,
-                                            Ticket.field,
-
-                                            Ticket.id
-                                        )
-                                    "
-                                >
-                                    <svg
-                                        class="w-3 h-3 text-gray-800 dark:text-white hover:text-green-600"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 16 12"
+                                        Approve
+                                    </button>
+                                    <button
+                                        @click="
+                                            RejectTicket(
+                                                $event,
+                                                2,
+                                                Ticket.studentId,
+                                                Ticket.field,
+                                                Ticket.id
+                                            )
+                                        "
+                                        class="px-2 py-1 bg-red-400 text-white rounded font-medium"
                                     >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M1 5.917 5.724 10.5 15 1.5"
-                                        />
-                                    </svg>
-                                </button>
+                                        Reject
+                                    </button>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -178,22 +193,37 @@
     </LayoutPDC>
 </template>
 <script>
+import moment from "moment";
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+import ConfirmPopup from "primevue/confirmpopup";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import Toast from "primevue/toast";
+
 export default {
     components: {
         MentorCard,
         UnSpinnerAlt,
+        ConfirmPopup,
+        Toast,
+        Button,
+        Dialog,
     },
     data() {
         return {
             tickets: [],
 
             isLoading: false,
-            isEdit: false,
+            visible: false,
+            moment: moment,
         };
     },
     methods: {
+        viewTicket(selectedTicket) {
+            this.selectedTicket = selectedTicket;
+            this.visible = true;
+        },
         getTickets() {
             this.isLoading = true;
 
@@ -204,9 +234,7 @@ export default {
                 this.isLoading = false;
             });
         },
-        updateStatus(Ticket) {
-            Ticket.isEdit = !Ticket.isEdit;
-        },
+
         verify(requestStatus, studentId, field, ticketId) {
             axios
                 .post("/verifyticket", {
@@ -220,10 +248,67 @@ export default {
                     this.getTickets();
                 });
         },
+        AcceptTicket(event, requestStatus, studentId, field, ticketId) {
+            this.$confirm.require({
+                target: event.currentTarget,
+                message: "Are you sure you want to proceed?",
+                icon: "pi pi-exclamation-triangle text-red-400",
+                rejectClass: "p-button-secondary p-button-outlined p-button-sm",
+                acceptClass:
+                    "p-button-sm text-white bg-green-400 px-2 py-1 ml-2",
+                rejectLabel: "Cancel",
+                acceptLabel: "Approve",
+                accept: () => {
+                    this.verify(requestStatus, studentId, field, ticketId);
+                    this.$toast.add({
+                        severity: "info",
+                        summary: "Confirmed",
+                        detail: "You have accepteds",
+                        position: "bottom-right",
+                        life: 10000,
+                    });
+                },
+                reject: () => {},
+            });
+        },
+        RejectTicket(event, requestStatus, studentId, field, ticketId) {
+            this.$confirm.require({
+                target: event.currentTarget,
+                message: "Are you sure you want to proceed?",
+                icon: "pi pi-exclamation-triangle text-red-400",
+                rejectClass: "p-button-secondary p-button-outlined p-button-sm",
+                acceptClass:
+                    "p-button-danger p-button-sm bg-red-400 px-2 py-1 ml-2 text-white",
+                rejectLabel: "Cancel",
+                acceptLabel: "Reject",
+                accept: () => {
+                    this.verify(requestStatus, studentId, field, ticketId);
+                    this.$toast.add({
+                        severity: "info",
+                        summary: "Confirmed",
+                        detail: "Record deleted",
+                        position: "bottom-right",
+                        life: 10000,
+                    });
+                },
+                reject: () => {},
+            });
+        },
     },
     mounted() {
         this.getTickets();
     },
 };
 </script>
-<style lang=""></style>
+<style lang="css">
+.p-confirm-popup {
+    font-size: 14px;
+}
+.p-confirm-popup-footer {
+    width: 100%;
+    display: flex;
+    justify-self: end;
+
+    align-items: center;
+}
+</style>

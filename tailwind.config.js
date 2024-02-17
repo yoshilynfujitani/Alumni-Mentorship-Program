@@ -19,6 +19,16 @@ module.exports = {
             backgroundImage: {
                 "main-bg": "url('./public/mmsu_logo.png')",
             },
+            screens: {
+                tablet: "640px",
+                // => @media (min-width: 640px) { ... }
+
+                laptop: "1400px",
+                // => @media (min-width: 1024px) { ... }
+
+                desktop: "1800px",
+                // => @media (min-width: 1280px) { ... }
+            },
         },
         container: {
             padding: {
