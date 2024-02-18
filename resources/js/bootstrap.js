@@ -27,7 +27,26 @@ window.Echo = new Echo({
     forceTLS: true,
 });
 
-window.Echo.channel("chat").listen(".newchat", (e) => {
-    console.log("UpdateProgressData has been updated!");
-    console.log(e);
-});
+const currentUrl = window.location.href;
+
+// Create a URLSearchParams object from the URL
+const urlParams = new URLSearchParams(currentUrl);
+
+// Get the value of the 'id' parameter
+const idFromUrl = urlParams.get("id");
+
+// Check if the 'id' parameter is present
+if (idFromUrl !== null) {
+    console.log("ID from URL:", idFromUrl);
+
+    // Now you can use the idFromUrl in your code
+    window.Echo.channel(`chat${idFromUrl}`).listen(".newchat", (e) => {
+        console.log(
+            "UpdateProgressData has been updated for chat with id:",
+            idFromUrl
+        );
+        console.log(e);
+    });
+} else {
+    console.log("No 'id' parameter found in the URL");
+}

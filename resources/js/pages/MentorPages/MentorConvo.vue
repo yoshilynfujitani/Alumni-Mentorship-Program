@@ -132,21 +132,17 @@ export default {
             chatLoading: false,
             chat: [],
             message: "",
+            chatListener: null,
         };
     },
 
     methods: {
         getChat(id) {
             this.chatLoading = true;
-            let currentAppointmentId = parseInt(this.$route.params.id);
 
             axios.post("/getconvo", { appointmentId: id }).then(({ data }) => {
-                if (this.chatListener) {
-                    window.Echo.leaveChannel(`chat${currentAppointmentId}`);
-                    this.chatListener = null; // Reset the listener
-                }
                 this.$router.push({
-                    name: "chat",
+                    name: "mentorchat",
                     params: { id: parseInt(id) },
                 });
                 this.chat = data;
@@ -208,10 +204,7 @@ export default {
                 // Register the listener only if it hasn't been registered yet
                 this.chatListener = (e) => {
                     console.log(e);
-                    if (
-                        Array.isArray(this.chat) &&
-                        e.appointmentId === appointmentId
-                    ) {
+                    if (Array.isArray(this.chat)) {
                         this.chat.push({
                             chats: e.message,
                             userId: e.userId,

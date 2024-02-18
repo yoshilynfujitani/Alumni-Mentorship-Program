@@ -30,7 +30,7 @@ class ConvoController extends Controller
 
         $newConvo->save();
 
-        return event(new MessageSent($request->message));
+        return event(new MessageSent($request->message, Auth::id(), $request->appointmentId ));
     }
 
     public function getConvoId(){

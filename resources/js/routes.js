@@ -33,8 +33,13 @@ export const routes = [
     },
 
     {
-        path: "/chat",
+        path: "/chat/:id?",
         name: "chat",
+        component: Conversation,
+    },
+    {
+        path: "/mentorchat/:id?",
+        name: "mentorchat",
         component: Conversation,
     },
     {
