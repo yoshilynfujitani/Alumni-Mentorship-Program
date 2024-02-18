@@ -130,7 +130,7 @@ export default {
             ConvoWithName: null,
             inbox: null,
             chatLoading: false,
-            chat: null,
+            chat: [],
             message: "",
         };
     },
@@ -140,9 +140,11 @@ export default {
             this.chatLoading = true;
 
             axios.post("/getconvo", { appointmentId: id }).then(({ data }) => {
+                // Assuming the server returns an array of messages
                 this.chat = data;
 
                 this.$nextTick(() => this.scrollToEnd());
+                this.listen();
                 this.chatLoading = false;
             });
         },
@@ -164,7 +166,6 @@ export default {
                     console.log("Message sent successfully:", data); // Log the response to check if the server is responding appropriately
 
                     this.message = "";
-                    this.getChat(ConvoId);
                 })
                 .catch((error) => {
                     console.error("Error sending message:", error); // Log any errors for debugging
@@ -194,8 +195,24 @@ export default {
                 }
             });
         },
+        listen() {
+            if (!this.chatListener) {
+                // Register the listener only if it hasn't been registered yet
+                this.chatListener = (e) => {
+                    console.log(e.message);
+                    if (Array.isArray(this.chat)) {
+                        this.chat.push({ chats: e.message });
+                    }
+                };
+
+                window.Echo.private("chat").listen(
+                    ".newchat",
+                    this.chatListener
+                );
+            }
+        },
     },
-    mounted() {
+    created() {
         this.getConvoId();
     },
 };

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Convo;
 
+use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Broadcast;
 
 class ConvoController extends Controller
 {
@@ -28,7 +30,7 @@ class ConvoController extends Controller
 
         $newConvo->save();
 
-        return;
+        return event(new MessageSent($request->message));
     }
 
     public function getConvoId(){
