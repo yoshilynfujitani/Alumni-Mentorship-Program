@@ -124,7 +124,7 @@
                             @input="handleChangeRating"
                         />
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label
                             for="message"
                             class="text-sm leading-7 text-gray-600"
@@ -138,7 +138,7 @@
                         ></textarea>
                     </div>
 
-                    <p class="mt-3 text-xs text-gray-500">
+                    <p class="mt-3 text-xs text-gray-500 text-center">
                         Feel free to connect with us through your insitutional
                         email.
                     </p>

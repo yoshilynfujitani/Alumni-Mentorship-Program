@@ -79,4 +79,9 @@ export const routes = [
         name: "mentorstudentreuqests",
         component: MentorStudentRequests,
     },
+    {
+        path: "/mentorchat",
+        name: "mentorchat",
+        component: Conversation,
+    },
 ];

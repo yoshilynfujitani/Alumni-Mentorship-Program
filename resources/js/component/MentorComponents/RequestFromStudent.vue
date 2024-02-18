@@ -20,43 +20,56 @@
     </button>
     <Dialog v-model:visible="visible" modal header="Appointment Details">
         <div class="" v-if="!this.requestDetails">Loading...</div>
-        <div class="flex items-start w-[700px] justify-between" v-else>
+        <div class="flex items-start w-[800px] justify-around" v-else>
             <div
                 class="flex flex-col mr-5 justify-between h-full"
                 v-if="!this.showFeedback"
             >
                 <div
+                    class="flex gap-5 border rounded-md border-gray-200 my-2.5 p-2.5 items-center"
+                >
+                    <img
+                        class="w-20 h-20 mb-3 rounded-full shadow-lg"
+                        src="../../../../public/DefaultAvatar.webp"
+                        alt="Avatar"
+                    />
+                    <div class="flex gap-2.5">
+                        <div class="">
+                            <h1 class="font-medium">Student's Name</h1>
+                            <p>{{ this.requestDetails.name }}</p>
+                        </div>
+                        <div class="">
+                            <h1 class="font-medium">College</h1>
+                            <p>{{ this.requestDetails.course }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div
                     class="text-start text-lg border p-2.5 border-gray-200 rounded-md"
                 >
                     <h1 class="font-medium">Request header</h1>
                     <p class="text-sm">{{ this.requestDetails.title }}</p>
-                </div>
-                <div
-                    class="grid grid-cols-2 gap-x-2 content-between text-start w-full my-5"
-                >
-                    <div class="">
-                        <h1 class="font-medium">Student's Name</h1>
-                        <p>{{ this.requestDetails.name }}</p>
-                    </div>
-                    <div class="">
-                        <h1 class="font-medium">Student's Course</h1>
-                        <p>{{ this.requestDetails.course }}</p>
-                    </div>
 
-                    <div class="">
-                        <h1 class="font-medium">Start Date</h1>
-                        <p>
-                            {{
-                                moment(
-                                    requestDetails.startSchedule,
-                                    "YYYY-MM-DD HH:mm:ss"
-                                ).format("MMMM Do YYYY")
-                            }}
-                        </p>
-                    </div>
-                    <div class="">
-                        <h1 class="font-medium">Status</h1>
-                        <p>{{ this.requestDetails.statusName }}</p>
+                    <div
+                        class="grid grid-cols-2 gap-x-2 content-between text-start w-full my-5"
+                    >
+                        <div class="">
+                            <h1 class="font-medium">Start Date</h1>
+                            <p class="text-sm">
+                                {{
+                                    moment(
+                                        requestDetails.startSchedule,
+                                        "YYYY-MM-DD HH:mm:ss"
+                                    ).format("MMMM Do YYYY")
+                                }}
+                            </p>
+                        </div>
+                        <div class="">
+                            <h1 class="font-medium">Status</h1>
+                            <p class="text-sm">
+                                {{ this.requestDetails.statusName }}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -188,11 +201,11 @@
                     <div
                         class="border border-gray-200 rounded-md p-5 w-full h-full"
                     >
-                        <h1 class="font-medium">Comments</h1>
+                        <h1 class="font-medium text-green-600">Comments</h1>
                         <h1 v-if="!this.feedbackDetails.comments">
                             Student have not yet submitted any feedback.
                         </h1>
-                        <h1 class="overflow-y-scroll" v-else>
+                        <h1 class="overflow-y-scroll min-h-[100px]" v-else>
                             {{ this.feedbackDetails.comments }}
                         </h1>
                     </div>
