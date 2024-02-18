@@ -65,9 +65,13 @@
                                         chats.userId !== this.userId,
                                     'bg-green-200 w-fit px-4 py-2 rounded-full ':
                                         chats.userId === this.userId,
+                                    hidden:
+                                        chats.appointmentId !== this.ConvoId,
                                 }"
                             >
-                                {{ chats.chats }}
+                                <h1 :class="{}">
+                                    {{ chats.chats }}
+                                </h1>
                             </h1>
                         </div>
                     </div>
@@ -140,11 +144,9 @@ export default {
             this.chatLoading = true;
             let currentAppointmentId = parseInt(this.$route.params.id);
 
+            // Disconnect from the current channel before pushing to the new route
+
             axios.post("/getconvo", { appointmentId: id }).then(({ data }) => {
-                if (this.chatListener) {
-                    window.Echo.leaveChannel(`chat${currentAppointmentId}`);
-                    this.chatListener = null; // Reset the listener
-                }
                 this.$router.push({
                     name: "chat",
                     params: { id: parseInt(id) },
@@ -171,12 +173,12 @@ export default {
                     message,
                 })
                 .then(({ data }) => {
-                    console.log("Message sent successfully:", data); // Log the response to check if the server is responding appropriately
+                    console.log("Message sent successfully:", data);
 
                     this.message = "";
                 })
                 .catch((error) => {
-                    console.error("Error sending message:", error); // Log any errors for debugging
+                    console.error("Error sending message:", error);
                 });
         },
         openChat(appointmentId, name) {
@@ -204,29 +206,28 @@ export default {
             });
         },
         listen(appointmentId) {
-            if (!this.chatListener) {
-                // Register the listener only if it hasn't been registered yet
-                this.chatListener = (e) => {
-                    console.log(e);
-                    if (
-                        Array.isArray(this.chat) &&
-                        e.appointmentId === appointmentId
-                    ) {
-                        this.chat.push({
-                            chats: e.message,
-                            userId: e.userId,
-                            appointmentId: e.appointmentId,
-                        });
-                    }
-                };
+            const data = (e) => {
+                console.log(e);
+                if (
+                    Array.isArray(this.chat) &&
+                    e.appointmentId === appointmentId
+                ) {
+                    this.chat.push({
+                        chats: e.message,
+                        userId: e.userId,
+                        appointmentId: e.appointmentId,
+                    });
+                    this.scrollToEnd(); // Scroll to the end when a new message is received
+                }
+            };
 
-                window.Echo.private(`chat${appointmentId}`).listen(
-                    ".newchat",
-                    this.chatListener
-                );
-            }
+            window.Echo.private(`chat${appointmentId}`).listen(
+                ".newchat",
+                data
+            );
         },
     },
+
     created() {
         this.getConvoId();
     },
