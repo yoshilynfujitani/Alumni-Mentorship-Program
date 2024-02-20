@@ -1,6 +1,6 @@
 <template lang="">
     <Layout
-        ><div class="flex w-full gap-5 h-screen py-5">
+        ><div class="flex w-full gap-5 h-screen py-10">
             <!-- Message Headers -->
             <div
                 class="bg-gray-50 rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
@@ -9,6 +9,10 @@
                 <div class="">
                     <div
                         class="rounded-md bg-white px-4 py-2 mx-2.5 my-1 cursor-pointer"
+                        :class="{
+                            'border-2 border-green-500':
+                                this.ConvoId === Inbox.appointmentId,
+                        }"
                         v-for="Inbox in inbox"
                         @click="openChat(Inbox.appointmentId, Inbox.name)"
                     >
@@ -76,7 +80,11 @@
                         </div>
                     </div>
 
-                    <form class="my-2" @submit.prevent="sendChat">
+                    <form
+                        class="my-2"
+                        @submit.prevent="sendChat"
+                        v-if="this.ConvoId"
+                    >
                         <div class="relative">
                             <div
                                 class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -123,6 +131,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import _debounce from "lodash/debounce";
+
 export default {
     computed: {
         ...mapState(["userId"]),
@@ -136,25 +146,28 @@ export default {
             chatLoading: false,
             chat: [],
             message: "",
+            listenerStatus: {},
         };
     },
 
     methods: {
         getChat(id) {
             this.chatLoading = true;
-            let currentAppointmentId = parseInt(this.$route.params.id);
-
-            // Disconnect from the current channel before pushing to the new route
 
             axios.post("/getconvo", { appointmentId: id }).then(({ data }) => {
                 this.$router.push({
                     name: "chat",
                     params: { id: parseInt(id) },
                 });
+                this.chat = [];
                 this.chat = data;
 
                 this.$nextTick(() => this.scrollToEnd());
-                this.listen(id);
+
+                if (!this.listenerStatus[id]) {
+                    this.listen(id);
+                    this.listenerStatus[id] = true;
+                }
                 this.chatLoading = false;
             });
         },
@@ -164,7 +177,7 @@ export default {
                 this.inbox = data;
             });
         },
-        sendChat() {
+        sendChat: _debounce(function () {
             const { message, ConvoId } = this;
 
             axios
@@ -174,13 +187,12 @@ export default {
                 })
                 .then(({ data }) => {
                     console.log("Message sent successfully:", data);
-
                     this.message = "";
                 })
                 .catch((error) => {
                     console.error("Error sending message:", error);
                 });
-        },
+        }, 400),
         openChat(appointmentId, name) {
             this.ConvoId = appointmentId;
             this.ConvoWithName = name;

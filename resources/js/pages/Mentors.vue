@@ -17,8 +17,20 @@
             <div
                 class="bg-white border border-gray-200 rounded-md p-5 my-5 w-full"
             >
-                <div class="">
-                    <div class=""><h1>Business</h1></div>
+                <div class="px-3">
+                    <div class="w-80 my-2.5">
+                        <span class="text-sm font-medium text-green-600"
+                            >Sort By</span
+                        >
+                        <Dropdown
+                            v-model="selectedCourse"
+                            :options="this.courses"
+                            optionLabel="name"
+                            placeholder="Select a Field"
+                            class="w-full md:w-14rem border-gray-200 border focus:border-2 focus:border-green-500"
+                            @change="handleCourseChange"
+                        />
+                    </div>
                 </div>
                 <div
                     class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 gap-5 mx-auto h-full w-full auto-rows-fr"
@@ -30,22 +42,47 @@
                         />
                     </div>
                 </div>
+                <div class="my-5">
+                    <Pagination
+                        @next="goToNextPage"
+                        @back="goToPrevPage"
+                        :total="this.pagination?.total"
+                        :current_page="this.pagination?.current_page"
+                        :last_page="this.pagination?.last_page"
+                    />
+                </div>
             </div>
         </div>
     </Layout>
 </template>
 <script>
 import MentorCard from "../component/MentorComponents/MentorCard.vue";
+import Pagination from "../utils/Pagination.vue";
 import Message from "primevue/message";
+import Dropdown from "primevue/dropdown";
 import { mapState, mapActions } from "vuex";
 export default {
     components: {
         MentorCard,
         Message,
+        Dropdown,
+        Pagination,
     },
     data() {
         return {
             mentors: [],
+            courses: [
+                { id: 1, name: "Business Management" },
+                { id: 2, name: "Creative Arts" },
+                { id: 3, name: "Engineering and Mathematics" },
+                { id: 4, name: "Humanities Arts and Social Sciences" },
+                { id: 5, name: "IT and Computer Science" },
+                { id: 6, name: " Medical and Health Science" },
+                { id: 7, name: "Teaching and Education" },
+                { id: 8, name: "Leadership and Team Building" },
+            ],
+            selectedCourse: null,
+            pagination: null,
         };
     },
     computed: {
@@ -59,21 +96,57 @@ export default {
     methods: {
         ...mapActions(["setUserDetailsAction"]),
         getMentors() {
-            const { fieldToTake, allowToAppoint } = this;
+            const { fieldToTake, allowToAppoint, selectedCourse } = this;
             axios
-                .post("/getmentorstudent", {
+                .post(`/getmentorstudent`, {
                     fieldToTake,
                     allowToAppoint,
+                    selectedCourseId: selectedCourse ? selectedCourse.id : null,
                 })
                 .then(({ data }) => {
                     console.log(this.fieldToTake);
-                    this.mentors = data;
+                    this.mentors = data.data;
+                    this.pagination = data;
                 });
         },
-        handleAppointmentAccessData(data) {
-            console.log(data);
-            this.apptAccessData = data;
+        handleCourseChange() {
+            // Call getMentors when the selected course changes
             this.getMentors();
+        },
+
+        goToPrevPage() {
+            if (this.pagination.current_page > 1) {
+                const prevPage = this.pagination.current_page - 1;
+                this.fetchRequests(prevPage);
+            }
+        },
+        goToNextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                const nextPage = this.pagination.current_page + 1;
+                this.fetchRequests(nextPage);
+            }
+        },
+        fetchRequests(page) {
+            this.isLoading = true;
+
+            axios
+                .get(
+                    `/getmentorstudent?page=${page}&field=${
+                        this.selectedCourse.id ? this.selectedCourse.id : null
+                    }`
+                )
+                .then(({ data }) => {
+                    console.log(data);
+
+                    this.mentors = data.data;
+                    this.pagination = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         },
     },
 

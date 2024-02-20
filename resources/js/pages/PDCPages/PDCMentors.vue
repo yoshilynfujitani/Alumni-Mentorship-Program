@@ -1,43 +1,23 @@
 <template lang="">
     <LayoutPDC>
         <div class="self-start space-x-2">
-            <button
-                @click="handleFilter('active')"
-                :class="{
-                    'bg-green-700 text-white': fetchMentorBy === 'active',
-                    'bg-white text-green-700 border':
-                        fetchMentorBy !== 'active',
-                }"
-                type="button"
-                class="focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
-            >
-                Active Mentors
-            </button>
-            <button
-                @click="handleFilter('pending')"
-                :class="{
-                    'bg-green-700 text-white': fetchMentorBy === 'pending',
-                    'bg-white text-green-700 border':
-                        fetchMentorBy !== 'pending',
-                }"
-                type="button"
-                class="transition-all focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
-            >
-                Pending Mentors
-            </button>
-            <button
-                @click="handleFilter('all')"
-                :class="{
-                    'bg-green-700 text-white': fetchMentorBy === 'all',
-                    'bg-white text-green-700 border': fetchMentorBy !== 'all',
-                }"
-                type="button"
-                class="focus:outline-none hover:bg-green-200 px-4 py-2 rounded-md"
-            >
-                All Mentors
-            </button>
-
-            <h1>Mentors</h1>
+            <div class="self-start">
+                <h1 class="flex items-center text-2xl gap-1 font-medium">
+                    <i class="pi pi-users text-2xl text-yellow-400"></i>
+                    <span class="text-green-700">Mentors</span>
+                </h1>
+            </div>
+            <div class="w-80 my-2.5">
+                <span class="text-sm font-medium text-green-600">Sort By</span>
+                <Dropdown
+                    v-model="fetchMentorBy"
+                    :options="this.mentorStatus"
+                    optionLabel="name"
+                    placeholder="Sort by Status"
+                    class="w-full md:w-14rem border-gray-200 border focus:border-2 focus:border-green-500"
+                    @change="handleFilterChange"
+                />
+            </div>
         </div>
 
         <!-- <div class="grid grid-cols-4 gap-5 mx-auto my-10">
@@ -76,30 +56,9 @@
                         </th>
                         <th
                             scope="col"
-                            class="px-6 py-3 text-center"
-                            v-if="
-                                fetchMentorBy == 'pending' ||
-                                fetchMentorBy == 'all'
-                            "
+                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
                         >
-                            Status
-                        </th>
-                        <th
-                            v-if="fetchMentorBy == 'active'"
-                            scope="col"
-                            class="px-6 py-3 text-center"
-                        >
-                            Appoint
-                        </th>
-                        <th
-                            scope="col"
-                            class="px-16 py-3 text-center"
-                            v-if="
-                                fetchMentorBy == 'all' ||
-                                fetchMentorBy == 'pending'
-                            "
-                        >
-                            Edit
+                            Field
                         </th>
                     </tr>
                 </thead>
@@ -119,110 +78,43 @@
                                 alt="Avatar"
                             />{{ Mentor.name }}
                         </th>
-                        <td class="px-6 py-4">{{ Mentor.course }}</td>
+                        <td class="px-6 py-4">{{ Mentor.statusName }}</td>
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {{ Mentor.fieldName }}
                         </td>
                         <td
                             class="px-6 py-4 flex justify-center"
-                            v-if="
-                                fetchMentorBy == 'pending' ||
-                                fetchMentorBy == 'all'
-                            "
+                            v-if="fetchMentorBy == null"
                         >
                             <h1
-                                v-if="Mentor.verified === 0"
-                                class="text-white font-bold bg-yellow-400 py-2 px-4 rounded-md w-fit"
-                            >
-                                {{ Mentor.statusName }}
-                            </h1>
-                            <h1
-                                v-if="Mentor.verified === 1"
-                                class="text-white font-bold bg-green-400 py-2 px-4 rounded-md w-fit"
-                            >
-                                {{ Mentor.statusName }}
-                            </h1>
-                            <h1
-                                v-if="Mentor.verified === 2"
-                                class="text-white font-bold bg-red-400 py-2 px-4 rounded-md w-fit text-center"
+                                class="font-bold"
+                                :class="{
+                                    'text-yellow-400': Mentor.verified === 0,
+                                    'text-green-400': Mentor.verified === 1,
+                                    'text-red-400': Mentor.verified === 2,
+                                    'text-green-700': Mentor.verified === 3,
+                                }"
                             >
                                 {{ Mentor.statusName }}
                             </h1>
                         </td>
                         <td
                             class="px-6 py-4 text-center"
-                            v-if="
-                                fetchMentorBy == 'all' ||
-                                fetchMentorBy == 'pending'
-                            "
+                            v-if="fetchMentorBy.id === 1"
                         >
-                            <button
-                                @click="updateStatus(Mentor)"
-                                v-if="!Mentor.isEdit"
-                            >
-                                <svg
-                                    class="w-3 h-3 text-gray-800 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 16 3"
+                            <ConfirmPopup></ConfirmPopup>
+                            <div class="flex gap-2 justify-content-center">
+                                <button
+                                    @click="AcceptRequest($event, 1)"
+                                    class="px-2 py-1 bg-green-400 text-white rounded font-medium"
                                 >
-                                    <path
-                                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
-                                    />
-                                </svg>
-                            </button>
-                            <div class="space-x-5" v-if="Mentor.isEdit">
-                                <button @click="updateStatus(Mentor)">
-                                    <svg
-                                        class="w-3 h-3 text-gray-800 dark:text-white hover:text-gray-400"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 8 14"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
-                                        />
-                                    </svg>
+                                    Approve
                                 </button>
-                                <button @click="verify(2, Mentor.id)">
-                                    <svg
-                                        class="w-3 h-3 text-gray-800 dark:text-white hover:text-red-500"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 14 14"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                        />
-                                    </svg>
-                                </button>
-                                <button @click="verify(1, Mentor.id)">
-                                    <svg
-                                        class="w-3 h-3 text-gray-800 dark:text-white hover:text-green-600"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 16 12"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M1 5.917 5.724 10.5 15 1.5"
-                                        />
-                                    </svg>
+                                <button
+                                    @click="RejectRequest($event, 2)"
+                                    class="px-2 py-1 bg-red-400 text-white rounded font-medium"
+                                >
+                                    Reject
                                 </button>
                             </div>
                         </td>
@@ -253,7 +145,10 @@ import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
 import AppointmentForm from "../../component/StudentComponents/AppointmentForm.vue";
 import Pagination from "../../utils/Pagination.vue";
-import Modal from "../../component/Modal.vue";
+import Dropdown from "primevue/dropdown";
+import ConfirmPopup from "primevue/confirmpopup";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
 
 export default {
     components: {
@@ -261,26 +156,39 @@ export default {
         UnSpinnerAlt,
         AppointmentForm,
         Pagination,
+        Dropdown,
+        ConfirmPopup,
+        Button,
+        Dialog,
     },
     data() {
         return {
             mentors: [],
             pagination: {},
-            fetchMentorBy: "active",
-            // ifPendingMentors: false,
+            fetchMentorBy: null,
+            mentorStatus: [
+                { id: 0, name: "Active" },
+                { id: 1, name: "Pending" },
+                { id: 2, name: "All" },
+            ],
             isLoading: false,
             isEdit: false,
+            visible: false,
         };
     },
     methods: {
-        handleFilter(filter) {
-            (this.fetchMentorBy = filter), this.getMentors();
+        handleFilterChange() {
+            // Call getMentors when the selected course changes
+            this.getMentors();
         },
         getMentors() {
             this.isLoading = true;
             const { fetchMentorBy } = this;
+
             axios
-                .get(`/getmentorAPI?searchBy=${fetchMentorBy}`)
+                .post(`/getmentorAPI`, {
+                    searchBy: this.fetchMentorBy ? this.fetchMentorBy.id : null,
+                })
                 .then(({ data }) => {
                     console.log(data);
 
@@ -300,6 +208,38 @@ export default {
                     this.getMentors();
                 });
         },
+        AcceptRequest(event, statusId, mentorId) {
+            this.$confirm.require({
+                target: event.currentTarget,
+                message: "Are you sure you want to proceed?",
+                icon: "pi pi-exclamation-triangle text-red-400",
+                rejectClass: "p-button-secondary p-button-outlined p-button-sm",
+                acceptClass:
+                    "p-button-sm text-white bg-green-400 px-2 py-1 ml-2",
+                rejectLabel: "Cancel",
+                acceptLabel: "Approve",
+                accept: () => {
+                    this.verify(statusId, mentorId);
+                },
+                reject: () => {},
+            });
+        },
+        RejectRequest(event, statusId, mentorId) {
+            this.$confirm.require({
+                target: event.currentTarget,
+                message: "Are you sure you want to proceed?",
+                icon: "pi pi-exclamation-triangle text-red-400",
+                rejectClass: "p-button-secondary p-button-outlined p-button-sm",
+                acceptClass:
+                    "p-button-danger p-button-sm bg-red-400 px-2 py-1 ml-2 text-white",
+                rejectLabel: "Cancel",
+                acceptLabel: "Reject",
+                accept: () => {
+                    this.verify(statusId, mentorId);
+                },
+                reject: () => {},
+            });
+        },
         goToPrevPage() {
             if (this.pagination.current_page > 1) {
                 const prevPage = this.pagination.current_page - 1;
@@ -316,7 +256,9 @@ export default {
             this.isLoading = true;
             const { fetchMentorBy } = this;
             axios
-                .get(`/getmentorAPI?searchBy=${fetchMentorBy}&page=${page}`)
+                .post(`/getmentorAPI?page=${page}`, {
+                    searchBy: fetchMentorBy ? fetchMentorBy.id : null,
+                })
                 .then(({ data }) => {
                     console.log(data);
 

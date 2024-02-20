@@ -22,7 +22,10 @@
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
-                                <MdRoundSpaceDashboard class="w-5 h-5" />
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
                                 <span class="ms-3">Dashboard</span>
                             </a>
                         </router-link>
@@ -34,7 +37,10 @@
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
-                                <FaUserTie class="w-5 h-5" />
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
                                 <span class="ms-3">Mentors</span>
                             </a>
                         </router-link>
@@ -45,8 +51,11 @@
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
-                                <FaUserGraduate class="w-5 h-5" />
-                                <span class="ms-3">Student Appointments</span>
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
+                                <span class="ms-3">Invite Alumni</span>
                             </a>
                         </router-link>
                     </li>
@@ -56,7 +65,10 @@
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
-                                <FaUserPlus class="w-5 h-5" />
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
                                 <span class="ms-3">Student Requests</span>
                             </a>
                         </router-link>

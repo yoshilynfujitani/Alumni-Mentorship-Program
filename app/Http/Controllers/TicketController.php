@@ -29,23 +29,22 @@ class TicketController extends Controller
     
     public function getTickets(){
         
-        return DB::connection('admin')->table('ticketlogs')
-        ->orderBy('created_at')
+        return Ticket::orderBy('created_at')
         ->join('users', 'users.id','=', 'ticketlogs.studentId')
         ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
         ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
         ->select('users.name','users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
-        ->get();
+        ->paginate(10);
     }
     public function getTicketsOfStudent(){
         
-        return DB::connection('admin')->table('ticketlogs')
+        return Ticket::where('studentId', Auth::id())
         ->orderBy('created_at')
         ->join('users', 'users.id','=', 'ticketlogs.studentId')
         ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
         ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
         ->select('users.name','users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
-        ->get();
+        ->paginate(10);
     }
 
     public function  verifyTicket(Request $request){

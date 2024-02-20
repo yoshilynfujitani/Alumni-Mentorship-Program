@@ -13,6 +13,8 @@ import MentorStudentRequests from "@/pages/MentorPages/MentorStudentRequests.vue
 import MentorApp from "@/pages/MentorPages/MentorApp.vue";
 import Conversation from "@/pages/Conversation.vue";
 import Appointments from "@/pages/Appointments.vue";
+import TicketLogsStudent from "@/pages/TicketLogsStudent.vue";
+
 export const routes = [
     {
         path: "/",
@@ -72,6 +74,11 @@ export const routes = [
         path: "/pdcstudenttickets",
         name: "pdcstudenttickets",
         component: PDCStudentTickets,
+    },
+    {
+        path: "/studenttickets",
+        name: "studenttickets",
+        component: TicketLogsStudent,
     },
     //Mentor Routes
     {

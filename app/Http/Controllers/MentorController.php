@@ -38,7 +38,7 @@ class MentorController extends Controller
     }
     public function getMentors(Request $request ){
       
-        $queryPerPage = 5;
+        $queryPerPage = 10;
         $query = DB::connection('admin')->table('users')
             ->orderBy('created_at')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
@@ -46,15 +46,16 @@ class MentorController extends Controller
             ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
             ->where('users.role', 2);
     
-        if ($request->searchBy== "active") {
+            // dd($request->searchBy);
+        if ($request->searchBy == 0 || $request->searchBy == null) {
             return $query->where('users.verified', 1)->paginate($queryPerPage);
         }
     
-        if ($request->searchBy == "pending") {
+        if ($request->searchBy == 1) {
             return $query->where('users.verified', 0)->paginate($queryPerPage);
         }
     
-        if ($request->searchBy == "all") {
+        if ($request->searchBy == 2) {
             return $query->paginate($queryPerPage);
         }
     }
@@ -66,12 +67,17 @@ class MentorController extends Controller
         ->where('users.role', 2)
         ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating' );
 
-        if($request->allowToAppoint == 0){
-            return $query->get();
+        if($request->allowToAppoint == null && $request->selectedCourseId == null){
+            return $query->paginate(12);
         }
+
+        if($request->allowToAppoint == 0){
+            return $query->where("users.field",$request->selectedCourseId)->paginate(12);
+        }
+
         if($request->allowToAppoint == 1 || $request->allowToAppoint == 2 ){
             // dd($request->fieldToTake);
-            return $query ->where('users.field', $request->fieldToTake)->get();
+            return $query ->where('users.field', $request->fieldToTake)->paginate(12);
         }
 
      

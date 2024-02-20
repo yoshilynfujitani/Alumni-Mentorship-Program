@@ -75,6 +75,20 @@
                             </a>
                         </router-link>
                     </li>
+                    <li>
+                        <router-link to="/studenttickets">
+                            <a
+                                href="#"
+                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            >
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
+                                <span class="ms-3">Ticket Log</span>
+                            </a>
+                        </router-link>
+                    </li>
                 </div>
 
                 <li @click="logout">

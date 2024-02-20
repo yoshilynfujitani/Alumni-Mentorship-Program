@@ -57,7 +57,7 @@ Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
-Route::get("/getmentorAPI", [MentorController::class, "getMentors"]);
+Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
 Route::post("/getmentorstudent", [MentorController::class, "getMentorsStudent"]);
 Route::get("/getstudentrequests", [MentorController::class, "getMentorAppointment"]);
 Route::post("/verifyrequest", [MentorController::class, "verifyRequest"]);
@@ -69,10 +69,12 @@ Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 //PDC
 Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);
 Route::get("/gettickets", [TicketController::class, "getTickets"]);
-Route::get("/gettickets", [TicketController::class, "getTickets"]);
+Route::get("/getticketsofstudent", [TicketController::class, "getTicketsOfStudent"]);
 Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
 Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);
+
+
 
 //kababaan amin
 Route::get('/{vue?}', function(){
