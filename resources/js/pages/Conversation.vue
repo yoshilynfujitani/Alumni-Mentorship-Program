@@ -1,11 +1,11 @@
 <template lang="">
-    <Layout
-        ><div class="flex w-full gap-5 h-screen py-10">
+    <Layout>
+        <div class="rounded-md bg-white m-2.5 px-4 py-2">Messages</div>
+        <div class="flex w-full gap-5 h-screen py-10">
             <!-- Message Headers -->
             <div
                 class="bg-gray-50 rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
             >
-                <div class="rounded-md bg-white m-2.5 px-4 py-2">Messages</div>
                 <div class="">
                     <div
                         class="rounded-md bg-white px-4 py-2 mx-2.5 my-1 cursor-pointer"
@@ -19,7 +19,25 @@
                         <h1 class="text-xs text-green-400">
                             #0000<span> {{ Inbox.appointmentId }}</span>
                         </h1>
-                        <h2 class="font-medium text-lg">{{ Inbox.name }}</h2>
+                        <h2
+                            class="font-medium text-lg flex items-center justify-between my-2"
+                        >
+                            {{ Inbox.name }}
+                            <span
+                                class="text-sm rounded-full font-medium px-2 py-1"
+                                :class="{
+                                    'bg-yellow-200 text-yellow-600 ':
+                                        Inbox.statusId === 0,
+                                    'bg-green-200 text-green-600 ':
+                                        Inbox.statusId === 1,
+                                    'bg-red-200 text-red-600 ':
+                                        Inbox.statusId === 2,
+                                    'bg-green-400 text-white ':
+                                        Inbox.statusId === 3,
+                                }"
+                                >{{ Inbox.statusName }}</span
+                            >
+                        </h2>
                         <p class="text-gray-500 text-md">
                             <span class="font-thin text-sm"
                                 >Appointment Title:</span

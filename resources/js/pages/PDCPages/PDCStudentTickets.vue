@@ -230,7 +230,7 @@ export default {
             axios.get("/gettickets").then(({ data }) => {
                 console.log(data);
 
-                this.tickets = data;
+                this.tickets = data.data;
                 this.isLoading = false;
             });
         },

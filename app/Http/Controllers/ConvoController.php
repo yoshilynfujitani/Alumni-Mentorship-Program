@@ -36,9 +36,10 @@ class ConvoController extends Controller
     public function getConvoId(){
         $ConvoId = mentorAppointment::where('studentId', Auth::id())
         ->join(DB::raw('adminportal.users AS user'), 'user.id', '=', 'mentorId')
-        ->where('Status', 1)
+        ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'Status', '=', 'status.statusId')
+        // ->where('Status', 1)
         ->orWhere('Status', 3)
-        ->select("appointmentId", "title", "user.name")
+        ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
         ->get();
 
         return  $ConvoId;

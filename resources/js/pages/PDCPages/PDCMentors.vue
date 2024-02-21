@@ -57,8 +57,9 @@
                         <th
                             scope="col"
                             class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
+                            v-if="fetchMentorBy?.id === 0"
                         >
-                            Field
+                            Others
                         </th>
                     </tr>
                 </thead>
@@ -100,7 +101,7 @@
                         </td>
                         <td
                             class="px-6 py-4 text-center"
-                            v-if="fetchMentorBy.id === 1"
+                            v-if="fetchMentorBy?.id === 1"
                         >
                             <ConfirmPopup></ConfirmPopup>
                             <div class="flex gap-2 justify-content-center">
@@ -118,10 +119,7 @@
                                 </button>
                             </div>
                         </td>
-                        <td
-                            class="text-center"
-                            v-if="fetchMentorBy === 'active'"
-                        >
+                        <td class="text-center" v-if="fetchMentorBy?.id === 0">
                             <AppointmentForm
                                 :MentorDetails="Mentor"
                                 type="pdc"
@@ -187,7 +185,7 @@ export default {
 
             axios
                 .post(`/getmentorAPI`, {
-                    searchBy: this.fetchMentorBy ? this.fetchMentorBy.id : null,
+                    searchBy: this.fetchMentorBy ? this.fetchMentorBy.id : 0,
                 })
                 .then(({ data }) => {
                     console.log(data);

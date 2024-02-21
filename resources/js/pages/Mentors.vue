@@ -17,7 +17,7 @@
             <div
                 class="bg-white border border-gray-200 rounded-md p-5 my-5 w-full"
             >
-                <div class="px-3">
+                <div class="px-1">
                     <div class="w-80 my-2.5">
                         <span class="text-sm font-medium text-green-600"
                             >Sort By</span
