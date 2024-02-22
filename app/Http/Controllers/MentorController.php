@@ -75,9 +75,26 @@ class MentorController extends Controller
             return $query->where("users.field",$request->selectedCourseId)->paginate(12);
         }
 
-        if($request->allowToAppoint == 1 || $request->allowToAppoint == 2 ){
-            // dd($request->fieldToTake);
-            return $query ->where('users.field', $request->fieldToTake)->paginate(12);
+        if ($request->allowToAppoint == 1 || $request->allowToAppoint == 2) {
+            $mentors = $query->where('users.field', $request->fieldToTake)->paginate(12);
+    
+            foreach ($mentors as $mentor) {
+                $appointment = MentorAppointment::where('studentId', auth()->id())
+                    ->where('status', 0)
+                    ->where('mentorId', $mentor->id)
+                    ->exists();
+    
+                if ($appointment) {
+                    
+                    $mentor->hasAppointment = true;
+        
+                } else {
+                    $mentor->hasAppointment = false;
+                
+                }
+            }
+    
+            return $mentors;
         }
 
      

@@ -38,8 +38,12 @@
                     <div class="mx-auto" v-for="Mentor in mentors">
                         <MentorCard
                             :MentorDetails="Mentor"
-                            :displaybtn="this.allowToAppoint === 1"
+                            :displaybtn="
+                                this.allowToAppoint === 1 ||
+                                !Mentor.hasAppointment
+                            "
                         />
+                        
                     </div>
                 </div>
                 <div class="my-5">
