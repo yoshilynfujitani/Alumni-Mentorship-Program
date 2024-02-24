@@ -24,7 +24,7 @@ class AppointmentController extends Controller
         $newAppointment->field = $request->field;
         $newAppointment->startSchedule = Carbon::parse($request->date);
 
-        DB::connection('admin')->table('users')->where('id', Auth::id())->update(['allowToAppoint' => 2]);
+        // DB::connection('admin')->table('users')->where('id', Auth::id())->update(['allowToAppoint' => 2]);
 
 
     

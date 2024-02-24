@@ -41,15 +41,13 @@
                         >
                             <th
                                 scope="row"
-                                class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
+                                class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
                             >
                                 {{ Request.name }}
                             </th>
                             <td class="px-6 py-4">{{ Request.course }}</td>
 
-                            <td
-                                class="px-6 py-4 flex flex-col items-center justify-center text-center"
-                            >
+                            <td class="px-6 py-4">
                                 <h1
                                     class="text-center font-bold"
                                     :class="{
@@ -57,6 +55,7 @@
                                         'text-green-400 ': Request.Status === 1,
                                         'text-red-400': Request.Status === 2,
                                         'text-green-700': Request.Status === 3,
+                                        'text-gray-500': Request.Status === 4,
                                     }"
                                 >
                                     {{ Request.statusName }}

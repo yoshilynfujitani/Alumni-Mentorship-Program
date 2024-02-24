@@ -1,21 +1,43 @@
 <template lang="">
-    <Layout
-        ><div class="flex w-full gap-5 h-screen py-5">
+    <LayoutMentor>
+        <div class="rounded-md bg-white m-2.5 px-4 py-2">Messages Hakdog</div>
+        <div class="flex w-full gap-5 h-screen">
             <!-- Message Headers -->
             <div
                 class="bg-gray-50 rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
             >
-                <div class="rounded-md bg-white m-2.5 px-4 py-2">Messages</div>
                 <div class="">
                     <div
                         class="rounded-md bg-white px-4 py-2 mx-2.5 my-1 cursor-pointer"
+                        :class="{
+                            'border-2 border-green-500':
+                                this.ConvoId === Inbox.appointmentId,
+                        }"
                         v-for="Inbox in inbox"
                         @click="openChat(Inbox.appointmentId, Inbox.name)"
                     >
                         <h1 class="text-xs text-green-400">
                             #0000<span> {{ Inbox.appointmentId }}</span>
                         </h1>
-                        <h2 class="font-medium text-lg">{{ Inbox.name }}</h2>
+                        <h2
+                            class="font-medium text-lg flex items-center justify-between my-2"
+                        >
+                            {{ Inbox.name }}
+                            <span
+                                class="text-sm rounded-full font-medium px-2 py-1"
+                                :class="{
+                                    'bg-yellow-200 text-yellow-600 ':
+                                        Inbox.statusId === 0,
+                                    'bg-green-200 text-green-600 ':
+                                        Inbox.statusId === 1,
+                                    'bg-red-200 text-red-600 ':
+                                        Inbox.statusId === 2,
+                                    'bg-green-400 text-white ':
+                                        Inbox.statusId === 3,
+                                }"
+                                >{{ Inbox.statusName }}</span
+                            >
+                        </h2>
                         <p class="text-gray-500 text-md">
                             <span class="font-thin text-sm"
                                 >Appointment Title:</span
@@ -65,14 +87,22 @@
                                         chats.userId !== this.userId,
                                     'bg-green-200 w-fit px-4 py-2 rounded-full ':
                                         chats.userId === this.userId,
+                                    hidden:
+                                        chats.appointmentId !== this.ConvoId,
                                 }"
                             >
-                                {{ chats.chats }}
+                                <h1 :class="{}">
+                                    {{ chats.chats }}
+                                </h1>
                             </h1>
                         </div>
                     </div>
 
-                    <form class="my-2" @submit.prevent="sendChat">
+                    <form
+                        class="my-2"
+                        @submit.prevent="sendChat"
+                        v-if="this.ConvoId"
+                    >
                         <div class="relative">
                             <div
                                 class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -113,15 +143,20 @@
                     </form>
                 </div>
             </div>
-        </div></Layout
-    >
+        </div>
+    </LayoutMentor>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import _debounce from "lodash/debounce";
+import LayoutMentor from "../../Layout/LayoutMentor.vue";
 export default {
     computed: {
         ...mapState(["userId"]),
+    },
+    components: {
+        LayoutMentor,
     },
 
     data() {
@@ -132,7 +167,7 @@ export default {
             chatLoading: false,
             chat: [],
             message: "",
-            chatListener: null,
+            listenerStatus: {},
         };
     },
 
@@ -145,20 +180,25 @@ export default {
                     name: "mentorchat",
                     params: { id: parseInt(id) },
                 });
+                this.chat = [];
                 this.chat = data;
 
                 this.$nextTick(() => this.scrollToEnd());
-                this.listen(id);
+
+                if (!this.listenerStatus[id]) {
+                    this.listen(id);
+                    this.listenerStatus[id] = true;
+                }
                 this.chatLoading = false;
             });
         },
         getConvoId() {
-            axios.get("/getConvoId").then(({ data }) => {
+            axios.get("/getConvoIdForMentor").then(({ data }) => {
                 console.log(data);
                 this.inbox = data;
             });
         },
-        sendChat() {
+        sendChat: _debounce(function () {
             const { message, ConvoId } = this;
 
             axios
@@ -167,14 +207,13 @@ export default {
                     message,
                 })
                 .then(({ data }) => {
-                    console.log("Message sent successfully:", data); // Log the response to check if the server is responding appropriately
-
+                    console.log("Message sent successfully:", data);
                     this.message = "";
                 })
                 .catch((error) => {
-                    console.error("Error sending message:", error); // Log any errors for debugging
+                    console.error("Error sending message:", error);
                 });
-        },
+        }, 400),
         openChat(appointmentId, name) {
             this.ConvoId = appointmentId;
             this.ConvoWithName = name;
@@ -200,26 +239,28 @@ export default {
             });
         },
         listen(appointmentId) {
-            if (!this.chatListener) {
-                // Register the listener only if it hasn't been registered yet
-                this.chatListener = (e) => {
-                    console.log(e);
-                    if (Array.isArray(this.chat)) {
-                        this.chat.push({
-                            chats: e.message,
-                            userId: e.userId,
-                            appointmentId: e.appointmentId,
-                        });
-                    }
-                };
+            const data = (e) => {
+                console.log(e);
+                if (
+                    Array.isArray(this.chat) &&
+                    e.appointmentId === appointmentId
+                ) {
+                    this.chat.push({
+                        chats: e.message,
+                        userId: e.userId,
+                        appointmentId: e.appointmentId,
+                    });
+                    this.scrollToEnd(); // Scroll to the end when a new message is received
+                }
+            };
 
-                window.Echo.private(`chat${appointmentId}`).listen(
-                    ".newchat",
-                    this.chatListener
-                );
-            }
+            window.Echo.private(`chat${appointmentId}`).listen(
+                ".newchat",
+                data
+            );
         },
     },
+
     created() {
         this.getConvoId();
     },

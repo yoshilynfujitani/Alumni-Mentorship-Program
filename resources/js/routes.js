@@ -12,8 +12,10 @@ import PDCStudentTickets from "@/pages/PDCPages/PDCStudentTickets.vue";
 import MentorStudentRequests from "@/pages/MentorPages/MentorStudentRequests.vue";
 import MentorApp from "@/pages/MentorPages/MentorApp.vue";
 import Conversation from "@/pages/Conversation.vue";
+import MentorConversation from "@/pages/MentorPages/MentorConversation.vue";
 import Appointments from "@/pages/Appointments.vue";
 import TicketLogsStudent from "@/pages/TicketLogsStudent.vue";
+import AlumniInvite from "@/pages/PDCPages/AlumniInvite.vue";
 
 export const routes = [
     {
@@ -42,7 +44,7 @@ export const routes = [
     {
         path: "/mentorchat/:id?",
         name: "mentorchat",
-        component: Conversation,
+        component: MentorConversation,
     },
     {
         path: "/appointments",
@@ -80,6 +82,11 @@ export const routes = [
         name: "studenttickets",
         component: TicketLogsStudent,
     },
+    {
+        path: "/alumniinvite",
+        name: "alumniinvite",
+        component: AlumniInvite,
+    },
     //Mentor Routes
     {
         path: "/mentorhome",
@@ -90,10 +97,5 @@ export const routes = [
         path: "/mentorstudentrequests",
         name: "mentorstudentreuqests",
         component: MentorStudentRequests,
-    },
-    {
-        path: "/mentorchat",
-        name: "mentorchat",
-        component: Conversation,
     },
 ];

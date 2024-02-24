@@ -11,8 +11,9 @@ class EmailController extends Controller
     //
     public function sendEmail(Request $request)
     {
+    
         
-        $receiverEmailAddress = "fujitaniyoshilynp@gmail.com";
+        $receiverEmailAddress = $request->email;
 
         try {
             

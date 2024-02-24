@@ -1,76 +1,421 @@
 <template>
     <LayoutMentor>
-        <h1>Hello Mentor</h1>
+        <div class="" v-if="loading"><h1>Loading...</h1></div>
+
+        <div class="w-full">
+            <div class="flex items-center w-full justify-between mb-2">
+                <div class="">
+                    <h1
+                        class="gap-1 flex items-center text-2xl font-medium text-green-700 pb-2.5"
+                    >
+                        <span
+                            ><i
+                                class="pi pi-chart-pie text-2xl text-yellow-400"
+                                style="font-size: 1rem"
+                            ></i></span
+                        >Dashboard
+                    </h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img
+                        src="../../../../public/DefaultAvatar.webp"
+                        class="w-10 h-10 rounded-full"
+                        alt=""
+                    />
+                    <h1>{{ this.username }}</h1>
+                </div>
+            </div>
+
+            <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
+
+            <div
+                class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
+                :class="{ 'min-h-[100px]': this.appointments?.length === 0 }"
+            >
+                <div class="w-full">
+                    <div
+                        class="px-16 w-full flex items-center justify-center gap-10"
+                    >
+                        <!-- <DatePicker
+                            expanded
+                            borderless
+                            :attributes="attributes"
+                        /> -->
+
+                        <Calendar
+                            v-model="date"
+                            inline
+                            showWeek
+                            :numberOfMonths="1"
+                            :minDate="minDate"
+                        />
+                        <div class="border p-5 rounded border-gray-200">
+                            <h1 class="pb-5 font-medium text-green-700 text-xl">
+                                <span
+                                    ><i
+                                        class="pi pi-chart-bar text-xl rounded-full text-yellow-400"
+                                        style="font-size: 1rem"
+                                    ></i
+                                ></span>
+                                User Statistics
+                                <span
+                                    class="text-xs text-gray-400 font-normal italic"
+                                    >as of
+                                    {{
+                                        this.minDate?.toLocaleDateString(
+                                            "en-US"
+                                        )
+                                    }}</span
+                                >
+                            </h1>
+                            <div
+                                class="grid grid-cols-1 laptop:grid-cols-2 gap-5 w-full h-full"
+                            >
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-briefcase text-2xl bg-green-100 rounded-full px-2 py-1 text-green-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Total Appointments
+                                        </h1>
+                                        <p class="text-gray-500">
+                                            {{ this.TotalAppointments }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-star text-2xl bg-yellow-100 rounded-full px-2 py-1 text-yellow-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Rating
+                                        </h1>
+                                        <p
+                                            :class="{
+                                                'text-red-400': this.rating < 3,
+                                                'text-yellow-400':
+                                                    this.rating == 3,
+                                                'text-green-400':
+                                                    this.rating > 3,
+                                            }"
+                                        >
+                                            {{ this.rating }}.0
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-bell text-2xl bg-blue-100 rounded-full px-2 py-1 text-blue-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Ongoing Appointments
+                                        </h1>
+                                        <p class="text-gray-500">
+                                            {{ this.appointments.length }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-flag text-2xl bg-gray-100 rounded-full px-2 py-1 text-gray-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Feedbacks
+                                        </h1>
+                                        <p
+                                            class="text-white text-sm bg-gray-800 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
+                                        >
+                                            View
+                                            <span
+                                                class="pi pi-arrow-right text-xs"
+                                            ></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center justify-center mr-20">
+                        <table
+                            class="w-full text-sm text-gray-500 dark:text-gray-400"
+                        >
+                            <caption
+                                class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+                            >
+                                Your Appointments
+                            </caption>
+                            <div
+                                class="mx-5 flex items-center justify-center"
+                                v-if="this.appointments?.length == 0"
+                            >
+                                <h1 class="flex flex-col items-center gap-5">
+                                    <i
+                                        class="pi pi-calendar-times text-6xl text-gray-300"
+                                    ></i>
+                                    <span class="text-gray-500"
+                                        >You have no ongoing appointments.</span
+                                    >
+                                </h1>
+                            </div>
+                            <div class="flex flex-col" v-else>
+                                <table>
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                    >
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                class="py-4 w-header"
+                                            >
+                                                Request Title
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Field
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Start Date
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Mentor
+                                            </th>
+                                            <th scope="col" class="w-header">
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        <tr
+                                            v-for="appointment in appointments"
+                                            class="bg-white dark:bg-gray-800 dark:border-gray-700"
+                                        >
+                                            <th
+                                                scope="row"
+                                                class="font-medium py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                                            >
+                                                {{ appointment.title }}
+                                            </th>
+                                            <td>{{ appointment.field }}</td>
+                                            <td>
+                                                {{
+                                                    moment(
+                                                        appointment.startSchedule,
+                                                        "YYYY-MM-DD HH:mm:ss"
+                                                    ).format("MMMM Do YYYY")
+                                                }}
+                                            </td>
+                                            <td>{{ appointment.name }}</td>
+                                            <td>
+                                                <h1
+                                                    class="font-bold"
+                                                    :class="{
+                                                        'text-yellow-400':
+                                                            appointment.Status ===
+                                                            0,
+                                                        'text-green-400':
+                                                            appointment.Status ===
+                                                            1,
+                                                        'text-red-400':
+                                                            appointment.Status ===
+                                                            2,
+                                                        'text-green-700':
+                                                            appointment.Status ===
+                                                            3,
+                                                    }"
+                                                >
+                                                    {{ appointment.statusName }}
+                                                </h1>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </table>
+                    </div>
+                    <!-- <div class="my-5" v-if="this.appointments?.length > 0">
+                        <Pagination
+                            @next="goToNextPage"
+                            @back="goToPrevPage"
+                            :total="this.pagination?.total"
+                            :current_page="this.pagination?.current_page"
+                            :last_page="this.pagination?.last_page"
+                        />
+                    </div> -->
+                </div>
+            </div>
+            <div class="flex gap-10 my-10 w-full">
+                <div class="w-1/3"><PieChart /></div>
+                <div class="w-2/3"><BarChart /></div>
+            </div>
+        </div>
     </LayoutMentor>
 </template>
 
 <script>
-import { Calendar, DatePicker } from "v-calendar";
-import "v-calendar/style.css";
-import AppointmentForm from "../../component/StudentComponents/AppointmentForm.vue";
+import Calendar from "primevue/calendar";
+import { mapState, mapActions } from "vuex";
+import PieChart from "../../Charts/PieChart.vue";
+import BarChart from "../../Charts/BarChart.vue";
+import Pagination from "../../utils/Pagination.vue";
+import Dropdown from "primevue/dropdown";
+import Menubar from "primevue/menubar";
+import Message from "primevue/message";
+import moment from "moment";
+
+import Modal from "../../component/Modal.vue";
+
+import Textarea from "primevue/textarea";
+
+import FloatLabel from "primevue/floatlabel";
+import LayoutMentor from "../../Layout/LayoutMentor.vue";
+
 export default {
     components: {
         Calendar,
-        DatePicker,
-        AppointmentForm,
+        Menubar,
+        Modal,
+        PieChart,
+        BarChart,
+        Pagination,
+        Dropdown,
+        Message,
+        Textarea,
+        FloatLabel,
+        LayoutMentor,
+        LayoutMentor,
     },
     data() {
         return {
             appointments: [],
             loading: false,
-
-            attributes: [
+            selectedField: null,
+            ticketRemarks: "",
+            pagination: null,
+            ticketIsLoading: true,
+            minDate: null,
+            TotalAppointments: 0,
+            items: [
                 {
-                    // An optional key can be used for retrieving this attribute later,
-                    // and will most likely be derived from your data object
-                    key: 1,
-                    // Attribute type definitions
-                    content: "green", // Boolean, String, Object
-
-                    dot: true, // Boolean, String, Object
-
-                    // We also need some dates to know where to display the attribute
-                    // We use a single date here, but it could also be an array of dates,
-                    //  a date range or a complex date pattern.
-                    dates: [],
-
-                    order: 0,
+                    label: "Home",
+                    icon: "pi pi-home",
+                },
+                {
+                    label: "Features",
+                    icon: "pi pi-star",
                 },
             ],
+            moment: moment,
         };
     },
+    computed: {
+        ...mapState([
+            "userId",
+            "ticketStatus",
+            "fieldToTake",
+            "allowToAppoint",
+            "rating",
+            "username",
+        ]),
+    },
     methods: {
+        ...mapActions(["setUserTicketStatusAction"]),
         getAppointments() {
             this.loading = true;
-            axios.get("/getAppointments").then(({ data }) => {
+            axios.get("/getOngoingAppointments").then(({ data }) => {
+                this.appointments = data.data;
+                this.pagination = data;
+
+                this.loading = false;
+            });
+        },
+        getCountTotalAppointments() {
+            axios.get("/getCountTotalAppointments").then(({ data }) => {
                 console.log(data);
-                this.appointments = data;
-                this.attributes[0].dates = data.map(
-                    (appointment) => new Date(appointment.startSchedule)
-                );
+                this.TotalAppointments = data;
                 this.loading = false;
             });
         },
 
-        checkAuth() {
-            axios.get("/checkUser").then(({ data }) => {
-                if (!data) {
-                    this.$router.push("/");
-                }
-            });
+        sendTicket() {
+            const fieldId = parseInt(this.selectedField.id);
+            const { ticketRemarks } = this;
+            axios
+                .post("/requestticket", { fieldId, ticketRemarks })
+                .then(({ data }) => {
+                    this.setUserTicketStatusAction();
+                });
         },
-        refecthAppointments() {
-            this.getAppointments();
+
+        goToPrevPage() {
+            if (this.pagination.current_page > 1) {
+                const prevPage = this.pagination.current_page - 1;
+                this.fetchRequests(prevPage);
+            }
+        },
+        goToNextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                const nextPage = this.pagination.current_page + 1;
+                this.fetchRequests(nextPage);
+            }
+        },
+        fetchRequests(page) {
+            this.isLoading = true;
+
+            axios
+                .get(`/getOngoingAppointments?page=${page}`)
+                .then(({ data }) => {
+                    console.log(data);
+
+                    this.appointments = data.data;
+                    this.pagination = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
+        getToday() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set hours to 00:00:00 for accurate comparison
+            return today;
         },
     },
 
     created() {
         this.getAppointments();
-        this.checkAuth();
     },
     mounted() {
-        this.refecthAppointments();
-        this.checkAuth();
+        // this.refecthAppointments();
+        this.setUserTicketStatusAction();
+        console.log(this.userId);
+        this.minDate = this.getToday();
+        this.getCountTotalAppointments();
+        // console.log(this.$store.getters.userDetails);
     },
     watch: {
         authenticated(newValue) {
@@ -81,3 +426,8 @@ export default {
     },
 };
 </script>
+<style>
+.p-message-text {
+    font-size: 14px;
+}
+</style>

@@ -100,6 +100,16 @@
                     />
                 </div>
                 <div class="my-2">
+                    <div class="card flex justify-content-center">
+                        <Dropdown
+                            v-model="selectedField"
+                            :options="this.courses"
+                            :highlightOnSelect="false"
+                            optionLabel="name"
+                            placeholder="Select a field"
+                            class="w-full text-xs"
+                        />
+                    </div>
                     <label
                         for="text"
                         class="block mb-2 text-sm font-medium text-start text-gray-900 dark:text-white"
@@ -140,12 +150,13 @@
     <!-- </Modal> -->
 </template>
 <script>
+import { mapState } from "vuex";
 import Modal from "../Modal.vue";
 import StudentSearch from "../PDCComponents/StudentSearch.vue";
 import Calendar from "primevue/calendar";
 import moment from "moment";
 import Toast from "primevue/toast";
-
+import Dropdown from "primevue/dropdown";
 import Dialog from "primevue/dialog";
 
 import Message from "primevue/message";
@@ -167,6 +178,9 @@ export default {
         Dialog,
         Toast,
     },
+    computed: {
+        ...mapState(["fieldToTake"]),
+    },
     data() {
         return {
             moment: moment,
@@ -183,10 +197,20 @@ export default {
                     milliseconds: 0,
                 },
             ],
-            field: 7,
+
             title: "",
             selectedStudent: "",
             minDate: null,
+            courses: [
+                { id: 1, name: "Business Management" },
+                { id: 2, name: "Creative Arts" },
+                { id: 3, name: "Engineering and Mathematics" },
+                { id: 4, name: "Humanities Arts and Social Sciences" },
+                { id: 5, name: "IT and Computer Science" },
+                { id: 6, name: " Medical and Health Science" },
+                { id: 7, name: "Teaching and Education" },
+                { id: 8, name: "Leadership and Team Building" },
+            ],
         };
     },
     methods: {
@@ -198,7 +222,7 @@ export default {
                 axios
                     .post("/assignappointment", {
                         title,
-                        field,
+                        field: this.fieldToTake,
                         date,
                         mentorId,
                         studentId: id,
@@ -212,7 +236,12 @@ export default {
                 });
             } else {
                 axios
-                    .post("/addAppointment", { title, field, date, mentorId })
+                    .post("/addAppointment", {
+                        title,
+                        field: this.fieldToTake,
+                        date,
+                        mentorId,
+                    })
                     .then(this.$router.push("/appointments"));
                 this.$toast.add({
                     severity: "info",

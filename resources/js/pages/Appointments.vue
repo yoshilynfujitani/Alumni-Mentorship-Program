@@ -12,6 +12,19 @@
                     >
                         Your Appointments
                     </caption>
+                    <!-- <div
+                        class="py-20 flex items-center justify-center"
+                        v-if="this.appointments?.length == 0"
+                    >
+                        <h1 class="flex flex-col items-center gap-5">
+                            <i
+                                class="pi pi-calendar-times text-6xl text-gray-300"
+                            ></i>
+                            <span class="text-gray-500"
+                                >You have no ongoing appointments.</span
+                            >
+                        </h1>
+                    </div> -->
                     <thead
                         v-if="this.appointments?.length > 0"
                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -66,6 +79,8 @@
                                             appointment.Status === 2,
                                         'text-green-700':
                                             appointment.Status === 3,
+                                        'text-gray-500':
+                                            appointment.Status === 4,
                                     }"
                                 >
                                     {{ appointment.statusName }}

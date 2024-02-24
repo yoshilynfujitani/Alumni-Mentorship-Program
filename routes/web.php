@@ -7,6 +7,7 @@ use App\Http\Controllers\PDCController;
 
 use App\Http\Controllers\ConvoController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TicketController;
@@ -30,7 +31,7 @@ use App\Http\Controllers\StudentSignUpController;
 //     return view('app');
 // });
 //Mail
-Route::get('sendEmail', [EmailController::class, 'sendEmail']);
+Route::post('sendEmail', [EmailController::class, 'sendEmail']);
 
 //Student Auth
 Route::post("/login", [StudentLoginController::class, "login"]);
@@ -53,6 +54,7 @@ Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);
 Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
 Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
 Route::get("/getConvoId", [ConvoController::class, "getConvoId"]);
+Route::get("/getConvoIdForMentor", [ConvoController::class, "getConvoIdForMentor"]);
 Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
 
 //Mentor
@@ -70,6 +72,7 @@ Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 Route::post("/editmentorstatus", [PDCController::class, "updateMentorStatus"]);
 Route::get("/gettickets", [TicketController::class, "getTickets"]);
 Route::get("/getticketsofstudent", [TicketController::class, "getTicketsOfStudent"]);
+Route::get("/getalumni", [AlumniController::class, "getAlumni"]);
 Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
 Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);

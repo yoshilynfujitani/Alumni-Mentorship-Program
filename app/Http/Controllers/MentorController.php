@@ -117,6 +117,13 @@ class MentorController extends Controller
         $user = User::find($request->studentId);
 
         if($request->requestStatus == 1){
+
+            $otherappointment = mentorAppointment::where('studentId', $request->studentId)
+            ->where('field', $appointment->field)
+            ->where('appointmentId', '<>', $request->appointmentId)
+            ->where('Status', 0)
+            ->update(['Status' => 4]);
+
             $appointment->Status = 1;
             $user->allowToAppoint = 0;
             $user->fieldToTake = null;
