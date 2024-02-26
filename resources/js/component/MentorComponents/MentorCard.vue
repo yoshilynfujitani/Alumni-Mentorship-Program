@@ -6,7 +6,7 @@
             <div class="flex flex-col justify-end items-center h-full">
                 <div class="items-center flex flex-col">
                     <img
-                        class="w-24 h-24 mb-3 rounded-full shadow-lg"
+                        class="w-24 h-24 mb-3 rounded-md shadow-lg"
                         src="../../../../public/DefaultAvatar.webp"
                         alt="Avatar"
                     />
@@ -37,12 +37,12 @@
                     </span>
                 </div>
                 <div class="flex items-center flex-col mt-2 gap-1">
-                    <div class="">
+                    <div class="flex gap-2 px-2">
                         <button
                             @click="onCardClick"
-                            class="bg-blue-400 text-white px-2 py-1 rounded-md"
+                            class="bg-blue-400 text-white px-2 py-1 rounded-md flex items-center justify-center"
                         >
-                            View Details
+                            <i class="pi pi-eye"></i>
                         </button>
                         <Dialog
                             v-model:visible="visible"
@@ -127,12 +127,12 @@
                                 ></button>
                             </div>
                         </Dialog>
-                    </div>
-                    <div class="flex" v-if="displaybtn">
-                        <AppointmentForm
-                            :MentorDetails="MentorDetails"
-                            type="student"
-                        />
+                        <div class="flex" v-if="displaybtn">
+                            <AppointmentForm
+                                :MentorDetails="MentorDetails"
+                                type="student"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

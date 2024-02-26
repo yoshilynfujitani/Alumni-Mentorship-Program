@@ -22,6 +22,7 @@ class StudentLoginController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'role' => $user->role,
+                    'verified' => $user->verified
                     // Add other user details as needed
                 ];
     

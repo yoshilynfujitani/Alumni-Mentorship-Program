@@ -1,7 +1,5 @@
 <template>
     <LayoutPDC>
-        <h1>Hello</h1>
-        <button @click="sendEmail">Send Email</button>
         <Toast />
         <div class="">
             <div class="bg-green-500" v-for="Alum in Alumni">

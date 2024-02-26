@@ -97,7 +97,7 @@
                                 @click="viewTicket(Ticket)"
                                 class="text-sm"
                             >
-                                View
+                                <i class="pi pi-envelope"></i>
                             </button>
                             <Dialog
                                 v-model:visible="visible"

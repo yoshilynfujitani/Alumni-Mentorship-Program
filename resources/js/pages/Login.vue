@@ -112,12 +112,18 @@ export default {
                 .then((res) => {
                     if (res.status == 200) {
                         this.setUserDetailsAction();
+                        console.log(res);
                         switch (res.data.user.role) {
                             case 1:
                                 this.$router.push("/home");
                                 break;
                             case 2:
-                                this.$router.push("/mentorhome");
+                                if (res.data.user.verified) {
+                                    this.$router.push("/mentorhome");
+                                } else {
+                                    this.$router.push("/login");
+                                }
+
                                 break;
                             case 3:
                                 this.$router.push("/pdchome");

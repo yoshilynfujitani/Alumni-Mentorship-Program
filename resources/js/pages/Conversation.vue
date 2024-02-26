@@ -133,8 +133,14 @@
                                     required
                                 />
                                 <button
+                                    :disabled="isOnlyWhiteSpace(this.message)"
                                     type="submit"
                                     class="bg-green-500 px-4 py-2 rounded-md text-gray-50"
+                                    :class="{
+                                        'cursor-not-allowed': isOnlyWhiteSpace(
+                                            this.message
+                                        ),
+                                    }"
                                 >
                                     Send
                                 </button>
@@ -194,6 +200,12 @@ export default {
                 console.log(data);
                 this.inbox = data;
             });
+        },
+
+        isOnlyWhiteSpace(string) {
+            const isWhitespaceString = !string.replace(/\s/g, "").length;
+
+            return isWhitespaceString;
         },
         sendChat: _debounce(function () {
             const { message, ConvoId } = this;

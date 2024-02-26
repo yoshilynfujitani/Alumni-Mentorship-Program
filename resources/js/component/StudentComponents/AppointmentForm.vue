@@ -12,7 +12,13 @@
     <!-- <label for="" class="self-start my-5 text-green-600 text-2xl font-bold"
             >Appointment Date</label
         > -->
-    <button label="Show" @click="visible = true">Request Appointment</button>
+    <button
+        label="Show"
+        @click="visible = true"
+        class="bg-green-700 w-full px-2 py-1 rounded-md text-white text-sm"
+    >
+        Request Appointment
+    </button>
     <Toast />
     <Dialog v-model:visible="visible" modal header="Schedule an Appointment">
         <div

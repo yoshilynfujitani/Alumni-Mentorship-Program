@@ -103,7 +103,6 @@
                         /> -->
 
                         <Calendar
-                            v-model="date"
                             inline
                             showWeek
                             :numberOfMonths="1"
@@ -422,16 +421,11 @@ export default {
             axios.get("/getOngoingAppointments").then(({ data }) => {
                 this.appointments = data.data;
                 this.pagination = data;
-                console.log(data);
-                this.attributes[0].dates = data.data.map(
-                    (appointment) => new Date(appointment.startSchedule)
-                );
                 this.loading = false;
             });
         },
         getCountTotalAppointments() {
             axios.get("/getCountTotalAppointments").then(({ data }) => {
-                console.log(data);
                 this.TotalAppointments = data;
                 this.loading = false;
             });
