@@ -71,5 +71,18 @@ class TicketController extends Controller
         }
     });
     }
+
+    public function getRecentStudentTicketRequests(Request $request) {
+        $data = Ticket::where('ticketlogs.studentId', $request->studentId)
+            ->join("userstatus", "userstatus.statusId", "=", "ticketStatus")
+            ->orderBy('ticketlogs.created_at', 'desc') 
+            ->take(5)
+            ->select('ticketlogs.created_at', 'ticketlogs.ticketStatus', 'userstatus.statusName')
+            ->get();
+            
+    
+        return $data;
+    }
+    
     
 }

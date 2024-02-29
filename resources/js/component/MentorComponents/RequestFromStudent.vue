@@ -19,86 +19,107 @@
         <i class="pi pi-eye"></i>View Details
     </button>
     <Dialog v-model:visible="visible" modal header="Appointment Details">
-        <div class="" v-if="!this.requestDetails">Loading...</div>
-        <div class="flex items-start w-[800px] justify-around" v-else>
+        <div class="h-full" v-if="!this.requestDetails">Loading...</div>
+        <div class="flex items-start justify-around h-full" v-else>
             <div
                 class="flex flex-col mr-5 justify-between h-full"
-                v-if="!this.showFeedback"
+                v-if="!this.showFeedback && !this.verifying"
             >
-                <div
-                    class="flex gap-5 border rounded-md border-gray-200 my-2.5 p-2.5 items-center"
-                >
-                    <img
-                        class="w-20 h-20 mb-3 rounded-full shadow-lg"
-                        src="../../../../public/DefaultAvatar.webp"
-                        alt="Avatar"
-                    />
-                    <div class="flex gap-2.5">
-                        <div class="">
-                            <h1 class="font-medium">Student's Name</h1>
-                            <p>{{ this.requestDetails.name }}</p>
-                        </div>
-                        <div class="">
-                            <h1 class="font-medium">College</h1>
-                            <p>{{ this.requestDetails.course }}</p>
-                        </div>
+                <div class="border border-gray-200 rounded-md">
+                    <div class="rounded-t-md h-36 overflow-hidden">
+                        <img
+                            class="object-fill w-96 h-56 object-center"
+                            src="../../../../public/mmsu_bg.webp"
+                            alt="Mountain"
+                        />
                     </div>
-                </div>
-                <div
-                    class="text-start text-lg border p-2.5 border-gray-200 rounded-md"
-                >
-                    <h1 class="font-medium">Request header</h1>
-                    <p class="text-sm">{{ this.requestDetails.title }}</p>
-
                     <div
-                        class="grid grid-cols-2 gap-x-2 content-between text-start w-full my-5"
+                        class="mx-auto w-28 h-28 relative -mt-16 border-4 border-white rounded-full overflow-hidden"
                     >
-                        <div class="">
-                            <h1 class="font-medium">Start Date</h1>
-                            <p class="text-sm">
-                                {{
-                                    moment(
-                                        requestDetails.startSchedule,
-                                        "YYYY-MM-DD HH:mm:ss"
-                                    ).format("MMMM Do YYYY")
-                                }}
-                            </p>
-                        </div>
-                        <div class="">
-                            <h1 class="font-medium">Status</h1>
-                            <p class="text-sm">
-                                {{ this.requestDetails.statusName }}
-                            </p>
-                        </div>
+                        <img
+                            class="object-cover object-center h-28"
+                            src="../../../../public/DefaultAvatar.webp"
+                            alt="Woman looking front"
+                        />
                     </div>
+                    <div class="text-center mt-2">
+                        <h2 class="font-semibold">
+                            {{ this.requestDetails.name }}
+                        </h2>
+                        <p class="text-gray-500">
+                            {{ this.requestDetails.course }}
+                        </p>
+                    </div>
+                    <ul
+                        class="py-4 mt-2 text-gray-700 flex items-center justify-around"
+                    >
+                        <li class="flex flex-col items-center justify-around">
+                            <i
+                                class="pi pi-star-fill text-yellow-400"
+                                style="font-size: 1rem"
+                            ></i>
+                            <p class="font-medium">Rating</p>
+                            <div>{{ this.requestDetails?.rating }}.0</div>
+                        </li>
+                        <li class="flex flex-col items-center justify-between">
+                            <svg
+                                class="w-4 fill-current text-blue-900"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z"
+                                />
+                            </svg>
+                            <div>10k</div>
+                        </li>
+                        <li class="flex flex-col items-center justify-around">
+                            <svg
+                                class="w-4 fill-current text-blue-900"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    d="M9 12H1v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-8v2H9v-2zm0-1H0V5c0-1.1.9-2 2-2h4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v6h-9V9H9v2zm3-8V2H8v1h4z"
+                                />
+                            </svg>
+                            <div>15</div>
+                        </li>
+                    </ul>
                 </div>
                 <div
                     v-if="this.requestDetails.statusId === 0"
-                    class="flex items-center w-full justify-around gap-2 self-end mt-5"
+                    class="flex flex-col items-center w-full justify-around gap-2 self-end mt-5"
                 >
-                    <div
-                        @click="
-                            verify(
-                                2,
-                                this.requestDetails.studentId,
-                                this.requestDetails.appointmentId
-                            )
-                        "
-                        class="transition-all border border-red-400 rounded-md w-full py-2 font-semibold text-red-500 hover:bg-red-400 hover:text-white hover:cursor-pointer"
+                    <h1
+                        class="self-start text-sm bg-green-600 text-white py-1 px-2 rounded-full flex items-center justify-center gap-1"
                     >
-                        Reject
-                    </div>
-                    <div
-                        @click="
-                            verify(
-                                1,
-                                this.requestDetails.studentId,
-                                this.requestDetails.appointmentId
-                            )
-                        "
-                        class="transition-all border border-green-400 rounded-md w-full py-2 font-semibold text-green-500 hover:bg-green-400 hover:text-white hover:cursor-pointer"
-                    >
-                        Accept
+                        <span
+                            ><i
+                                class="pi pi-check-circle text-white text-sm"
+                            ></i
+                        ></span>
+                        Verify Appointment
+                    </h1>
+                    <div class="flex w-full gap-2.5">
+                        <div
+                            @click="this.verifying = true"
+                            class="transition-all border text-center border-red-400 rounded-md w-full py-2 font-semibold text-red-500 hover:bg-red-400 hover:text-white hover:cursor-pointer"
+                        >
+                            Reject
+                        </div>
+                        <div
+                            @click="
+                                verify(
+                                    1,
+                                    this.requestDetails.studentId,
+                                    this.requestDetails.appointmentId
+                                )
+                            "
+                            class="transition-all border text-center border-green-400 rounded-md w-full py-2 font-semibold text-green-500 hover:bg-green-400 hover:text-white hover:cursor-pointer"
+                        >
+                            Accept
+                        </div>
                     </div>
                 </div>
                 <div class="" v-else>
@@ -151,9 +172,51 @@
                     </div>
                 </div>
             </div>
-            <div
+            <div class="mr-5" v-else>
+                <button @click="this.verifying = false">Back</button>
+                <div
+                    class="max-w-xl mx-auto flex w-full flex-col border border-gray-200 rounded-lg bg-white p-8"
+                >
+                    <h2
+                        class="title-font mb-1 text-lg font-medium text-gray-900"
+                    >
+                        Reason for Rejection
+                    </h2>
+                    <p class="mb-5 leading-relaxed text-gray-600">
+                        If you had any issues or you liked our product, please
+                        share with us!
+                    </p>
+
+                    <div class="mb-4">
+                        <label
+                            for="message"
+                            class="text-sm leading-7 text-gray-600"
+                            >Message</label
+                        >
+                        <textarea
+                            v-model="remarks"
+                            id="message"
+                            name="message"
+                            class="h-32 w-full resize-none rounded border border-gray-300 bg-white py-1 px-3 text-base leading-6 text-gray-700 outline-none transition-colors duration-200 ease-in-out focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+                        ></textarea>
+                    </div>
+                    <button
+                        @click="
+                            proceedToReject(
+                                2,
+                                this.requestDetails.studentId,
+                                this.requestDetails.appointmentId
+                            )
+                        "
+                        class="rounded border-0 bg-red-500 py-2 px-6 text-md text-white hover:bg-red-600 focus:outline-none"
+                    >
+                        Send Remarks
+                    </button>
+                </div>
+            </div>
+            <!-- <div
                 class="flex flex-col mr-5 justify-between h-full w-full"
-                v-else
+                v-if=""
             >
                 <button
                     @click="setShowFeedback"
@@ -210,15 +273,54 @@
                         </h1>
                     </div>
                 </div>
+            </div> -->
+            <div class="h-full">
+                <h1 class="font-medium">Student's Log</h1>
+                <div class="">
+                    <div class="" v-if="!this.recentTickets">
+                        User has no tickets
+                    </div>
+                    <div
+                        v-else
+                        v-for="ticket in recentTickets"
+                        class="rounded-md px-2 py-1 border-2 w-48 flex items-center gap-2 my-2.5"
+                        :class="{
+                            'border-yellow-300 text-yellow-500':
+                                ticket.ticketStatus === 0,
+                            'border-green-300 text-green-500':
+                                ticket.ticketStatus === 1,
+                            'border-red-300 text-red-500':
+                                ticket.ticketStatus === 2,
+                        }"
+                    >
+                        <i
+                            class="pi"
+                            :class="{
+                                'pi-question-circle text-yellow-500':
+                                    ticket.ticketStatus === 0,
+                                'pi-check-circle text-green-500':
+                                    ticket.ticketStatus === 1,
+                                'pi-times-circle text-red-500':
+                                    ticket.ticketStatus === 2,
+                            }"
+                            style="font-size: 1rem"
+                        ></i>
+                        <div class="">
+                            <h1 class="font-medium text-sm">
+                                {{ ticket.statusName }}
+                            </h1>
+                            <p class="text-sm text-gray-700">
+                                {{
+                                    moment(
+                                        ticket.created_at,
+                                        "YYYY-MM-DD HH:mm:ss"
+                                    ).format("MMMM Do YYYY")
+                                }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <Calendar
-                v-model="date"
-                inline
-                showWeek
-                :numberOfMonths="1"
-                :minDate="minDate"
-            />
         </div>
     </Dialog>
 </template>
@@ -245,11 +347,14 @@ export default {
     data() {
         return {
             visible: false,
+            verifying: false,
             moment: moment,
             requestDetails: null,
             showFeedback: false,
             minDate: null,
             feedbackDetails: null,
+            recentTickets: null,
+            remarks: "",
         };
     },
     computed: {
@@ -276,6 +381,15 @@ export default {
                 .post("/getAppointment", { appointmentId: this.requestId })
                 .then(({ data }) => {
                     this.requestDetails = data;
+                    this.getRecentTickets(parseInt(data.studentId));
+                    console.log(data);
+                });
+        },
+        getRecentTickets(studentId) {
+            axios
+                .post("/getrecenttickets", { studentId: studentId })
+                .then(({ data }) => {
+                    this.recentTickets = data;
                     console.log(data);
                 });
         },
@@ -288,15 +402,23 @@ export default {
         },
         verify(requestStatus, studentId, appointmentId) {
             console.log(studentId);
+            const { remarks } = this;
             axios
                 .post("/verifyrequest", {
                     requestStatus,
                     studentId,
                     appointmentId,
+                    remarks,
                 })
                 .then(({ data }) => {
                     this.getAppointmentDetails();
+                    this.remarks = "";
+                    this.verifying = false;
                 });
+        },
+        proceedToReject(studentId, appointmentId) {
+            const { remarks } = this;
+            this.verify(2, studentId, appointmentId, remarks);
         },
         confirm1(event, requestStatus, studentId, appointmentId) {
             this.$confirm.require({

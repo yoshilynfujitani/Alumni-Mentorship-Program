@@ -89,12 +89,45 @@
                             <td
                                 class="px-6 py-2 flex items-center justify-center gap-2"
                             >
+                                <div class="" v-if="appointment.Status === 2">
+                                    <button
+                                        label="View"
+                                        @click="visible = true"
+                                        class="text-sm"
+                                    >
+                                        View
+                                    </button>
+                                    <Dialog
+                                        v-model:visible="visible"
+                                        modal
+                                        header="Ticket Remarks"
+                                        :style="{ width: '25rem' }"
+                                    >
+                                        <div
+                                            class="border min-h-[300px] px-5 py-2.5 rounded border-gray-200"
+                                        >
+                                            {{ appointment.remarks }}
+                                        </div>
+                                        <button>Resend Appointment</button>
+                                        <div
+                                            class="flex justify-content-end gap-2"
+                                        >
+                                            <Button
+                                                type="button"
+                                                label="Cancel"
+                                                severity="secondary"
+                                                @click="visible = false"
+                                            ></Button>
+                                        </div>
+                                    </Dialog>
+                                </div>
                                 <div
                                     class="px-4 py-2 border-dashed border rounded border-gray-300 text-gray-300 font-thin"
-                                    v-if="appointment.Status !== 3"
+                                    v-if="appointment.Status === 1"
                                 >
                                     Unavailable
                                 </div>
+
                                 <div class="" v-else>
                                     <button
                                         :disabled="appointment.Status !== 3"

@@ -136,6 +136,7 @@ class MentorController extends Controller
         if($request->requestStatus == 2){
             $appointment->Status = 2;
             $user->allowToAppoint = 1;
+            $appointment->remarks = $request->remarks;
             $appointment->save();
             $user->save();
         }
