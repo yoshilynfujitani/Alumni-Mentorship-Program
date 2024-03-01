@@ -103,12 +103,13 @@
                                         header="Ticket Remarks"
                                         :style="{ width: '25rem' }"
                                     >
+                                        <button>Resend Appointment</button>
                                         <div
-                                            class="border min-h-[300px] px-5 py-2.5 rounded border-gray-200"
+                                            class="border min-h-[250px] px-5 py-2.5 rounded border-gray-200"
                                         >
                                             {{ appointment.remarks }}
                                         </div>
-                                        <button>Resend Appointment</button>
+
                                         <div
                                             class="flex justify-content-end gap-2"
                                         >

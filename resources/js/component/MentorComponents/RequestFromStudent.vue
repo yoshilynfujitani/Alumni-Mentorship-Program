@@ -172,7 +172,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mr-5" v-else>
+            <div class="mr-5" v-if="this.verifying">
                 <button @click="this.verifying = false">Back</button>
                 <div
                     class="max-w-xl mx-auto flex w-full flex-col border border-gray-200 rounded-lg bg-white p-8"
@@ -214,9 +214,10 @@
                     </button>
                 </div>
             </div>
-            <!-- <div
+
+            <div
                 class="flex flex-col mr-5 justify-between h-full w-full"
-                v-if=""
+                v-if="this.showFeedback"
             >
                 <button
                     @click="setShowFeedback"
@@ -237,10 +238,10 @@
                             />
                             <div class="">
                                 <h1 class="">
-                                    {{ this.requestDetails.name }}
+                                    {{ this.requestDetails?.name }}
                                 </h1>
                                 <h1 class="text-sm text-gray-400">
-                                    {{ this.requestDetails.course }}
+                                    {{ this.requestDetails?.course }}
                                 </h1>
                             </div>
                         </div>
@@ -251,12 +252,12 @@
                                 <h1 class="font-medium">Rating</h1>
                                 <h1
                                     class="text-sm text-gray-400"
-                                    v-if="!this.feedbackDetails.rating"
+                                    v-if="!this.feedbackDetails?.rating"
                                 >
                                     No rating.
                                 </h1>
                                 <h1 class="text-sm text-gray-400" v-else>
-                                    {{ this.feedbackDetails.rating }}/5
+                                    {{ this.feedbackDetails?.rating }}/5
                                 </h1>
                             </div>
                         </div>
@@ -265,15 +266,15 @@
                         class="border border-gray-200 rounded-md p-5 w-full h-full"
                     >
                         <h1 class="font-medium text-green-600">Comments</h1>
-                        <h1 v-if="!this.feedbackDetails.comments">
+                        <h1 v-if="!this.feedbackDetails?.comments">
                             Student have not yet submitted any feedback.
                         </h1>
                         <h1 class="overflow-y-scroll min-h-[100px]" v-else>
-                            {{ this.feedbackDetails.comments }}
+                            {{ this.feedbackDetails?.comments }}
                         </h1>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <div class="h-full">
                 <h1 class="font-medium">Student's Log</h1>
                 <div class="">
@@ -348,6 +349,7 @@ export default {
         return {
             visible: false,
             verifying: false,
+            viewFeedback: false,
             moment: moment,
             requestDetails: null,
             showFeedback: false,
@@ -394,11 +396,10 @@ export default {
                 });
         },
         setShowFeedback(appointmentId) {
-            console.log(appointmentId);
+            console.log("clicked");
             this.showFeedback = !this.showFeedback;
+            console.log(this.showFeedback);
             this.getFeedback(appointmentId);
-            if (this.showFeedback) {
-            }
         },
         verify(requestStatus, studentId, appointmentId) {
             console.log(studentId);
