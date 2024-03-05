@@ -27,6 +27,37 @@
             </div>
 
             <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
+            <div class="pb-5 flex flex-col">
+                Your Available Day for Appointments
+                <div class="flex" v-if="!isEdit">
+                    <div
+                        class="mx-2.5 border px-2 py-1 rounded-md border-gray-200"
+                        v-for="day in daysOfTheWeek"
+                        :class="{
+                            'border-green-600 border-2 text-green-500':
+                                isActiveDay(day.id),
+                        }"
+                    >
+                        {{ day.name }}
+                    </div>
+                    <button @click="isEdit = !isEdit">Edit Schedule</button>
+                </div>
+                <div class="flex" v-else>
+                    <div
+                        class="mx-2.5 border px-2 py-1 rounded-md border-gray-200 cursor-pointer"
+                        v-for="day in daysOfTheWeek"
+                        :key="day.id"
+                        :class="{
+                            'border-green-600 border-2 text-green-500':
+                                isActiveDay(day.id),
+                        }"
+                        @click="toggleDay(day.id)"
+                    >
+                        {{ day.name }}
+                    </div>
+                    <button @click="saveSchedule">Save Schedule</button>
+                </div>
+            </div>
 
             <div
                 class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
@@ -317,6 +348,7 @@ export default {
             ticketIsLoading: true,
             minDate: null,
             TotalAppointments: 0,
+            isEdit: false,
             items: [
                 {
                     label: "Home",
@@ -328,6 +360,37 @@ export default {
                 },
             ],
             moment: moment,
+            daysOfTheWeek: [
+                {
+                    id: 1,
+                    name: "Sun",
+                },
+                {
+                    id: 2,
+                    name: "Mon",
+                },
+                {
+                    id: 3,
+                    name: "Tue",
+                },
+                {
+                    id: 4,
+                    name: "Wed",
+                },
+                {
+                    id: 5,
+                    name: "Thu",
+                },
+                {
+                    id: 6,
+                    name: "Fri",
+                },
+                {
+                    id: 7,
+                    name: "Sat",
+                },
+            ],
+            activeAvailableDays: [1, 3, 5],
         };
     },
     computed: {
@@ -404,6 +467,36 @@ export default {
             today.setHours(0, 0, 0, 0); // Set hours to 00:00:00 for accurate comparison
             return today;
         },
+        isActiveDay(dayId) {
+            return this.activeAvailableDays.includes(dayId);
+        },
+        toggleDay(dayId) {
+            if (this.isEdit) {
+                if (this.activeAvailableDays.includes(dayId)) {
+                    this.activeAvailableDays = this.activeAvailableDays.filter(
+                        (id) => id !== dayId
+                    );
+                } else {
+                    this.activeAvailableDays.push(dayId);
+                }
+            }
+        },
+
+        saveSchedule() {
+            console.log(this.activeAvailableDays);
+            const { activeAvailableDays } = this;
+            axios
+                .post("/setSchedule", { activeAvailableDays })
+                .then(({ data }) => {
+                    this.getLatestSchedule();
+                    this.isEdit = !this.isEdit;
+                });
+        },
+        getLatestSchedule() {
+            axios.get("/getLatestSchedule").then(({ data }) => {
+                this.activeAvailableDays = data.map((day) => parseInt(day, 10));
+            });
+        },
     },
 
     created() {
@@ -415,6 +508,7 @@ export default {
         console.log(this.userId);
         this.minDate = this.getToday();
         this.getCountTotalAppointments();
+        this.getLatestSchedule();
         // console.log(this.$store.getters.userDetails);
     },
     watch: {

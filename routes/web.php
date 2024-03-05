@@ -12,6 +12,7 @@ use App\Http\Controllers\MentorController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\StudentLoginController;
 use App\Http\Controllers\StudentSignUpController;
@@ -67,6 +68,8 @@ Route::post("/getrecentfeedback", [FeedbackController::class, "getRecentMentorFe
 Route::post("/getrecenttickets", [TicketController::class, "getRecentStudentTicketRequests"]);
 Route::post("/getAppointment", [AppointmentController::class, "getAppointment"]);
 Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
+Route::post("/setSchedule", [ScheduleController::class, "setSchedule"]);
+Route::get("/getLatestSchedule", [ScheduleController::class, "getLatestSchedule"]);
 
 
 //PDC
