@@ -1,12 +1,9 @@
 <template>
     <LayoutPDC>
         <Toast />
-        <div class="">
-            <div class="bg-green-500" v-for="Alum in Alumni">
-                {{ Alum.name }}
 
-                <button @click="sendEmail(Alum.email)">Send Invite</button>
-            </div>
+        <div class="grid grid-cols-5 w-full     " v-for="Alum in Alumni">
+            <AlumniCard :Alum="Alum" />
         </div>
     </LayoutPDC>
 </template>
@@ -14,6 +11,7 @@
 <script>
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
+import AlumniCard from "../../component/PDCComponents/AlumniCard.vue";
 
 import Toast from "primevue/toast";
 
@@ -22,6 +20,7 @@ export default {
         Calendar,
         DatePicker,
         Toast,
+        AlumniCard,
     },
     data() {
         return {
@@ -32,17 +31,6 @@ export default {
         getAlumni() {
             axios.get("/getalumni").then(({ data }) => {
                 this.Alumni = data;
-            });
-        },
-
-        sendEmail(email) {
-            axios.post("/sendEmail", { email: email }).then(({ data }) => {
-                this.$toast.add({
-                    severity: "success",
-                    summary: "Success Message",
-                    detail: data,
-                    life: 3000,
-                });
             });
         },
     },

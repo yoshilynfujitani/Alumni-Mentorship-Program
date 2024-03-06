@@ -14,9 +14,10 @@ return new class extends Migration
         //
         Schema::connection('admin')->create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->integer('studentId');
-            $table->integer('field');
-            $table->boolean('ticketStatus')->default(0);
+            $table->integer('userId');
+            $table->integer('apppointmentId');
+            $table->string('chats');
+            
             
         
   

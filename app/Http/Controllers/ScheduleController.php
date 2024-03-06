@@ -25,11 +25,15 @@ class ScheduleController extends Controller
         $mentorschedule->save();
     }
 
-    public function getLatestSchedule(){
-        $currentSchedule = Schedule::where("mentor_id",Auth::id())->latest()->first();
+    public function getLatestSchedule(Request $request){
+        $mentorId = $request->has('mentorId') ? $request->mentorId : Auth::id();
+
+        $currentSchedule = Schedule::where("mentor_id", $mentorId)->orderBy('created_at', 'desc')->first();
         
         $currentSchedule->daysOfTheWeek = str_split($currentSchedule->daysOfTheWeek);
 
         return $currentSchedule->daysOfTheWeek;
     }
+
+
 }

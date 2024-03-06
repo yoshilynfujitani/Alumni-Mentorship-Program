@@ -28,34 +28,55 @@
 
             <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
             <div class="pb-5 flex flex-col">
-                Your Available Day for Appointments
-                <div class="flex" v-if="!isEdit">
+                <h1
+                    class="text-green-700 text-sm font-medium flex items-center gap-1"
+                >
+                    <i class="pi pi-calendar"></i> Available Day for
+                    Appointments
+                </h1>
+                <div class="flex my-2 gap-3" v-if="!isEdit">
                     <div
-                        class="mx-2.5 border px-2 py-1 rounded-md border-gray-200"
+                        class="border px-2 py-1 rounded-md border-gray-200"
                         v-for="day in daysOfTheWeek"
                         :class="{
-                            'border-green-600 border-2 text-green-500':
+                            'border-blue-600 border-2 text-blue-500':
                                 isActiveDay(day.id),
                         }"
                     >
                         {{ day.name }}
                     </div>
-                    <button @click="isEdit = !isEdit">Edit Schedule</button>
+                    <button
+                        @click="isEdit = !isEdit"
+                        class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
+                    >
+                        Edit Schedule
+                    </button>
                 </div>
-                <div class="flex" v-else>
+                <div class="flex gap-3 my-2" v-else>
                     <div
-                        class="mx-2.5 border px-2 py-1 rounded-md border-gray-200 cursor-pointer"
+                        class="border px-2 py-1 rounded-md border-gray-200 cursor-pointer"
                         v-for="day in daysOfTheWeek"
                         :key="day.id"
                         :class="{
-                            'border-green-600 border-2 text-green-500':
+                            'border-blue-600 border-2 text-blue-500':
                                 isActiveDay(day.id),
                         }"
                         @click="toggleDay(day.id)"
                     >
                         {{ day.name }}
                     </div>
-                    <button @click="saveSchedule">Save Schedule</button>
+                    <button
+                        @click="saveSchedule"
+                        class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
+                    >
+                        Save Schedule
+                    </button>
+                    <button
+                        @click="isEdit = false"
+                        class="border border-green-600 font-semibold text-green-600 px-4 py-1 rounded-md"
+                    >
+                        Cancel
+                    </button>
                 </div>
             </div>
 
@@ -390,7 +411,7 @@ export default {
                     name: "Sat",
                 },
             ],
-            activeAvailableDays: [1, 3, 5],
+            activeAvailableDays: [],
         };
     },
     computed: {

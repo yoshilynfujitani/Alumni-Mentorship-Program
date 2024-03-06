@@ -48,9 +48,10 @@
                             v-model:visible="visible"
                             modal
                             :header="MentorDetails.name + '\'s Profile'"
-                            :style="{ width: '25rem' }"
                         >
-                            <div class="flex gap-5">
+                            <div
+                                class="flex gap-5 border border-gray-100 rounded p-2"
+                            >
                                 <img
                                     class="w-24 h-24 mb-3 rounded-full shadow-lg"
                                     src="../../../../public/DefaultAvatar.webp"
@@ -59,14 +60,14 @@
                                 <div class="">
                                     <label
                                         for=""
-                                        class="text-sm text-green-500 font-medium"
+                                        class="text-sm text-green-700 font-medium"
                                         >Mentor's Field</label
                                     >
                                     <h1>{{ MentorDetails.fieldName }}</h1>
 
                                     <label
                                         for=""
-                                        class="text-sm text-green-500 font-medium"
+                                        class="text-sm text-green-700 font-medium"
                                         >Mentor's Rating</label
                                     >
                                     <div class="" v-if="!MentorDetails.rating">
@@ -84,12 +85,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="pb-5 flex flex-col">
+                                <h1
+                                    class="text-green-700 text-sm font-medium py-2.5 flex items-center gap-1"
+                                >
+                                    <i class="pi pi-calendar"></i> Available Day
+                                    for Appointments
+                                </h1>
+                                <div class="flex space-x-2.5">
+                                    <div
+                                        class="border px-2 py-1 rounded-md border-gray-200 text-gray-200"
+                                        v-for="day in daysOfTheWeek"
+                                        :class="{
+                                            'border-blue-600 border-2 text-blue-500':
+                                                isActiveDay(day.id),
+                                        }"
+                                    >
+                                        <p class="font-semibold">
+                                            {{ day.name }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="">
-                                <h1 class="text-green-500 font-medium">
-                                    Most Recent Feedbacks
+                                <h1 class="text-green-700 font-medium">
+                                    <i class="pi pi-megaphone"></i> Most Recent
+                                    Feedbacks
                                 </h1>
                                 <div
-                                    class="text-center text-gray-400"
+                                    class="text-center text-gray-400 py-20"
                                     v-if="recentFeedbacks?.length === 0"
                                 >
                                     <i
@@ -148,6 +172,37 @@ export default {
         return {
             visible: false,
             recentFeedbacks: null,
+            activeAvailableDays: [],
+            daysOfTheWeek: [
+                {
+                    id: 1,
+                    name: "Sun",
+                },
+                {
+                    id: 2,
+                    name: "Mon",
+                },
+                {
+                    id: 3,
+                    name: "Tue",
+                },
+                {
+                    id: 4,
+                    name: "Wed",
+                },
+                {
+                    id: 5,
+                    name: "Thu",
+                },
+                {
+                    id: 6,
+                    name: "Fri",
+                },
+                {
+                    id: 7,
+                    name: "Sat",
+                },
+            ],
         };
     },
     components: {
@@ -162,9 +217,22 @@ export default {
                     this.recentFeedbacks = data;
                 });
         },
+        getLatestSchedule() {
+            axios
+                .post("/getLatestSchedule", { mentorId: this.MentorDetails.id })
+                .then(({ data }) => {
+                    this.activeAvailableDays = data.map((day) =>
+                        parseInt(day, 10)
+                    );
+                });
+        },
+        isActiveDay(dayId) {
+            return this.activeAvailableDays.includes(dayId);
+        },
         onCardClick() {
             this.visible = true;
             this.getRecentFeedbacks();
+            this.getLatestSchedule();
         },
     },
 };
