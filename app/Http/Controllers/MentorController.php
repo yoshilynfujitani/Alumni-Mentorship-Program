@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
@@ -65,14 +66,32 @@ class MentorController extends Controller
         $query = DB::connection('admin')->table('users')
         ->join('userfields', 'userfields.fieldId', '=', 'users.field')
         ->where('users.role', 2)
+       
         ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating' );
 
         if($request->allowToAppoint == null && $request->selectedCourseId == null){
-            return $query->paginate(12);
+            $mentors = $query->paginate(12);
+            foreach ($mentors as $mentor) {
+                
+                $feedbacks = Feedback::where('userToRateId',$mentor->id);
+
+                $mentor->feedBackCount = $feedbacks->count();
+            }
+    
+            return $mentors;
         }
 
         if($request->allowToAppoint == 0){
-            return $query->where("users.field",$request->selectedCourseId)->paginate(12);
+            $mentors =  $query->where("users.field",$request->selectedCourseId)->paginate(12);
+            foreach ($mentors as $mentor) {
+                
+                $feedbacks = Feedback::where('userToRateId',$mentor->id);
+
+                $mentor->feedBackCount = $feedbacks->count();
+            }
+    
+            return $mentors;
+
         }
 
         if ($request->allowToAppoint == 1 || $request->allowToAppoint == 2) {
@@ -92,6 +111,10 @@ class MentorController extends Controller
                     $mentor->hasAppointment = false;
                 
                 }
+
+                $feedbacks = Feedback::where('userToRateId',$mentor->id);
+
+                $mentor->feedBackCount = $feedbacks->count();
             }
     
             return $mentors;

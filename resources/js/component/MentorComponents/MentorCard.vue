@@ -78,9 +78,14 @@
                                     </div>
                                     <div class="" v-else>
                                         {{ MentorDetails.rating }}
+
                                         <i
                                             class="pi pi-star-fill text-sm text-yellow-400"
                                         ></i>
+                                        <span class="text-gray-400 text-sm">
+                                            ({{ MentorDetails.feedBackCount }})
+                                            reviews</span
+                                        >
                                     </div>
                                 </div>
                             </div>

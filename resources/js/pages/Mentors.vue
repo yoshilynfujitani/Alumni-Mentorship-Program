@@ -107,7 +107,7 @@ export default {
                     selectedCourseId: selectedCourse ? selectedCourse.id : null,
                 })
                 .then(({ data }) => {
-                    console.log(this.fieldToTake);
+                    console.log(data);
                     this.mentors = data.data;
                     this.pagination = data;
                 });
