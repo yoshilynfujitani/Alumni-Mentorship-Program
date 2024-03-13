@@ -65,6 +65,7 @@ class MentorController extends Controller
     public function getMentorsStudent(Request $request){
         $query = DB::connection('admin')->table('users')
         ->join('userfields', 'userfields.fieldId', '=', 'users.field')
+        // ->leftJoin(DB::raw('mentorportal.mentor_schedule AS sched'), 'sched.mentor_id', '=', 'users.id')
         ->where('users.role', 2)
        
         ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating' );

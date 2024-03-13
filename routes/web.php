@@ -69,7 +69,7 @@ Route::post("/getrecenttickets", [TicketController::class, "getRecentStudentTick
 Route::post("/getAppointment", [AppointmentController::class, "getAppointment"]);
 Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 Route::post("/setSchedule", [ScheduleController::class, "setSchedule"]);
-Route::get("/getLatestSchedule", [ScheduleController::class, "getLatestSchedule"]);
+Route::post("/getLatestSchedule", [ScheduleController::class, "getLatestSchedule"]);
 
 
 //PDC
