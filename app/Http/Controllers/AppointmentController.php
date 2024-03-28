@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Convo;
 use App\Models\Mentor;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
@@ -70,19 +71,25 @@ class AppointmentController extends Controller
     
 
     public function getAppointment(Request $request) {
-        $appointmentId = $request->input('appointmentId');
-    
-        $data = DB::table(DB::raw('adminportal.users AS users'))
-            ->join(DB::raw('mentorportal.appointmentdetails AS appt'), 'users.id', '=', 'appt.studentId')
-            ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
-            // ->leftJoin(DB::raw('mentorportal.feedback AS feedback'), 'appt.appointmentId', '=', 'feedback.appointmentId')
-            ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy', '=', 'reqby.id')
-            ->where("appt.appointmentId", $appointmentId) 
-            ->select('users.name','users.rating', 'appt.*', 'status.*', 'reqby.requestor', 'users.course') 
-            ->first(); 
-    
-        return $data;
-    }
+    $appointmentId = $request->input('appointmentId');
+
+    $data = DB::table(DB::raw('adminportal.users AS users'))
+        ->join(DB::raw('mentorportal.appointmentdetails AS appt'), 'users.id', '=', 'appt.studentId')
+        ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
+        ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy', '=', 'reqby.id')
+        ->where("appt.appointmentId", $appointmentId) 
+        ->select('users.name','users.rating', 'appt.*', 'status.*', 'reqby.requestor', 'users.course') 
+        ->first();
+
+    $feedbackExists = Feedback::where('appointmentId', $appointmentId)
+        ->where('userId', Auth::id())
+        ->exists();
+
+    $data->feedbackSent = $feedbackExists;
+
+    return $data;
+}
+
     public function getPieChartData(Request $request){
         
         $appointments = mentorAppointment::join(DB::raw('adminportal.userfields AS field'), 'field.fieldId', '=', 'appointmentdetails.field');

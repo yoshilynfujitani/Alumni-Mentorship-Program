@@ -16,12 +16,6 @@ class FeedbackController extends Controller
         $feedback = new Feedback();
         $appointmentDetails = mentorAppointment::find($request->appointmentId);
         
-        if($request->userRole == 'Student'){
-            $appointmentDetails->feedback_sent_student = 1;
-        }
-        else{
-            $appointmentDetails->feedback_sent_mentor = 1;
-        }
             
         $appointmentDetails->save();
 
