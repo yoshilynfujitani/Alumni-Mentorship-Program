@@ -136,10 +136,13 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center py-20 min-h-screen">
+    <div class="ml-[250px] bg-[#fdfdff]">
+        <div
+            class="flex flex-col items-center min-h-screen px-10 laptop:mx-[50px] desktop:mx-[150px]"
+        >
             <slot />
         </div>
+        <div class="bg-green-400 px-10">footer</div>
     </div>
 </template>
 

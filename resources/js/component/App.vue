@@ -12,7 +12,7 @@
             <div class="flex items-center w-full justify-between mb-2">
                 <div class="">
                     <h1
-                        class="gap-1 flex items-center text-2xl font-medium text-green-700 pb-2.5"
+                        class="gap-1 flex items-center text-2xl font-bold  pb-2.5"
                     >
                         <span
                             ><i

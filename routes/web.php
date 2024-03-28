@@ -54,9 +54,10 @@ Route::post("/sendconvo", [ConvoController::class, "sendChat"]);
 Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);
 Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
 Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
-Route::get("/getConvoId", [ConvoController::class, "getConvoId"]);
-Route::get("/getConvoIdForMentor", [ConvoController::class, "getConvoIdForMentor"]);
+Route::post("/getConvoId", [ConvoController::class, "getConvoId"]);
+Route::post("/getConvoIdForMentor", [ConvoController::class, "getConvoIdForMentor"]);
 Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
+Route::post("/searchConvo", [ConvoController::class, "searchConvo"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

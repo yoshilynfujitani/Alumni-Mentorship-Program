@@ -2,6 +2,7 @@
     <LayoutMentor>
         <div class="" v-if="loading"><h1>Loading...</h1></div>
 
+        <div class="w-full my-10">
         <div class="w-full">
             <div class="flex items-center w-full justify-between mb-2">
                 <div class="">
@@ -324,6 +325,7 @@
                 <div class="w-1/3"><PieChart :role="2" /></div>
                 <div class="w-2/3"><BarChart :role="2" /></div>
             </div>
+        </div>
         </div>
     </LayoutMentor>
 </template>

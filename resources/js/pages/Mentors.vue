@@ -3,9 +3,9 @@
         <!-- <div class="" v-if="!apptAccessData">Loading...</div> -->
         <div class="my-10 flex justify-center flex-col items-center w-full">
             <div class="self-start">
-                <h1 class="flex items-center text-2xl gap-1 font-medium">
+                <h1 class="flex items-center text-2xl gap-1 font-bold">
                     <i class="pi pi-users text-2xl text-yellow-400"></i>
-                    <span class="text-green-700">Mentors</span>
+                    <span class="">Mentors</span>
                 </h1>
             </div>
             <div class="w-fit" v-if="this.allowToAppoint === 2">
