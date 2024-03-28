@@ -326,8 +326,8 @@
                 </div>
             </div>
             <div class="flex gap-10 my-10 w-full">
-                <div class="w-1/3"><PieChart /></div>
-                <div class="w-2/3"><BarChart /></div>
+                <div class="w-1/3"><PieChart :role="1" /></div>
+                <div class="w-2/3"><BarChart :role="1" /></div>
             </div>
         </div>
     </Layout>

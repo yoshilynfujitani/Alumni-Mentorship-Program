@@ -47,8 +47,8 @@ Route::get("/getOngoingAppointments", [AppointmentController::class, "getOngoing
 Route::get("/getCountTotalAppointments", [AppointmentController::class, "getCountTotalAppointments"]);
 Route::get("/getAppointments", [AppointmentController::class, "getAppointments"]);
 Route::post("/requestticket", [TicketController::class, "requestTicket"]);
-Route::get("/getpiechartdata", [AppointmentController::class, "getPieChartData"]);
-Route::get("/getbarchartdata", [AppointmentController::class, "getBarChartData"]);
+Route::post("/getpiechartdata", [AppointmentController::class, "getPieChartData"]);
+Route::post("/getbarchartdata", [AppointmentController::class, "getBarChartData"]);
 Route::post("/getconvo", [ConvoController::class, "getChat"]);
 Route::post("/sendconvo", [ConvoController::class, "sendChat"]);
 Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);

@@ -83,28 +83,33 @@ class AppointmentController extends Controller
     
         return $data;
     }
-    public function getPieChartData(){
-        $appointments = mentorAppointment::
-    join(DB::raw('adminportal.userfields AS field'), 'field.fieldId', '=', 'appointmentdetails.field')
-    ->where('appointmentdetails.studentId', Auth::id())
-    // ->where('appointmentdetails.Status',1)
-    ->select('field.fieldName', 'field.id')
-    ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.studentId = ' . Auth::id() . ') as count'))
-    ->groupBy('field.fieldName', 'field.id')
-    ->get();
+    public function getPieChartData(Request $request){
+        
+        $appointments = mentorAppointment::join(DB::raw('adminportal.userfields AS field'), 'field.fieldId', '=', 'appointmentdetails.field');
 
+        if($request->role == 1) {
+            $appointments->where('appointmentdetails.studentId', Auth::id())
+                ->select('field.fieldName', 'field.id')
+                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.studentId = ' . Auth::id() . ') as count'));
+        }
+        elseif($request->role == 2) {
+            $appointments->where('appointmentdetails.mentorId', Auth::id())
+                ->select('field.fieldName', 'field.id')
+                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.mentorId = ' . Auth::id() . ') as count'));
+        }
+
+        $appointments = $appointments->get();
 
         $data = [
             'labels' => [],
             'datasets' => [
                 [
-                    'backgroundColor' => ["#41B883", "	#FAFA33", "#00D8FF", "#DD1B16"],
+                    'backgroundColor' => ["#41B883", "#FAFA33", "#00D8FF", "#DD1B16"],
                     'data' => [],
                 ],
             ],
         ];
 
-    
         foreach ($appointments as $appointment) {
             $data['labels'][] = $appointment->fieldName;
             $data['datasets'][0]['data'][] = $appointment->count; 
@@ -112,23 +117,28 @@ class AppointmentController extends Controller
 
         return response()->json(['chartData' => $data]);
     }
-    public function getBarChartData()
+    public function getBarChartData(Request $request)
     {
         $currentYear = now()->year; 
         $appointments = MentorAppointment::whereYear('created_at', $currentYear)
-            ->orderBy('created_at')
-            ->where('studentId', Auth::id())
-            ->get();
+            ->orderBy('created_at');
+            if($request->role == 1){
+                $appointments->where('studentId', Auth::id());
+            }
+            elseif($request->role == 2){
+                $appointments->where('mentorId', Auth::id());
+            }
+            
+            $appointments = $appointments->get();
 
         $monthlyAppointments = [];
 
-        // Initialize counts for all months to zero
         foreach (range(1, 12) as $month) {
             $monthName = Carbon::createFromDate($currentYear, $month, 1)->format('F');
             $monthlyAppointments[$monthName] = 0;
         }
 
-        // Count appointments for each month
+  
         foreach ($appointments as $appointment) {
             $month = Carbon::parse($appointment->created_at)->format('F');
             $monthlyAppointments[$month]++;

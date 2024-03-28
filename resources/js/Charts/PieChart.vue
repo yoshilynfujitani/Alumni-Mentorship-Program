@@ -31,6 +31,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default {
     name: "PieChart",
     components: { Doughnut, Chart },
+    props: ["role"],
     data() {
         return {
             loaded: false,
@@ -49,7 +50,7 @@ export default {
     methods: {
         fetchChartData() {
             axios
-                .get("/getpiechartdata")
+                .post("/getpiechartdata", { role: this.role })
                 .then((response) => {
                     this.chartData = response.data.chartData;
 

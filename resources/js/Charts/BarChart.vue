@@ -32,6 +32,7 @@ export default {
     components: {
         Bar,
     },
+    props: ["role"],
     data() {
         return {
             loaded: false,
@@ -63,9 +64,7 @@ export default {
                 maintainAspectRatio: false,
                 scales: {
                     y: {
-                        max: 10,
-                        // Add min if needed
-                        // min: 0,
+                        max: this.role == 1 ? 20 : 30,
                     },
                 },
                 plugins: {
@@ -80,7 +79,7 @@ export default {
     methods: {
         fetchChartData() {
             axios
-                .get("/getbarchartdata")
+                .post("/getbarchartdata", { role: this.role })
                 .then((response) => {
                     // Update the chart data with the fetched data
                     this.chartData.datasets[0].data = Object.values(
