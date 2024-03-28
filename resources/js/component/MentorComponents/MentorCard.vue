@@ -97,12 +97,14 @@
                                     <i class="pi pi-calendar"></i> Available Day
                                     for Appointments
                                 </h1>
-                                <div class="flex space-x-2.5">
+                                <div
+                                    class="flex space-x-2.5 border-gray-200 text-gray-200"
+                                >
                                     <div
-                                        class="border px-2 py-1 rounded-md border-gray-200 text-gray-200"
+                                        class="border px-2 py-1 rounded-md"
                                         v-for="day in daysOfTheWeek"
                                         :class="{
-                                            'border-blue-600 border-2 text-blue-500':
+                                            'border-blue-600 border-2 text-blue-600':
                                                 isActiveDay(day.id),
                                         }"
                                     >

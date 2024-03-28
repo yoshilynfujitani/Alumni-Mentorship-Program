@@ -37,7 +37,7 @@ class ConvoController extends Controller
         $ConvoId = mentorAppointment::where('studentId', Auth::id())
         ->join(DB::raw('adminportal.users AS user'), 'user.id', '=', 'mentorId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'Status', '=', 'status.statusId')
-        // ->where('Status', 1)
+        ->where('Status', 1)
         ->orWhere('Status', 3)
         ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
         ->get();
@@ -49,7 +49,7 @@ class ConvoController extends Controller
         $ConvoId = mentorAppointment::where('mentorId', Auth::id())
         ->join(DB::raw('adminportal.users AS user'), 'user.id', '=', 'mentorId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'Status', '=', 'status.statusId')
-        // ->where('Status', 1)
+        ->where('Status', 1)
         ->orWhere('Status', 3)
         ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
         ->get();

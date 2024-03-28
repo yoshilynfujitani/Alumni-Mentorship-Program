@@ -1,6 +1,6 @@
 <template lang="">
     <LayoutMentor>
-        <div class="rounded-md bg-white m-2.5 px-4 py-2">Messages Hakdog</div>
+        <div class="rounded-md bg-white px-4">Messages</div>
         <div class="flex w-full gap-5 h-screen">
             <!-- Message Headers -->
             <div

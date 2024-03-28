@@ -36,11 +36,12 @@
                 </h1>
                 <div class="flex my-2 gap-3" v-if="!isEdit">
                     <div
-                        class="border px-2 py-1 rounded-md border-gray-200"
+                        class="border px-2 py-1 rounded-md"
                         v-for="day in daysOfTheWeek"
                         :class="{
-                            'border-blue-600 border-2 text-blue-500':
+                            'border-blue-600 border-2 text-blue-600 font-semibold':
                                 isActiveDay(day.id),
+                            'border-gray-200': !isActiveDay(day.id),
                         }"
                     >
                         {{ day.name }}
@@ -54,12 +55,13 @@
                 </div>
                 <div class="flex gap-3 my-2" v-else>
                     <div
-                        class="border px-2 py-1 rounded-md border-gray-200 cursor-pointer"
+                        class="border px-2 py-1 rounded-md cursor-pointer"
                         v-for="day in daysOfTheWeek"
                         :key="day.id"
                         :class="{
-                            'border-blue-600 border-2 text-blue-500':
+                            'border-blue-600 border-2 text-blue-600 font-semibold':
                                 isActiveDay(day.id),
+                            'border-gray-200': !isActiveDay(day.id),
                         }"
                         @click="toggleDay(day.id)"
                     >
@@ -72,7 +74,7 @@
                         Save Schedule
                     </button>
                     <button
-                        @click="isEdit = false"
+                        @click="cancelEdit"
                         class="border border-green-600 font-semibold text-green-600 px-4 py-1 rounded-md"
                     >
                         Cancel
@@ -412,6 +414,7 @@ export default {
                 },
             ],
             activeAvailableDays: [],
+            editAvailableDays: [],
         };
     },
     computed: {
@@ -489,33 +492,43 @@ export default {
             return today;
         },
         isActiveDay(dayId) {
-            return this.activeAvailableDays.includes(dayId);
+            return this.editAvailableDays.includes(dayId);
         },
         toggleDay(dayId) {
             if (this.isEdit) {
-                if (this.activeAvailableDays.includes(dayId)) {
-                    this.activeAvailableDays = this.activeAvailableDays.filter(
+                if (this.editAvailableDays.includes(dayId)) {
+                    this.editAvailableDays = this.editAvailableDays.filter(
                         (id) => id !== dayId
                     );
                 } else {
-                    this.activeAvailableDays.push(dayId);
+                    this.editAvailableDays.push(dayId);
                 }
             }
         },
+        cancelEdit() {
+            this.editAvailableDays = [...this.activeAvailableDays];
+            this.isEdit = !this.isEdit;
+        },
 
         saveSchedule() {
+            console.log(this.editAvailableDays);
             console.log(this.activeAvailableDays);
-            const { activeAvailableDays } = this;
-            axios
-                .post("/setSchedule", { activeAvailableDays })
-                .then(({ data }) => {
-                    this.getLatestSchedule();
-                    this.isEdit = !this.isEdit;
-                });
+            const { activeAvailableDays, editAvailableDays } = this;
+            if (activeAvailableDays === editAvailableDays) {
+                this.isEdit = !this.isEdit;
+            } else {
+                axios
+                    .post("/setSchedule", { editAvailableDays })
+                    .then(({ data }) => {
+                        this.getLatestSchedule();
+                        this.isEdit = !this.isEdit;
+                    });
+            }
         },
         getLatestSchedule() {
-            axios.get("/getLatestSchedule").then(({ data }) => {
+            axios.post("/getLatestSchedule").then(({ data }) => {
                 this.activeAvailableDays = data.map((day) => parseInt(day, 10));
+                this.editAvailableDays = [...this.activeAvailableDays];
             });
         },
     },

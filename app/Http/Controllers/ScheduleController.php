@@ -12,7 +12,7 @@ class ScheduleController extends Controller
     public function setSchedule(Request $request){
     
         $daysOfTheWeek = "";
-        foreach ($request->activeAvailableDays as $day) {
+        foreach ($request->editAvailableDays as $day) {
             $daysOfTheWeek .= $day;
         }
         
@@ -26,7 +26,10 @@ class ScheduleController extends Controller
     }
 
     public function getLatestSchedule(Request $request){
+
+
         $mentorId = $request->has('mentorId') ? $request->mentorId : Auth::id();
+   
 
         $currentSchedule = Schedule::where("mentor_id", $mentorId)->orderBy('created_at', 'desc')->first();
         
