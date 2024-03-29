@@ -84,12 +84,16 @@ class ConvoController extends Controller
             ->join('adminportal.users AS user', 'user.id', '=', 'studentId') ;
         }
 
-            $convo->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
+    
+
+            $convo =  $convo->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
             ->where('title', 'LIKE', "%{$request->titleQuery}%")
-            ->where(function ($query) {
+           
+            ->where(function($query) {
                 $query->where('Status', 1)
-                    ->orWhere('Status', 3);
+                      ->orWhere('Status', 3);
             })
+        
             ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
             ->get();
     

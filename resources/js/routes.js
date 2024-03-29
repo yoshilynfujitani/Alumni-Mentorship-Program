@@ -13,6 +13,7 @@ import MentorStudentRequests from "@/pages/MentorPages/MentorStudentRequests.vue
 import MentorApp from "@/pages/MentorPages/MentorApp.vue";
 import Conversation from "@/pages/Conversation.vue";
 import MentorConversation from "@/pages/MentorPages/MentorConversation.vue";
+import ScheduleHistory from "@/pages/MentorPages/ScheduleHistory.vue";
 import Appointments from "@/pages/Appointments.vue";
 import TicketLogsStudent from "@/pages/TicketLogsStudent.vue";
 import AlumniInvite from "@/pages/PDCPages/AlumniInvite.vue";
@@ -97,5 +98,10 @@ export const routes = [
         path: "/mentorstudentrequests",
         name: "mentorstudentreuqests",
         component: MentorStudentRequests,
+    },
+    {
+        path: "/schedule",
+        name: "schedule",
+        component: ScheduleHistory,
     },
 ];

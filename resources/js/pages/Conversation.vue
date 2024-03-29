@@ -85,6 +85,7 @@
                             id="chats"
                             ref="chats"
                         >
+                        
                             <h1
                                 v-for="chats in chat"
                                 :key="chats.id"
@@ -217,7 +218,8 @@ export default {
 
         searchConvo() {
             const { titleQuery } = this;
-            axios.post("/searchConvo", { titleQuery , role:1}).then(({ data }) => {
+            
+            axios.post("/searchConvo", { titleQuery:titleQuery , role:1}).then(({ data }) => {
                 console.log(data);
                 this.inbox = data;
             });

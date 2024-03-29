@@ -38,5 +38,15 @@ class ScheduleController extends Controller
         return $currentSchedule->daysOfTheWeek;
     }
 
+    public function getAllSchedule(){
+        $sched = Schedule::where('mentor_id', Auth::id())
+        ->orderByDesc('created_at')
+        ->select('daysOfTheWeek', 'created_at')
+        ->paginate(10);
+
+        return $sched;
+
+    }
+
 
 }

@@ -55,7 +55,6 @@ Route::post("/sendfeedback", [FeedbackController::class, "sendFeedback"]);
 Route::get("/getTicketStatus", [StudentLoginController::class, "getUserTicketStatus"]);
 Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserAllowToAppointStatus"]);
 Route::post("/getConvoId", [ConvoController::class, "getConvoId"]);
-Route::post("/getConvoIdForMentor", [ConvoController::class, "getConvoIdForMentor"]);
 Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
 Route::post("/searchConvo", [ConvoController::class, "searchConvo"]);
 
@@ -71,6 +70,7 @@ Route::post("/getAppointment", [AppointmentController::class, "getAppointment"])
 Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 Route::post("/setSchedule", [ScheduleController::class, "setSchedule"]);
 Route::post("/getLatestSchedule", [ScheduleController::class, "getLatestSchedule"]);
+Route::get("/getAllSchedule", [ScheduleController::class, "getAllSchedule"]);
 
 
 //PDC

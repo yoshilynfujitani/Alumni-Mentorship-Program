@@ -72,20 +72,18 @@
                             </h1>
                         </td>
                         <td class="px-6 py-4 items-center flex justify-center">
-                            <button
-                                label="View"
-                                @click="viewTicket(Ticket)"
-                                class="text-sm"
+                            <Modal
+                                :modalContent="{
+                                    title: 'Ticket Remarks',
+                                    disablebtn: disable,
+                                    // content: 'Please fill out the form below:',
+                                }"
+                                type="rate"
+                                iconLabel="Review"
+                                cancelLabel="Back"
+                                @modalopen="viewTicket(Ticket)"
                             >
-                                View
-                            </button>
-                            <Dialog
-                                v-model:visible="visible"
-                                modal
-                                header="Ticket Remarks"
-                                :style="{ width: '25rem' }"
-                            >
-                                <div class="">
+                                <div class="min-w-[500px] max-w-[500px]">
                                     <h1 class="text-sm font-medium">
                                         {{
                                             moment(
@@ -100,15 +98,7 @@
                                         {{ selectedTicket.ticketRemarks }}
                                     </div>
                                 </div>
-                                <div class="flex justify-content-end gap-2">
-                                    <Button
-                                        type="button"
-                                        label="Cancel"
-                                        severity="secondary"
-                                        @click="visible = false"
-                                    ></Button>
-                                </div>
-                            </Dialog>
+                            </Modal>
                         </td>
                     </tr>
                 </tbody>
@@ -133,6 +123,7 @@ import ConfirmPopup from "primevue/confirmpopup";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
+import Modal from "../component/Modal.vue";
 
 export default {
     components: {
@@ -142,6 +133,7 @@ export default {
         Button,
         Dialog,
         Pagination,
+        Modal,
     },
     data() {
         return {
