@@ -142,9 +142,9 @@ class MentorController extends Controller
 
         if($request->requestStatus == 1){
 
-            $otherappointment = mentorAppointment::where('studentId', $request->studentId)
-            ->where('field', $appointment->field)
-            ->where('appointmentId', '<>', $request->appointmentId)
+            $otherappointment = mentorAppointment::
+            where('field', $appointment->field)
+            ->where('appointmentId', $request->appointmentId)
             ->where('Status', 0)
             ->update(['Status' => 4]);
 

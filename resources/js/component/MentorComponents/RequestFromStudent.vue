@@ -18,7 +18,12 @@
     >
         <i class="pi pi-eye"></i>View Details
     </button>
-    <Dialog v-model:visible="visible" modal header="Appointment Details">
+    <Dialog
+        v-model:visible="visible"
+        modal
+        header="Appointment Details"
+        @hide="onDialogHide"
+    >
         <div class="h-full" v-if="!this.requestDetails">Loading...</div>
         <div class="flex items-start justify-around h-full" v-else>
             <div
@@ -202,7 +207,7 @@
                     </div>
                     <button
                         @click="
-                            proceedToReject(
+                            verify(
                                 2,
                                 this.requestDetails.studentId,
                                 this.requestDetails.appointmentId
@@ -377,6 +382,9 @@ export default {
             this.visible = true;
             this.getAppointmentDetails();
         },
+        onDialogHide() {
+            this.$emit("Updated");
+        },
 
         getAppointmentDetails() {
             axios
@@ -402,7 +410,9 @@ export default {
             this.getFeedback(appointmentId);
         },
         verify(requestStatus, studentId, appointmentId) {
+            console.log(requestStatus);
             console.log(studentId);
+            console.log(appointmentId);
             const { remarks } = this;
             axios
                 .post("/verifyrequest", {
@@ -417,10 +427,7 @@ export default {
                     this.verifying = false;
                 });
         },
-        proceedToReject(studentId, appointmentId) {
-            const { remarks } = this;
-            this.verify(2, studentId, appointmentId, remarks);
-        },
+
         confirm1(event, requestStatus, studentId, appointmentId) {
             this.$confirm.require({
                 target: event.currentTarget,

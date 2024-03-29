@@ -27,7 +27,7 @@
                             <td class="px-6 py-4 font-medium whitespace-nowrap">
                                 <div class="flex gap-2">
                                     <div
-                                        class="px-4 py-2 text-xl border rounded-md font-semibold"
+                                        class="px-2 py-1 text-lg border rounded-md font-semibold"
                                         v-for="dayOfWeek in daysOfTheWeek"
                                         :key="dayOfWeek.id"
                                         :class="{

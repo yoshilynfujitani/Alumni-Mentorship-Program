@@ -3,6 +3,7 @@
         <div class="self-start">
             <h1>Tickets</h1>
         </div>
+        <Toast />
 
         <!-- <div class="grid grid-cols-4 gap-5 mx-auto my-10">
             <div class="mx-auto" v-for="Mentor in mentors">
@@ -152,7 +153,6 @@
                                 class="flex items-center justify-center"
                                 v-else
                             >
-                                <Toast />
                                 <ConfirmPopup></ConfirmPopup>
                                 <div class="flex gap-2 justify-content-center">
                                     <button
@@ -261,9 +261,9 @@ export default {
                 accept: () => {
                     this.verify(requestStatus, studentId, field, ticketId);
                     this.$toast.add({
-                        severity: "info",
+                        severity: "success",
                         summary: "Confirmed",
-                        detail: "You have accepteds",
+                        detail: "Ticket approved successfully",
                         position: "bottom-right",
                         life: 10000,
                     });
@@ -284,9 +284,9 @@ export default {
                 accept: () => {
                     this.verify(requestStatus, studentId, field, ticketId);
                     this.$toast.add({
-                        severity: "info",
-                        summary: "Confirmed",
-                        detail: "Record deleted",
+                        severity: "success",
+                        summary: "Rejected",
+                        detail: "Ticket Rejected",
                         position: "bottom-right",
                         life: 10000,
                     });
