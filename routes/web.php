@@ -33,6 +33,7 @@ use App\Http\Controllers\StudentSignUpController;
 // });
 //Mail
 Route::post('sendEmail', [EmailController::class, 'sendEmail']);
+Route::post('sendEmailAppointment', [EmailController::class, 'sendEmailAppointment']);
 
 //Student Auth
 Route::post("/login", [StudentLoginController::class, "login"]);

@@ -19,7 +19,7 @@
     >
         Request Appointment
     </button>
-    <Toast />
+
     <Dialog v-model:visible="visible" modal header="Schedule an Appointment">
         <div
             class="w-[1000px] flex border border-gray-200 p-10 rounded-md my-10 gap-5"
@@ -192,6 +192,7 @@ export default {
             moment: moment,
             name: this.MentorDetails.name,
             mentorId: this.MentorDetails.id,
+            email: this.MentorDetails.email,
             color: "green",
             date: new Date(),
             visible: false,
@@ -221,7 +222,7 @@ export default {
     },
     methods: {
         submitAppointment() {
-            const { field, title, date, mentorId } = this;
+            const { title, date, mentorId, email } = this;
             const { id } = this.selectedStudent;
 
             if (this.type === "pdc") {
@@ -233,14 +234,20 @@ export default {
                         mentorId,
                         studentId: id,
                     })
-                    .then(this.$router.push("/pdcmentors"));
+                    .then(() => {
+                        this.$router.push("/pdcmentors");
+                        axios
+                            .post("/sendEmailAppointment", { email: email })
+                            .then(console.log("Success"));
+                    });
+
                 this.$toast.add({
                     severity: "info",
                     summary: "Info",
                     detail: "Message Content",
                     life: 3000,
                 });
-            } else {
+            } else if (this.type === "student") {
                 axios
                     .post("/addAppointment", {
                         title,
@@ -248,7 +255,13 @@ export default {
                         date,
                         mentorId,
                     })
-                    .then(this.$router.push("/appointments"));
+                    .then(() => {
+                        this.$router.push("/appointments");
+                        axios
+                            .post("/sendEmailAppointment", { email: email })
+                            .then(console.log("Success"));
+                    });
+
                 this.$toast.add({
                     severity: "info",
                     summary: "Info",
@@ -257,6 +270,7 @@ export default {
                 });
             }
         },
+
         handleQueryData(data) {
             this.selectedStudent = data;
         },

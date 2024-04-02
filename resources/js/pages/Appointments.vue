@@ -3,6 +3,7 @@
         <div
             class="w-full my-10 overflow-x-clip flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
         >
+            <Toast />
             <div class="">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -172,6 +173,7 @@ import Pagination from "../utils/Pagination.vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import moment from "moment";
+import Toast from "primevue/toast";
 
 export default {
     computed: {
@@ -183,6 +185,7 @@ export default {
         Pagination,
         Dialog,
         Button,
+        Toast,
     },
 
     data() {
