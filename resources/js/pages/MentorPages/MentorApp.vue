@@ -4,11 +4,11 @@
 
         <div class="w-full my-10">
             <div class="w-full">
-                <div class="flex items-center w-full justify-between mb-2">
+                <div
+                    class="flex items-center w-full justify-between border bg-white px-2.5 py-1.5 mb-2.5 rounded-md border-gray-200"
+                >
                     <div class="">
-                        <h1
-                            class="gap-1 flex items-center text-2xl font-medium text-green-700 pb-2.5"
-                        >
+                        <h1 class="gap-1 flex items-center text-2xl font-bold">
                             <span
                                 ><i
                                     class="pi pi-chart-pie text-2xl text-yellow-400"
@@ -54,6 +54,7 @@
                             Edit Schedule
                         </button>
                     </div>
+
                     <div class="flex gap-3 my-2" v-else>
                         <div
                             class="border px-2 py-1 rounded-md cursor-pointer"
@@ -83,6 +84,63 @@
                     </div>
                 </div>
 
+                <div class="pb-5">
+                    <h1
+                        class="text-green-700 text-sm font-medium flex items-center gap-1"
+                    >
+                        <i class="pi pi-building"></i> Preferred Field for
+                        Appointments
+                    </h1>
+
+                    <h1>Select Courses</h1>
+                    <div class="flex gap-x-2 flex-wrap">
+                        <div
+                            v-for="course in activeCourses"
+                            :key="course.id"
+                            class=""
+                        >
+                            <div
+                                class="border px-2 py-1 my-1.5 rounded-md flex items-center gap-1"
+                            >
+                                {{ course.name }}
+                                <i
+                                    class="pi pi-times cursor-pointer rounded-full text-xs font-bold"
+                                    :class="{ hidden: !isEditCourses }"
+                                    @click="toggleCourse(course)"
+                                ></i>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="">
+                        <div v-if="!isEditCourses">
+                            <button @click="isEditCourses = !isEditCourses">
+                                Edit Courses
+                            </button>
+                        </div>
+                        <div v-else class="">
+                            <h1>Available Field</h1>
+                            <div class="flex gap-x-2">
+                                <div
+                                    v-for="course in availableCourses"
+                                    :key="course.id"
+                                    class=""
+                                >
+                                    <button
+                                        v-if="!isActive(course)"
+                                        @click="toggleCourse(course)"
+                                        class="border px-2 py-1 my-1.5 rounded-md"
+                                    >
+                                        {{ course.name }}
+                                    </button>
+                                </div>
+                            </div>
+                            <button @click="saveCourses">Save Courses</button>
+                            <button @click="cancelEditCourses">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div
                     class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
                     :class="{
@@ -100,7 +158,6 @@
                         /> -->
 
                             <Calendar
-                                v-model="date"
                                 inline
                                 showWeek
                                 :numberOfMonths="1"
@@ -449,6 +506,19 @@ export default {
             ],
             activeAvailableDays: [],
             editAvailableDays: [],
+            availableCourses: [
+                { id: 1, name: "Business Management" },
+                { id: 2, name: "Creative Arts" },
+                { id: 3, name: "Engineering and Mathematics" },
+                { id: 4, name: "Humanities Arts and Social Sciences" },
+                { id: 5, name: "IT and Computer Science" },
+                { id: 6, name: "Medical and Health Science" },
+                { id: 7, name: "Teaching and Education" },
+                { id: 8, name: "Leadership and Team Building" },
+            ],
+            selectedCourses: [],
+            activeCourses: [],
+            isEditCourses: false,
         };
     },
     computed: {
@@ -474,7 +544,6 @@ export default {
         },
         getCountTotalAppointments() {
             axios.get("/getCountTotalAppointments").then(({ data }) => {
-                console.log(data);
                 this.TotalAppointments = data;
                 this.loading = false;
             });
@@ -545,10 +614,12 @@ export default {
         },
 
         saveSchedule() {
-            console.log(this.editAvailableDays);
             console.log(this.activeAvailableDays);
             const { activeAvailableDays, editAvailableDays } = this;
-            if (activeAvailableDays === editAvailableDays) {
+            if (
+                activeAvailableDays.sort().join(",") ===
+                editAvailableDays.sort().join(",")
+            ) {
                 this.isEdit = !this.isEdit;
             } else {
                 axios
@@ -561,10 +632,62 @@ export default {
         },
         getLatestSchedule() {
             axios.post("/getLatestSchedule").then(({ data }) => {
-                console.log(data);
                 this.activeAvailableDays = data.map((day) => parseInt(day, 10));
                 this.editAvailableDays = [...this.activeAvailableDays];
             });
+        },
+        cancelEditCourses() {
+            this.selectedCourses = [...this.activeCourses];
+            this.isEditCourses = !this.isEditCourses;
+        },
+        toggleCourse(course) {
+            const index = this.activeCourses.findIndex(
+                (c) => c.id === course.id
+            );
+            if (index === -1) {
+                // Course not found in activeCourses, add it
+                this.activeCourses.push(course);
+            } else {
+                // Course found in activeCourses, remove it
+                this.activeCourses.splice(index, 1);
+            }
+        },
+        isActive(course) {
+            return this.activeCourses.some((c) => c.id === course.id);
+        },
+        saveCourses() {
+            const CourseId = this.activeCourses.map((course) => course.id);
+            const FieldId = CourseId.join(",");
+            console.log(FieldId);
+
+            axios
+                .post("/updatefield", { FieldId: FieldId })
+                .then((data) => {
+                    this.isEditCourses = !this.isEditCourses;
+                })
+                .catch((error) => {
+                    // Handle error
+                    console.error("Error saving courses:", error);
+                });
+        },
+        getField() {
+            axios
+                .get("/getfield")
+                .then((data) => {
+                    console.log(data.data);
+                    //data data is only printing the course id like 123 it does not contain the course name how to map
+                    const idStrings = data.data.toString().split("");
+                    this.activeCourses = idStrings.map((courseId) => {
+                        // Map each course ID to its corresponding name
+                        return this.availableCourses.find(
+                            (course) => course.id === parseInt(courseId, 10)
+                        );
+                    });
+                })
+                .catch((error) => {
+                    // Handle error
+                    console.error("Error saving courses:", error);
+                });
         },
     },
 
@@ -574,23 +697,12 @@ export default {
     mounted() {
         // this.refecthAppointments();
         this.setUserTicketStatusAction();
-        console.log(this.userId);
         this.minDate = this.getToday();
         this.getCountTotalAppointments();
         this.getLatestSchedule();
+        this.getField();
         // console.log(this.$store.getters.userDetails);
-    },
-    watch: {
-        authenticated(newValue) {
-            if (!newValue) {
-                this.$router.push("/login");
-            }
-        },
     },
 };
 </script>
-<style>
-.p-message-text {
-    font-size: 14px;
-}
-</style>
+<style></style>

@@ -63,6 +63,7 @@ class MentorController extends Controller
     
 
     public function getMentorsStudent(Request $request){
+      $desiredFieldValue = $request->selectedCourseId;
         $query = DB::connection('admin')->table('users')
         ->join('userfields', 'userfields.fieldId', '=', 'users.field')
         // ->leftJoin(DB::raw('mentorportal.mentor_schedule AS sched'), 'sched.mentor_id', '=', 'users.id')
@@ -83,7 +84,10 @@ class MentorController extends Controller
         }
 
         if($request->allowToAppoint == 0){
-            $mentors =  $query->where("users.field",$request->selectedCourseId)->paginate(12);
+           
+          
+           $mentors = $query->whereRaw('FIND_IN_SET(' . $desiredFieldValue . ', users.field)')->paginate(12);
+
             foreach ($mentors as $mentor) {
                 
                 $feedbacks = Feedback::where('userToRateId',$mentor->id);
@@ -96,7 +100,7 @@ class MentorController extends Controller
         }
 
         if ($request->allowToAppoint == 1 || $request->allowToAppoint == 2) {
-            $mentors = $query->where('users.field', $request->fieldToTake)->paginate(12);
+             $mentors = $query->whereRaw('FIND_IN_SET(' . $desiredFieldValue . ', users.field)')->paginate(12);
     
             foreach ($mentors as $mentor) {
                 $appointment = MentorAppointment::where('studentId', auth()->id())
@@ -172,6 +176,20 @@ class MentorController extends Controller
 
         return;
 
+    }
+
+    public function updateField(Request $request){
+        $user = User::where('id', Auth::id())->first();
+
+        $user->field = strVal($request->FieldId);
+        $user->save();
+        return ;
+    }
+
+    public function getField(){
+        $user = User::where('id', Auth::id())->first();
+
+        return $user->field;
     }
   
 }

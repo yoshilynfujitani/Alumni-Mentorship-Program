@@ -63,6 +63,8 @@ Route::post("/searchConvo", [ConvoController::class, "searchConvo"]);
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);
 Route::post("/getmentorAPI", [MentorController::class, "getMentors"]);
 Route::post("/getmentorstudent", [MentorController::class, "getMentorsStudent"]);
+Route::post("/updatefield", [MentorController::class, "updateField"]);
+Route::get("/getfield", [MentorController::class, "getField"]);
 Route::get("/getstudentrequests", [MentorController::class, "getMentorAppointment"]);
 Route::post("/verifyrequest", [MentorController::class, "verifyRequest"]);
 Route::post("/getrecentfeedback", [FeedbackController::class, "getRecentMentorFeedback"]);
