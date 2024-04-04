@@ -62,45 +62,30 @@ class MentorController extends Controller
     }
     
 
-    public function getMentorsStudent(Request $request){
-      $desiredFieldValue = $request->selectedCourseId;
+    public function getMentorsStudent(Request $request) {
+        $desiredFieldValue = $request->selectedCourseId;
         $query = DB::connection('admin')->table('users')
-        ->join('userfields', 'userfields.fieldId', '=', 'users.field')
-        // ->leftJoin(DB::raw('mentorportal.mentor_schedule AS sched'), 'sched.mentor_id', '=', 'users.id')
-        ->where('users.role', 2)
-       
-        ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating' );
-
-        if($request->allowToAppoint == null && $request->selectedCourseId == null){
+            ->join('userfields', 'userfields.fieldId', '=', 'users.field')
+            ->where('users.role', 2)
+            ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating');
+    
+        if ($request->allowToAppoint == null && $request->selectedCourseId == null) {
             $mentors = $query->paginate(12);
             foreach ($mentors as $mentor) {
-                
-                $feedbacks = Feedback::where('userToRateId',$mentor->id);
-
+                $feedbacks = Feedback::where('userToRateId', $mentor->id);
                 $mentor->feedBackCount = $feedbacks->count();
             }
-    
             return $mentors;
         }
-
-        if($request->allowToAppoint == 0){
-           
-          
-           $mentors = $query->whereRaw('FIND_IN_SET(' . $desiredFieldValue . ', users.field)')->paginate(12);
-
-            foreach ($mentors as $mentor) {
-                
-                $feedbacks = Feedback::where('userToRateId',$mentor->id);
-
-                $mentor->feedBackCount = $feedbacks->count();
+    
+        if ($request->allowToAppoint == 0 || $request->allowToAppoint == 1 || $request->allowToAppoint == 2) {
+            if (!empty($desiredFieldValue)) {
+                $mentors = $query->whereRaw('FIND_IN_SET(?, users.field)', [$desiredFieldValue])->paginate(12);
+            } else {
+                // Handle the case when $desiredFieldValue is empty or null
+                // For example, skip the FIND_IN_SET condition
+                $mentors = $query->paginate(12);
             }
-    
-            return $mentors;
-
-        }
-
-        if ($request->allowToAppoint == 1 || $request->allowToAppoint == 2) {
-             $mentors = $query->whereRaw('FIND_IN_SET(' . $desiredFieldValue . ', users.field)')->paginate(12);
     
             foreach ($mentors as $mentor) {
                 $appointment = MentorAppointment::where('studentId', auth()->id())
@@ -108,28 +93,16 @@ class MentorController extends Controller
                     ->where('mentorId', $mentor->id)
                     ->exists();
     
-                if ($appointment) {
-                    
-                    $mentor->hasAppointment = true;
-        
-                } else {
-                    $mentor->hasAppointment = false;
-                
-                }
-
-                $feedbacks = Feedback::where('userToRateId',$mentor->id);
-
+                $mentor->hasAppointment = $appointment;
+    
+                $feedbacks = Feedback::where('userToRateId', $mentor->id);
                 $mentor->feedBackCount = $feedbacks->count();
             }
     
             return $mentors;
         }
-
-     
-    
-       
     }
-
+    
     public function getMentorAppointment(){
         return mentorAppointment::where('appointmentdetails.mentorId', Auth::id())
         ->join('appointmentstatus', 'appointmentstatus.statusId', '=', 'appointmentdetails.status')

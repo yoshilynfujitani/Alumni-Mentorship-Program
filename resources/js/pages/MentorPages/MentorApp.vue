@@ -30,11 +30,12 @@
                 <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
                 <div class="pb-5 flex flex-col">
                     <h1
-                        class="text-green-700 text-sm font-medium flex items-center gap-1"
+                        class="text-green-700 font-medium flex items-center gap-1"
                     >
                         <i class="pi pi-calendar"></i> Available Day for
                         Appointments
                     </h1>
+
                     <div class="flex my-2 gap-3" v-if="!isEdit">
                         <div
                             class="border px-2 py-1 rounded-md bg-white"
@@ -49,9 +50,9 @@
                         </div>
                         <button
                             @click="isEdit = !isEdit"
-                            class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
+                            class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
                         >
-                            Edit Schedule
+                            <i class="pi pi-wrench"></i>
                         </button>
                     </div>
 
@@ -86,21 +87,30 @@
 
                 <div class="pb-5">
                     <h1
-                        class="text-green-700 text-sm font-medium flex items-center gap-1"
+                        class="text-green-700 font-medium flex items-center gap-1"
                     >
                         <i class="pi pi-building"></i> Preferred Field for
                         Appointments
                     </h1>
 
-                    <h1>Select Courses</h1>
                     <div class="flex gap-x-2 flex-wrap">
                         <div
-                            v-for="course in activeCourses"
+                            v-for="course in selectedCourses"
                             :key="course.id"
                             class=""
                         >
                             <div
-                                class="border px-2 py-1 my-1.5 rounded-md flex items-center gap-1"
+                                class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-bold text-white"
+                                :class="{
+                                    'bg-[#e879f9]': course.id === 1,
+                                    'bg-blue-700': course.id === 2,
+                                    'bg-yellow-400': course.id === 3,
+                                    'bg-red-600': course.id === 4,
+                                    'bg-gray-600': course.id === 5,
+                                    'bg-green-600': course.id === 6,
+                                    'bg-[#bef264]': course.id === 7,
+                                    'bg-[#f472b6]': course.id === 8,
+                                }"
                             >
                                 {{ course.name }}
                                 <i
@@ -114,13 +124,24 @@
                     </div>
                     <div class="">
                         <div v-if="!isEditCourses">
-                            <button @click="isEditCourses = !isEditCourses">
-                                Edit Courses
+                            <button
+                                @click="isEditCourses = !isEditCourses"
+                                class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
+                            >
+                                <i class="pi pi-wrench"></i>
                             </button>
                         </div>
                         <div v-else class="">
-                            <h1>Available Field</h1>
-                            <div class="flex gap-x-2">
+                            <h1 class="font-semibold">Available Fields</h1>
+                            <div
+                                class="flex gap-x-2 flex-wrap border my-2.5 p-2.5 border-gray-200 rounded-md"
+                            >
+                                <div
+                                    class=""
+                                    v-if="this.compareEditandActiveCourses()"
+                                >
+                                    All courses selected
+                                </div>
                                 <div
                                     v-for="course in availableCourses"
                                     :key="course.id"
@@ -129,14 +150,36 @@
                                     <button
                                         v-if="!isActive(course)"
                                         @click="toggleCourse(course)"
-                                        class="border px-2 py-1 my-1.5 rounded-md"
+                                        class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-bold text-white"
+                                        :class="{
+                                            'bg-[#e879f9]': course.id === 1,
+                                            'bg-blue-700': course.id === 2,
+                                            'bg-yellow-400': course.id === 3,
+                                            'bg-red-600': course.id === 4,
+                                            'bg-gray-600': course.id === 5,
+                                            'bg-green-600': course.id === 6,
+                                            'bg-[#bef264]': course.id === 7,
+                                            'bg-[#f472b6]': course.id === 8,
+                                        }"
                                     >
                                         {{ course.name }}
                                     </button>
                                 </div>
                             </div>
-                            <button @click="saveCourses">Save Courses</button>
-                            <button @click="cancelEditCourses">Cancel</button>
+                            <div class="space-x-2">
+                                <button
+                                    @click="saveCourses"
+                                    class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
+                                >
+                                    Save Courses
+                                </button>
+                                <button
+                                    @click="cancelEditCourses"
+                                    class="font-bold border px-4 py-1 rounded-md"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -639,30 +682,35 @@ export default {
         cancelEditCourses() {
             this.selectedCourses = [...this.activeCourses];
             this.isEditCourses = !this.isEditCourses;
+
+            console.log(this.selectedCourses);
+            console.log(this.activeCourses);
         },
         toggleCourse(course) {
-            const index = this.activeCourses.findIndex(
+            console.log(this.compareEditandActiveCourses());
+            const index = this.selectedCourses.findIndex(
                 (c) => c.id === course.id
             );
             if (index === -1) {
                 // Course not found in activeCourses, add it
-                this.activeCourses.push(course);
+                this.selectedCourses.push(course);
             } else {
                 // Course found in activeCourses, remove it
-                this.activeCourses.splice(index, 1);
+                this.selectedCourses.splice(index, 1);
             }
         },
         isActive(course) {
-            return this.activeCourses.some((c) => c.id === course.id);
+            return this.selectedCourses.some((c) => c.id === course.id);
         },
         saveCourses() {
-            const CourseId = this.activeCourses.map((course) => course.id);
+            const CourseId = this.selectedCourses.map((course) => course.id);
             const FieldId = CourseId.join(",");
             console.log(FieldId);
 
             axios
                 .post("/updatefield", { FieldId: FieldId })
                 .then((data) => {
+                    this.getField();
                     this.isEditCourses = !this.isEditCourses;
                 })
                 .catch((error) => {
@@ -676,18 +724,34 @@ export default {
                 .then((data) => {
                     console.log(data.data);
                     //data data is only printing the course id like 123 it does not contain the course name how to map
-                    const idStrings = data.data.toString().split("");
+                    const idStrings = data.data.toString().split(",");
                     this.activeCourses = idStrings.map((courseId) => {
                         // Map each course ID to its corresponding name
                         return this.availableCourses.find(
                             (course) => course.id === parseInt(courseId, 10)
                         );
                     });
+                    this.selectedCourses = [...this.activeCourses];
                 })
                 .catch((error) => {
                     // Handle error
                     console.error("Error saving courses:", error);
                 });
+        },
+
+        compareEditandActiveCourses() {
+            const { selectedCourses, availableCourses } = this;
+            var objectsAreSame = true;
+            for (var propertyName in selectedCourses) {
+                if (
+                    selectedCourses[propertyName] !==
+                    availableCourses[propertyName]
+                ) {
+                    objectsAreSame = false;
+                    break;
+                }
+            }
+            return objectsAreSame;
         },
     },
 
