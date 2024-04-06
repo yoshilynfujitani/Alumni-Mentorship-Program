@@ -3,12 +3,12 @@
         <div class="flex justify-center cursor-auto">
             <button
                 @click="modalopened"
-                class="transition-all px-3 py-2 rounded-md text-white text-sm"
+                class="transition-all px-4 py-2 rounded-md text-white text-sm"
                 type="button"
                 :disabled="modalContent.disablebtn"
                 :class="{
                     'bg-green-500 hover:bg-green-600': !type,
-                    'bg-blue-500 hover:bg-lblue-600': type === 'rate',
+                    'bg-blue-500 hover:bg-blue-600': type === 'rate',
                     'cursor-not-allowed': modalContent.disablebtn,
                     'bg-yellow-300 hover:bg-yellow-400': type === 'edit',
                 }"

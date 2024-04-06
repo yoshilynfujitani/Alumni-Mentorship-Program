@@ -58,6 +58,7 @@ Route::get("/getAllowToAppointStatus", [StudentLoginController::class, "getUserA
 Route::post("/getConvoId", [ConvoController::class, "getConvoId"]);
 Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
 Route::post("/searchConvo", [ConvoController::class, "searchConvo"]);
+Route::post("/searchMentor", [MentorController::class, "searchMentor"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

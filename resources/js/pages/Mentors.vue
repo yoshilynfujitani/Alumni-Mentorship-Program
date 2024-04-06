@@ -17,10 +17,16 @@
             <div
                 class="bg-white border border-gray-200 rounded-md p-5 my-5 w-full"
             >
-                <div class="px-1">
-                    <div class="w-80 my-2.5">
+                <div
+                    class="mx-5 mb-2.5 text-lg font-semibold text-green-700"
+                    v-if="this.allowToAppoint === 1"
+                >
+                    Mentors from Requested Field
+                </div>
+                <div class="mx-5 mb-2.5" v-else>
+                    <div class="w-80">
                         <span class="text-sm font-medium text-green-600"
-                            >Sort By</span
+                            >Filter Mentors</span
                         >
                         <Dropdown
                             v-model="selectedCourse"
@@ -32,10 +38,27 @@
                         />
                     </div>
                 </div>
+
+                <div class="mx-5 mb-2.5">
+                    <input
+                        class="rounded-md border-gray-200"
+                        placeholder="Search Mentor"
+                        v-model="mentorQuery"
+                    />
+                    <button
+                        @click="searchMentor(1)"
+                        class="text-white bg-green-600 px-3 py-2 rounded-md ml-2"
+                    >
+                        <i class="pi pi-search"></i>
+                    </button>
+                </div>
                 <div
-                    class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 gap-5 mx-auto h-full w-full auto-rows-fr"
+                    class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 gap-2"
                 >
-                    <div class="mx-auto" v-for="Mentor in mentors">
+                    <div class="mx-5" v-if="this.mentors?.length === 0">
+                        Mentor not found
+                    </div>
+                    <div class="mx-5 my-1" v-for="Mentor in mentors" v-else>
                         <MentorCard
                             :MentorDetails="Mentor"
                             :displaybtn="
@@ -86,6 +109,7 @@ export default {
             ],
             selectedCourse: null,
             pagination: null,
+            mentorQuery: "",
         };
     },
     computed: {
@@ -107,7 +131,6 @@ export default {
                     selectedCourseId: selectedCourse ? selectedCourse.id : null,
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.mentors = data.data;
                     this.pagination = data;
                 });
@@ -133,7 +156,7 @@ export default {
             this.isLoading = true;
 
             axios
-                .get(
+                .post(
                     `/getmentorstudent?page=${page}&field=${
                         this.selectedCourse.id ? this.selectedCourse.id : null
                     }`
@@ -149,6 +172,21 @@ export default {
                 })
                 .finally(() => {
                     this.isLoading = false;
+                });
+        },
+        searchMentor() {
+            const { fieldToTake, mentorQuery } = this;
+            const searchBy = this.allowToAppoint ? 1 : null;
+            axios
+                .post("/searchMentor", {
+                    fieldToTake: fieldToTake,
+                    mentorQuery: mentorQuery,
+                    searchBy: searchBy,
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                    this.mentors = data.data;
+                    this.pagination = data;
                 });
         },
     },

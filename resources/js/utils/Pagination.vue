@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="flex items-center gap-1 px-5 rounded-md w-fit m-2">
+    <div class="flex items-center gap-1 px-2.5 rounded-md w-fit m-2">
         <div v-if="current_page > 0">
             <button
                 @click="back"
@@ -11,7 +11,7 @@
             </button>
         </div>
         <h1 class="border px-4 py-1 rounded-md border-gray-200 text-gray-500">
-            {{ current_page }}
+            {{ current_page ? current_page : 1 }}
         </h1>
         <div v-if="current_page > 0">
             <button

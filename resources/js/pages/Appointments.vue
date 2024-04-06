@@ -90,13 +90,16 @@
                             <td
                                 class="px-6 py-4 flex items-center justify-center gap-2"
                             >
-                                <div class="" v-if="appointment.Status === 2">
+                                <div
+                                    class="flex items-center justify-center"
+                                    v-if="appointment.Status === 2"
+                                >
                                     <button
                                         label="View"
                                         @click="visible = true"
-                                        class="text-sm"
+                                        class="transition-all bg-red-500 text-white flex items-center gap-1 px-4 py-2 rounded-md hover:bg-red-700 ml-2"
                                     >
-                                        View
+                                        <i class="pi pi-eye"></i> View
                                     </button>
                                     <Dialog
                                         v-model:visible="visible"

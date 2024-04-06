@@ -112,13 +112,16 @@ class AppointmentController extends Controller
         if($request->role == 1) {
             $appointments->where('appointmentdetails.studentId', Auth::id())
                 ->select('field.fieldName', 'field.id')
-                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.studentId = ' . Auth::id() . ') as count'));
-        }
+                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.studentId = ' . Auth::id() . ') as count'))
+                ->groupBy('field.fieldName', 'field.id');
+            }
         elseif($request->role == 2) {
             $appointments->where('appointmentdetails.mentorId', Auth::id())
                 ->select('field.fieldName', 'field.id')
-                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.mentorId = ' . Auth::id() . ') as count'));
-        }
+                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.fieldId AND appointmentdetails.mentorId = ' . Auth::id() . ') as count'))
+                ->groupBy('field.fieldName', 'field.id');
+        
+            }
 
         $appointments = $appointments->get();
 
