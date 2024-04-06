@@ -134,21 +134,20 @@
                         <div v-else class="">
                             <h1 class="font-semibold">Available Fields</h1>
                             <div
-                                class="flex gap-x-2 flex-wrap border my-2.5 p-2.5 border-gray-200 rounded-md"
+                                class="flex flex-wrap border my-2.5 p-2.5 border-gray-200 rounded-md"
                             >
-                                <div
+                                <!-- <div
                                     class=""
-                                    v-if="this.compareEditandActiveCourses()"
+                                    v-if="!this.compareEditandActiveCourses()"
                                 >
                                     All courses selected
-                                </div>
+                                </div> -->
                                 <div
                                     v-for="course in availableCourses"
                                     :key="course.id"
                                     class=""
                                 >
                                     <button
-                                        v-if="!isActive(course)"
                                         @click="toggleCourse(course)"
                                         class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-bold text-white"
                                         :class="{
@@ -160,6 +159,8 @@
                                             'bg-green-600': course.id === 6,
                                             'bg-[#bef264]': course.id === 7,
                                             'bg-[#f472b6]': course.id === 8,
+                                            hidden: isActive(course),
+                                            'mr-2': !isActive(course),
                                         }"
                                     >
                                         {{ course.name }}
@@ -744,7 +745,7 @@ export default {
             var objectsAreSame = true;
             for (var propertyName in selectedCourses) {
                 if (
-                    selectedCourses[propertyName] !==
+                    selectedCourses[propertyName] ===
                     availableCourses[propertyName]
                 ) {
                     objectsAreSame = false;
