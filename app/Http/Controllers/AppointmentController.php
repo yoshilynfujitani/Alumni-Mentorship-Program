@@ -34,7 +34,9 @@ class AppointmentController extends Controller
     
         return $res;
     }
-    public function getOngoingAppointments(){
+    public function getOngoingAppointments(Request $request){
+
+        if($request->userType === 1){
         $data = DB::table(DB::raw('adminportal.users AS users'))
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
@@ -44,8 +46,21 @@ class AppointmentController extends Controller
         ->orderBy("appt.created_at")
         ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
         ->paginate(5);
-       
+        }
+        else if($request->userType === 2){
+        $data = DB::table(DB::raw('adminportal.users AS users'))
+        ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.studentId')
+        ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
+        ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy','=','reqby.id')
+        ->where("mentorId",Auth::id())
+        ->where("StatusId", 1)
+        ->orWhere("StatusId", 0)
+        ->orderBy("appt.created_at")
+        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
+        ->paginate(5);
+        }
         
+       
         return $data;
     }
     public function getCountTotalAppointments(){

@@ -24,15 +24,17 @@ class MessageSent implements ShouldBroadcast
     public $message;
     public $userId;
     public $appointmentId;
+    public $created_at;
 
 
-    public function __construct($message, $userId, $appointmentId)
+    public function __construct($message, $userId, $appointmentId, $created_at)
     {
         //
     
         $this->message = $message;
         $this->userId = $userId;
         $this->appointmentId = $appointmentId;
+        $this->created_at = $created_at;
     }
 
     /**

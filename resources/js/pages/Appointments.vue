@@ -125,7 +125,10 @@
                                 </div>
                                 <div
                                     class="px-4 py-2 border-dashed border rounded border-gray-300 text-gray-300 font-thin"
-                                    v-if="appointment.Status === 1"
+                                    v-if="
+                                        appointment.Status === 1 ||
+                                        appointment.Status === 0
+                                    "
                                 >
                                     Unavailable
                                 </div>

@@ -12,7 +12,7 @@
             <div class="flex items-center w-full justify-between mb-2">
                 <div class="">
                     <h1
-                        class="gap-1 flex items-center text-2xl font-bold  pb-2.5"
+                        class="gap-1 flex items-center text-2xl font-bold pb-2.5"
                     >
                         <span
                             ><i
@@ -418,11 +418,13 @@ export default {
         ...mapActions(["setUserTicketStatusAction"]),
         getAppointments() {
             this.loading = true;
-            axios.get("/getOngoingAppointments").then(({ data }) => {
-                this.appointments = data.data;
-                this.pagination = data;
-                this.loading = false;
-            });
+            axios
+                .post("/getOngoingAppointments", { userType: 1 })
+                .then(({ data }) => {
+                    this.appointments = data.data;
+                    this.pagination = data;
+                    this.loading = false;
+                });
         },
         getCountTotalAppointments() {
             axios.get("/getCountTotalAppointments").then(({ data }) => {

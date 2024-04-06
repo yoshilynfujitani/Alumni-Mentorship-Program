@@ -191,21 +191,14 @@
                         'min-h-[100px]': this.appointments?.length === 0,
                     }"
                 >
-                    <div class="w-full">
-                        <div
-                            class="px-16 w-full flex items-center justify-center gap-10"
-                        >
-                            <!-- <DatePicker
-                            expanded
-                            borderless
-                            :attributes="attributes"
-                        /> -->
-
+                    <div class="">
+                        <div class="flex items-center justify-center gap-10">
                             <Calendar
+                                v-model="date"
                                 inline
-                                showWeek
                                 :numberOfMonths="1"
                                 :minDate="minDate"
+                                class=""
                             />
                             <div class="border p-5 rounded border-gray-200">
                                 <h1
@@ -328,130 +321,104 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="w-full flex items-center justify-center mr-20"
-                        >
-                            <table
-                                class="w-full text-sm text-gray-500 dark:text-gray-400"
+                        <div class="w-full">
+                            <h1
+                                class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
                             >
-                                <caption
-                                    class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
-                                >
-                                    Your Appointments
-                                </caption>
-                                <div
-                                    class="mx-5 flex items-center justify-center"
-                                    v-if="this.appointments?.length == 0"
-                                >
-                                    <h1
-                                        class="flex flex-col items-center gap-5"
+                                Your Appointments
+                            </h1>
+
+                            <div
+                                class="mx-5 flex items-center justify-center"
+                                v-if="this.appointments?.length == 0"
+                            >
+                                <h1 class="flex flex-col items-center gap-5">
+                                    <i
+                                        class="pi pi-calendar-times text-6xl text-gray-300"
+                                    ></i>
+                                    <span class="text-gray-500"
+                                        >You have no ongoing appointments.</span
                                     >
-                                        <i
-                                            class="pi pi-calendar-times text-6xl text-gray-300"
-                                        ></i>
-                                        <span class="text-gray-500"
-                                            >You have no ongoing
-                                            appointments.</span
+                                </h1>
+                            </div>
+                            <div class="flex flex-col" v-else>
+                                <table class="text-sm">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 py-10"
+                                    >
+                                        <tr class="">
+                                            <th scope="col" class="py-2.5">
+                                                Request Title
+                                            </th>
+                                            <th scope="col" class="">Field</th>
+                                            <th scope="col" class="">
+                                                Start Date
+                                            </th>
+                                            <th scope="col" class="">
+                                                Student
+                                            </th>
+                                            <th scope="" class="pr-2.5">
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        <tr
+                                            v-for="appointment in appointments"
+                                            :key="appointment.appointmentId"
+                                            class="bg-white dark:bg-gray-800 dark:border-gray-700"
                                         >
-                                    </h1>
-                                </div>
-                                <div class="flex flex-col" v-else>
-                                    <table>
-                                        <thead
-                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-                                        >
-                                            <tr>
-                                                <th
-                                                    scope="col"
-                                                    class="py-4 w-header"
-                                                >
-                                                    Request Title
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="w-header"
-                                                >
-                                                    Field
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="w-header"
-                                                >
-                                                    Start Date
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="w-header"
-                                                >
-                                                    Mentor
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="w-header"
-                                                >
-                                                    Status
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-center">
-                                            <tr
-                                                v-for="appointment in appointments"
-                                                class="bg-white dark:bg-gray-800 dark:border-gray-700"
+                                            <th
+                                                scope="row"
+                                                class="font-medium py-4 text-gray-900 whitespace-nowrap dark:text-white"
                                             >
-                                                <th
-                                                    scope="row"
-                                                    class="font-medium py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                                                {{ appointment.title }}
+                                            </th>
+                                            <td>{{ appointment.field }}</td>
+                                            <td>
+                                                {{
+                                                    moment(
+                                                        appointment.startSchedule,
+                                                        "YYYY-MM-DD HH:mm:ss"
+                                                    ).format("MMMM Do YYYY")
+                                                }}
+                                            </td>
+                                            <td>{{ appointment.name }}</td>
+                                            <td class="pr-2.5">
+                                                <h1
+                                                    class="font-bold"
+                                                    :class="{
+                                                        'text-yellow-400':
+                                                            appointment.Status ===
+                                                            0,
+                                                        'text-green-400':
+                                                            appointment.Status ===
+                                                            1,
+                                                        'text-red-400':
+                                                            appointment.Status ===
+                                                            2,
+                                                        'text-green-700':
+                                                            appointment.Status ===
+                                                            3,
+                                                    }"
                                                 >
-                                                    {{ appointment.title }}
-                                                </th>
-                                                <td>{{ appointment.field }}</td>
-                                                <td>
-                                                    {{
-                                                        moment(
-                                                            appointment.startSchedule,
-                                                            "YYYY-MM-DD HH:mm:ss"
-                                                        ).format("MMMM Do YYYY")
-                                                    }}
-                                                </td>
-                                                <td>{{ appointment.name }}</td>
-                                                <td>
-                                                    <h1
-                                                        class="font-bold"
-                                                        :class="{
-                                                            'text-yellow-400':
-                                                                appointment.Status ===
-                                                                0,
-                                                            'text-green-400':
-                                                                appointment.Status ===
-                                                                1,
-                                                            'text-red-400':
-                                                                appointment.Status ===
-                                                                2,
-                                                            'text-green-700':
-                                                                appointment.Status ===
-                                                                3,
-                                                        }"
-                                                    >
-                                                        {{
-                                                            appointment.statusName
-                                                        }}
-                                                    </h1>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </table>
+                                                    {{ appointment.statusName }}
+                                                </h1>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <!-- <div class="my-5" v-if="this.appointments?.length > 0">
-                        <Pagination
-                            @next="goToNextPage"
-                            @back="goToPrevPage"
-                            :total="this.pagination?.total"
-                            :current_page="this.pagination?.current_page"
-                            :last_page="this.pagination?.last_page"
-                        />
-                    </div> -->
+                        <div class="mt-5" v-if="this.appointments?.length > 0">
+                            <Pagination
+                                @next="goToNextPage"
+                                @back="goToPrevPage"
+                                :total="this.pagination?.total"
+                                :current_page="this.pagination?.current_page"
+                                :last_page="this.pagination?.last_page"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div class="flex gap-10 my-10 w-full">
@@ -498,6 +465,7 @@ export default {
     },
     data() {
         return {
+            date: null,
             appointments: [],
             loading: false,
             selectedField: null,
@@ -579,12 +547,15 @@ export default {
         ...mapActions(["setUserTicketStatusAction"]),
         getAppointments() {
             this.loading = true;
-            axios.get("/getOngoingAppointments").then(({ data }) => {
-                this.appointments = data.data;
-                this.pagination = data;
+            axios
+                .post("/getOngoingAppointments", { userType: 2 })
+                .then(({ data }) => {
+                    console.log(data);
+                    this.appointments = data.data;
+                    this.pagination = data;
 
-                this.loading = false;
-            });
+                    this.loading = false;
+                });
         },
         getCountTotalAppointments() {
             axios.get("/getCountTotalAppointments").then(({ data }) => {
@@ -760,14 +731,38 @@ export default {
         this.getAppointments();
     },
     mounted() {
-        // this.refecthAppointments();
         this.setUserTicketStatusAction();
         this.minDate = this.getToday();
         this.getCountTotalAppointments();
         this.getLatestSchedule();
         this.getField();
-        // console.log(this.$store.getters.userDetails);
+
+        var titleElement = document.querySelector(
+            ".p-calendar .p-datepicker-title"
+        );
+
+        if (titleElement) {
+            var titleText = titleElement.textContent.trim();
+            var month = titleText.substring(0, titleText.length - 4);
+            var year = titleText.substring(titleText.length - 4);
+            var newTextContent = month + " " + year;
+            titleElement.textContent = newTextContent;
+        }
     },
 };
 </script>
-<style></style>
+
+<style>
+.p-calendar .p-datepicker-title {
+    font-weight: 600;
+    color: green;
+    word-spacing: 5px;
+}
+.p-calendar .p-datepicker-title::after {
+    content: " ";
+}
+
+.p-calendar .p-datepicker-title::after {
+    content: attr(data-month) " " attr(data-year);
+}
+</style>

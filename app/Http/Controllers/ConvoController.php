@@ -27,10 +27,11 @@ class ConvoController extends Controller
         $newConvo->userId = Auth::id();
         $newConvo->appointmentId = $request->appointmentId;
         $newConvo->chats = $request->message;
+        $newConvo->created_at = $request->created_at;
 
         $newConvo->save();
 
-        return event(new MessageSent($request->message, Auth::id(), $request->appointmentId ));
+        return event(new MessageSent($request->message, Auth::id(), $request->appointmentId, $request->created_at ));
     }
 
     public function getConvoId(Request $request){

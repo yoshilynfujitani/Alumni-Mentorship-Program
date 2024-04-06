@@ -1,24 +1,42 @@
 <template lang="">
     <LayoutMentor>
-        <div class="my-10 flex w-full gap-5 h-screen">
+        <div class="my-10 flex w-full gap-5 h-screen pb-20">
             <!-- Message Headers -->
             <div
                 class="p-5 bg-white rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-50 scrollbar-track-gray-50"
             >
-            <div class="">
-                <h1 class="font-bold text-2xl py-2">Messages</h1>
-                <div class="w-full flex justify-between ">
-                  <div class="relative">  
-                    <input v-model="titleQuery" class="border border-gray-200 rounded-md active:border-green-200 focus:border-green-200"  placeholder="Appointment title...">
-                    <button @click="clearQuery" v-if="this.titleQuery" class="rounded-full  px-1.5 text-xs flex items-center justify-center text-gray-300 absolute right-1 top-3 "><i class="pi pi-times-circle"></i></button></div>
-                    
-                    <button @click="searchConvo" class="transition-all bg-green-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-green-500" >Search</button>
+                <div class="">
+                    <h1 class="font-bold text-2xl py-2">Messages</h1>
+                    <div class="w-full flex justify-between">
+                        <div class="relative">
+                            <input
+                                v-model="titleQuery"
+                                class="border border-gray-200 rounded-md active:border-green-200 focus:border-green-200"
+                                placeholder="Appointment title..."
+                            />
+                            <button
+                                @click="clearQuery"
+                                v-if="this.titleQuery"
+                                class="rounded-full px-1.5 text-xs flex items-center justify-center text-gray-300 absolute right-1 top-3"
+                            >
+                                <i class="pi pi-times-circle"></i>
+                            </button>
+                        </div>
+
+                        <button
+                            @click="searchConvo"
+                            class="transition-all bg-green-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-green-500"
+                        >
+                            Search
+                        </button>
+                    </div>
                 </div>
-            </div>
-                <div class="" >
-                    <h1 class="font-semibold py-2 text-green-700">Recent Conversation</h1>
+                <div class="">
+                    <h1 class="font-semibold py-2 text-green-700">
+                        Recent Conversation
+                    </h1>
                     <div
-                        class="rounded-md bg-gray-50 px-4 py-2  my-1 cursor-pointer"
+                        class="rounded-md bg-gray-50 px-4 py-2 my-1 cursor-pointer"
                         :class="{
                             'border-2 border-green-500':
                                 this.ConvoId === Inbox.appointmentId,
@@ -78,33 +96,40 @@
                         class="overflow-y-scroll min-h-full h-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
                         v-else
                     >
-                        <div
-                            class="flex flex-col min-h-full max-h-full"
-                            id="chats"
-                            ref="chats"
-                        >
-                            <h1
-                                v-for="chats in chat"
-                                :key="chats.id"
-                                class="w-auto text-gray-900 my-1 max-w-xs"
-                                :ref="'chatIndex' + chats.id"
-                                :class="{
-                                    'self-start text-left':
-                                        chats.userId !== this.userId,
-                                    'self-end text-right':
-                                        chats.userId === this.userId,
-                                    'bg-gray-200 w-fit px-4 py-2 rounded-full ':
-                                        chats.userId !== this.userId,
-                                    'bg-green-200 w-fit px-4 py-2 rounded-full ':
-                                        chats.userId === this.userId,
-                                    hidden:
-                                        chats.appointmentId !== this.ConvoId,
-                                }"
-                            >
-                                <h1 :class="{}">
-                                    {{ chats.chats }}
+                        <div class="flex flex-col" id="chats" ref="chats">
+                            <div class="flex flex-col">
+                                <h1
+                                    v-for="chats in chat"
+                                    :key="chats.id"
+                                    :ref="'chatIndex' + chats.id"
+                                    class="w-auto flex items-center  text-gray-900 my-1 self-end relative"
+                                >
+                                <p class="text-sm text-gray-400 mr-2"> {{
+                                    moment(
+                                        chats.created_at,
+                                        "YYYY-MM-DD HH:mm:ss"
+                                    ).format(" HH:mm:ss")
+                                }}</p>
+                                    <h1
+                                        class=""
+                                        :class="{
+                                            'self-start text-left':
+                                                chats.userId !== this.userId,
+                                            'self-end text-right':
+                                                chats.userId === this.userId,
+                                            'bg-gray-200 w-fit px-4 py-2 rounded-full ':
+                                                chats.userId !== this.userId,
+                                            'bg-green-200 w-fit px-4 py-2 rounded-full ':
+                                                chats.userId === this.userId,
+                                            hidden:
+                                                chats.appointmentId !==
+                                                this.ConvoId,
+                                        }"
+                                    >
+                                        {{ chats.chats }}
+                                    </h1>
                                 </h1>
-                            </h1>
+                            </div>
                         </div>
                     </div>
 
@@ -161,6 +186,7 @@
 import { mapState, mapActions } from "vuex";
 import _debounce from "lodash/debounce";
 import LayoutMentor from "../../Layout/LayoutMentor.vue";
+import moment from "moment";
 export default {
     computed: {
         ...mapState(["userId"]),
@@ -178,6 +204,7 @@ export default {
             chat: [],
             message: "",
             listenerStatus: {},
+            moment,
         };
     },
 
@@ -190,6 +217,7 @@ export default {
                     name: "mentorchat",
                     params: { id: parseInt(id) },
                 });
+                console.log(data);
                 this.chat = [];
                 this.chat = data;
 
@@ -203,7 +231,7 @@ export default {
             });
         },
         getConvoId() {
-            axios.post("/getConvoId", {role: 2}).then(({ data }) => {
+            axios.post("/getConvoId", { role: 2 }).then(({ data }) => {
                 console.log(data);
                 this.inbox = data;
             });
@@ -211,22 +239,27 @@ export default {
         searchConvo() {
             const { titleQuery } = this;
 
-            axios.post("/searchConvo", { titleQuery, role: 2  }).then(({ data }) => {
-                console.log(data);
-                this.inbox = data;
-            });
+            axios
+                .post("/searchConvo", { titleQuery, role: 2 })
+                .then(({ data }) => {
+                    console.log(data);
+                    this.inbox = data;
+                });
         },
-        clearQuery(){
-            this.titleQuery = ""
-            this.getConvoId()
+        clearQuery() {
+            this.titleQuery = "";
+            this.getConvoId();
         },
         sendChat: _debounce(function () {
             const { message, ConvoId } = this;
+            let created_at = new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' ');
+
 
             axios
                 .post("/sendconvo", {
                     appointmentId: ConvoId,
                     message,
+                    created_at: created_at
                 })
                 .then(({ data }) => {
                     console.log("Message sent successfully:", data);
@@ -271,6 +304,8 @@ export default {
                         chats: e.message,
                         userId: e.userId,
                         appointmentId: e.appointmentId,
+                        created_at: e.created_at
+                        
                     });
                     this.scrollToEnd(); // Scroll to the end when a new message is received
                 }
