@@ -1,14 +1,17 @@
-<template lang="">
+<template>
     <LayoutPDC>
-        <div class="self-start space-x-2">
+        <Toast />
+        <div class="self-start">
             <div class="self-start">
-                <h1 class="flex items-center text-2xl gap-1 font-medium">
+                <h1 class="flex items-center text-2xl gap-1 font-bold">
                     <i class="pi pi-users text-2xl text-yellow-400"></i>
-                    <span class="text-green-700">Mentors</span>
+                    <span class="">Mentors</span>
                 </h1>
             </div>
-            <div class="w-80 my-2.5">
-                <span class="text-sm font-medium text-green-600">Sort By</span>
+            <div class="mb-5">
+                <span class="text-sm font-medium text-green-600"
+                    >Search Mentors By</span
+                >
                 <Dropdown
                     v-model="fetchMentorBy"
                     :options="this.mentorStatus"
@@ -20,12 +23,6 @@
             </div>
         </div>
 
-        <!-- <div class="grid grid-cols-4 gap-5 mx-auto my-10">
-            <div class="mx-auto" v-for="Mentor in mentors">
-                <MentorCard :MentorDetails="Mentor" />
-            </div>
-
-        </div> -->
         <div v-if="isLoading">
             <UnSpinnerAlt class="animate-spin text-green-500" />
         </div>
@@ -56,8 +53,7 @@
                         </th>
                         <th
                             scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
-                            v-if="fetchMentorBy?.id === 0"
+                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-center"
                         >
                             Others
                         </th>
@@ -79,25 +75,212 @@
                                 alt="Avatar"
                             />{{ Mentor.name }}
                         </th>
-                        <td class="px-6 py-4">{{ Mentor.statusName }}</td>
+                        <td class="px-6 py-4">{{ Mentor.course }}</td>
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {{ Mentor.fieldName }}
                         </td>
                         <td
                             class="px-6 py-4 flex justify-center"
-                            v-if="fetchMentorBy == null"
+                            v-if="fetchMentorBy.id == 2"
                         >
-                            <h1
-                                class="font-bold"
-                                :class="{
-                                    'text-yellow-400': Mentor.verified === 0,
-                                    'text-green-400': Mentor.verified === 1,
-                                    'text-red-400': Mentor.verified === 2,
-                                    'text-green-700': Mentor.verified === 3,
-                                }"
+                            <button
+                                @click="openDialog(Mentor)"
+                                class="bg-blue-400 text-white px-2 py-1 rounded-md flex items-center justify-center"
                             >
-                                {{ Mentor.statusName }}
-                            </h1>
+                                <i class="pi pi-eye"></i>
+                            </button>
+                            <Dialog
+                                v-model:visible="Mentor.visible"
+                                modal
+                                :header="Mentor.name + '\'s Profile'"
+                                @hide="onDialogClose"
+                            >
+                                <div
+                                    class="flex gap-5 border border-gray-100 rounded p-2"
+                                >
+                                    <img
+                                        class="w-24 h-24 mb-3 rounded-full shadow-lg"
+                                        src="../../../../public/DefaultAvatar.webp"
+                                        alt="Avatar"
+                                    />
+                                    <div class="">
+                                        <label
+                                            for=""
+                                            class="text-sm text-green-700 font-medium"
+                                            >Mentor's Field</label
+                                        >
+                                        <h1>{{ Mentor.fieldName }}</h1>
+
+                                        <label
+                                            for=""
+                                            class="text-sm text-green-700 font-medium"
+                                            >Mentor's Rating</label
+                                        >
+                                        <div class="" v-if="!Mentor.rating">
+                                            <h1
+                                                class="text-xs my-1 italic text-gray-400"
+                                            >
+                                                Mentor has no ratings
+                                            </h1>
+                                        </div>
+                                        <div class="" v-else>
+                                            {{ Mentor.rating }}
+
+                                            <i
+                                                class="pi pi-star-fill text-sm text-yellow-400"
+                                            ></i>
+                                            <span class="text-gray-400 text-sm">
+                                                ({{ Mentor.feedBackCount }})
+                                                reviews</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pb-5 flex flex-col">
+                                    <h1
+                                        class="text-green-700 text-sm font-medium py-2.5 flex items-center gap-1"
+                                    >
+                                        <i class="pi pi-calendar"></i> Available
+                                        Day for Appointments
+                                    </h1>
+                                    <div
+                                        class="flex space-x-2.5 border-gray-200 text-gray-200"
+                                    >
+                                        <div
+                                            class="border px-2 py-1 rounded-md"
+                                            v-for="day in daysOfTheWeek"
+                                            :class="{
+                                                'border-blue-600 border-2 text-blue-600':
+                                                    isActiveDay(day.id),
+                                            }"
+                                        >
+                                            <p class="font-semibold">
+                                                {{ day.name }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <h1 class="text-green-700 font-medium">
+                                        <i class="pi pi-megaphone"></i> Most
+                                        Recent Feedbacks
+                                    </h1>
+                                    <div
+                                        class="text-center text-gray-400 py-20"
+                                        v-if="recentFeedbacks?.length === 0"
+                                    >
+                                        <i
+                                            class="pi pi-ban text-sm text-gray-400"
+                                        ></i>
+                                        No Info to show
+                                    </div>
+                                    <div
+                                        class="border border-gray-200 my-2 rounded-md p-2.5"
+                                        :key="feedback.id"
+                                        v-for="feedback in recentFeedbacks"
+                                        v-else
+                                    >
+                                        <h1 class="text-gray-400 text-sm">
+                                            Anonymous (<span
+                                                >{{ feedback.rating }}
+                                                <i
+                                                    class="pi pi-star-fill text-sm text-yellow-400"
+                                                ></i></span
+                                            >)
+                                        </h1>
+                                        <p>{{ feedback?.comments }}</p>
+                                    </div>
+                                </div>
+                            </Dialog>
+                            <button
+                                @click="openSchedule(Mentor)"
+                                class="bg-green-600 text-white font-semibold px-2 py-1 rounded-md ml-2"
+                            >
+                                Schedule
+                            </button>
+                            <Dialog
+                                v-model:visible="Mentor.schedVisible"
+                                modal
+                                :header="Mentor.name + '\'s Schedule History'"
+                                @hide="onDialogClose"
+                            >
+                                <div
+                                    v-if="schedule?.length === 0"
+                                    class="text-center"
+                                >
+                                    No schedule available
+                                </div>
+                                <div class="" v-else>
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                    >
+                                        <tr class="">
+                                            <th scope="col" class="pl-6 py-2">
+                                                Available Day for Appointment
+                                            </th>
+                                            <th scope="col" class="text-center">
+                                                Effective Date
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="(day, index) in schedule"
+                                            :key="index"
+                                            class="border-b border-gray-200 dark:border-gray-700"
+                                        >
+                                            <td
+                                                v-if="this.schedule"
+                                                class="px-6 py-4 font-medium whitespace-nowrap"
+                                            >
+                                                <div class="flex gap-2">
+                                                    <div
+                                                        class="px-2 py-1 text-lg border rounded-md font-semibold"
+                                                        v-for="dayOfWeek in daysOfTheWeek"
+                                                        :key="dayOfWeek.id"
+                                                        :class="{
+                                                            'border-blue-600 text-blue-600  ':
+                                                                day.days.includes(
+                                                                    dayOfWeek.id
+                                                                ),
+                                                            'border-red-200 text-red-500':
+                                                                !day.days.includes(
+                                                                    dayOfWeek.id
+                                                                ),
+                                                        }"
+                                                    >
+                                                        {{ dayOfWeek.name }}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 text-center text-sm"
+                                            >
+                                                {{
+                                                    moment(
+                                                        day.created_at,
+                                                        "YYYY-MM-DD HH:mm:ss"
+                                                    ).format("MMMM Do YYYY")
+                                                }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <div class="my-5">
+                                        <Pagination
+                                            @next="goToNextPageSched"
+                                            @back="goToPrevPageSched"
+                                            :total="this.paginationSched?.total"
+                                            :current_page="
+                                                this.paginationSched
+                                                    ?.current_page
+                                            "
+                                            :last_page="
+                                                this.paginationSched?.last_page
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                            </Dialog>
                         </td>
                         <td
                             class="px-6 py-4 text-center"
@@ -106,13 +289,13 @@
                             <ConfirmPopup></ConfirmPopup>
                             <div class="flex gap-2 justify-content-center">
                                 <button
-                                    @click="AcceptRequest($event, 1)"
+                                    @click="AcceptRequest($event, 1, Mentor.id)"
                                     class="px-2 py-1 bg-green-400 text-white rounded font-medium"
                                 >
                                     Approve
                                 </button>
                                 <button
-                                    @click="RejectRequest($event, 2)"
+                                    @click="RejectRequest($event, 2, Mentor.id)"
                                     class="px-2 py-1 bg-red-400 text-white rounded font-medium"
                                 >
                                     Reject
@@ -123,6 +306,7 @@
                             <AppointmentForm
                                 :MentorDetails="Mentor"
                                 type="pdc"
+                                @sent="runToast"
                             />
                         </td>
                     </tr>
@@ -147,6 +331,8 @@ import Dropdown from "primevue/dropdown";
 import ConfirmPopup from "primevue/confirmpopup";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
+import moment from "moment";
+import Toast from "primevue/toast";
 
 export default {
     components: {
@@ -158,45 +344,105 @@ export default {
         ConfirmPopup,
         Button,
         Dialog,
+        Toast,
     },
     data() {
         return {
             mentors: [],
             pagination: {},
-            fetchMentorBy: null,
+            fetchMentorBy: { id: 2, name: "All" },
             mentorStatus: [
+                { id: 2, name: "All" },
                 { id: 0, name: "Active" },
                 { id: 1, name: "Pending" },
-                { id: 2, name: "All" },
+            ],
+            daysOfTheWeek: [
+                { id: 1, name: "Sun" },
+                { id: 2, name: "Mon" },
+                { id: 3, name: "Tue" },
+                { id: 4, name: "Wed" },
+                { id: 5, name: "Thu" },
+                { id: 6, name: "Fri" },
+                { id: 7, name: "Sat" },
             ],
             isLoading: false,
-            isEdit: false,
-            visible: false,
+            activeAvailableDays: [],
+            recentFeedbacks: [],
+            schedule: [],
+            paginationSched: {},
+            moment,
+            currentId: null,
         };
     },
     methods: {
+        onDialogClose() {
+            this.activeAvailableDays = null;
+            this.schedule = null;
+            this.paginationSched = null;
+        },
+        isActiveDay(dayId) {
+            return this.activeAvailableDays?.includes(dayId);
+        },
+        openDialog(mentor) {
+            this.closeAllDialogs();
+            mentor.visible = true;
+            this.currentId = mentor.id;
+            this.getRecentFeedbacks();
+            this.getLatestSchedule();
+        },
+        openSchedule(mentor) {
+            this.closeAllDialogs();
+            mentor.schedVisible = true;
+            this.currentId = mentor.id;
+            this.getSchedule();
+        },
+        closeAllDialogs() {
+            this.mentors.forEach((mentor) => {
+                mentor.visible = false;
+                mentor.schedVisible = false; // Close all dialogs
+            });
+        },
+        getRecentFeedbacks() {
+            axios
+                .post("/getrecentfeedback", { mentorId: this.currentId })
+                .then(({ data }) => {
+                    this.recentFeedbacks = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching recent feedback:", error);
+                });
+        },
+        getLatestSchedule() {
+            axios
+                .post("/getLatestSchedule", { mentorId: this.currentId })
+                .then(({ data }) => {
+                    this.activeAvailableDays = data.map((day) =>
+                        parseInt(day, 10)
+                    );
+                })
+                .catch((error) => {
+                    console.error("Error fetching latest schedule:", error);
+                });
+        },
         handleFilterChange() {
-            // Call getMentors when the selected course changes
             this.getMentors();
         },
         getMentors() {
             this.isLoading = true;
-            const { fetchMentorBy } = this;
+            const searchBy = this.fetchMentorBy ? this.fetchMentorBy.id : 2;
 
             axios
-                .post(`/getmentorAPI`, {
-                    searchBy: this.fetchMentorBy ? this.fetchMentorBy.id : 0,
-                })
+                .post(`/getmentorAPI`, { searchBy })
                 .then(({ data }) => {
-                    console.log(data);
-
                     this.mentors = data.data;
                     this.pagination = data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
                     this.isLoading = false;
                 });
-        },
-        updateStatus(mentor) {
-            mentor.isEdit = !mentor.isEdit;
         },
         verify(statusId, mentorId) {
             axios
@@ -204,12 +450,15 @@ export default {
                 .then(({ data }) => {
                     console.log(data);
                     this.getMentors();
+                })
+                .catch((error) => {
+                    console.error("Error verifying mentor status:", error);
                 });
         },
         AcceptRequest(event, statusId, mentorId) {
             this.$confirm.require({
                 target: event.currentTarget,
-                message: "Are you sure you want to proceed?",
+                message: "Are you sure you want to approve this request?",
                 icon: "pi pi-exclamation-triangle text-red-400",
                 rejectClass: "p-button-secondary p-button-outlined p-button-sm",
                 acceptClass:
@@ -219,13 +468,12 @@ export default {
                 accept: () => {
                     this.verify(statusId, mentorId);
                 },
-                reject: () => {},
             });
         },
         RejectRequest(event, statusId, mentorId) {
             this.$confirm.require({
                 target: event.currentTarget,
-                message: "Are you sure you want to proceed?",
+                message: "Are you sure you want to reject this request?",
                 icon: "pi pi-exclamation-triangle text-red-400",
                 rejectClass: "p-button-secondary p-button-outlined p-button-sm",
                 acceptClass:
@@ -235,7 +483,6 @@ export default {
                 accept: () => {
                     this.verify(statusId, mentorId);
                 },
-                reject: () => {},
             });
         },
         goToPrevPage() {
@@ -252,14 +499,11 @@ export default {
         },
         fetchMentors(page) {
             this.isLoading = true;
-            const { fetchMentorBy } = this;
-            axios
-                .post(`/getmentorAPI?page=${page}`, {
-                    searchBy: fetchMentorBy ? fetchMentorBy.id : null,
-                })
-                .then(({ data }) => {
-                    console.log(data);
+            const searchBy = this.fetchMentorBy ? this.fetchMentorBy.id : 2;
 
+            axios
+                .post(`/getmentorAPI?page=${page}`, { searchBy })
+                .then(({ data }) => {
                     this.mentors = data.data;
                     this.pagination = data;
                 })
@@ -270,10 +514,72 @@ export default {
                     this.isLoading = false;
                 });
         },
+        runToast() {
+            this.$toast.add({
+                severity: "success",
+                summary: "Successful Appointment",
+                detail: "Your appointment was sent successfully!",
+                life: 3000,
+            });
+        },
+        getSchedule() {
+            axios
+                .post("/getAllSchedule", { mentorId: this.currentId })
+                .then(({ data }) => {
+                    this.paginationSched = data;
+                    this.schedule = data.data.map((number) => {
+                        return {
+                            days: Array.from(
+                                number.daysOfTheWeek.toString()
+                            ).map(Number),
+                            created_at: number.created_at,
+                        };
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching schedule:", error);
+                });
+        },
+        goToPrevPageSched() {
+            if (this.paginationSched.current_page > 1) {
+                const prevPage = this.paginationSched.current_page - 1;
+                this.fetchRequestsSched(prevPage);
+            }
+        },
+        goToNextPageSched() {
+            if (
+                this.paginationSched.current_page <
+                this.paginationSched.last_page
+            ) {
+                const nextPage = this.paginationSched.current_page + 1;
+                this.fetchRequestsSched(nextPage);
+            }
+        },
+        fetchRequestsSched(page) {
+            axios
+                .post(`/getAllSchedule?page=${page}`, {
+                    mentorId: this.currentId,
+                })
+                .then(({ data }) => {
+                    this.paginationSched = data;
+                    this.schedule = data.data.map((number) => {
+                        return {
+                            days: Array.from(
+                                number.daysOfTheWeek.toString()
+                            ).map(Number),
+                            created_at: number.created_at,
+                        };
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching schedule:", error);
+                });
+        },
     },
     mounted() {
         this.getMentors();
     },
 };
 </script>
+
 <style lang=""></style>

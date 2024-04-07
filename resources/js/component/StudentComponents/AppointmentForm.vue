@@ -15,15 +15,13 @@
     <button
         label="Show"
         @click="visible = true"
-        class="bg-green-700 w-full px-2 py-1 rounded-md text-white text-sm"
+        class="bg-green-700 w-fit px-2 py-1 rounded-md text-white text-sm"
     >
         Request Appointment
     </button>
 
     <Dialog v-model:visible="visible" modal header="Schedule an Appointment">
-        <div
-            class="w-[1000px] flex border border-gray-200 p-10 rounded-md my-10 gap-5"
-        >
+        <div class="flex border border-gray-200 p-2.5 rounded-md my-5 gap-5">
             <form @submit.prevent="submitAppointment" class="">
                 <div class="w-[550px]">
                     <div class="flex flex-col">
@@ -40,7 +38,7 @@
                         <div class="">
                             <label
                                 for="text"
-                                class="block mb-2 text-sm font-medium text-start text-gray-900 dark:text-white"
+                                class="mb-2 font-medium text-start text-gray-900 dark:text-white"
                                 >Request Header</label
                             >
                             <input
@@ -52,13 +50,31 @@
                                 required
                             />
                         </div>
-                        <div class="">
-                            <h1 class="text-start text-black font-medium">
-                                Student To Assign To Mentor
-                            </h1>
-                            <h1 class="text-start">
-                                {{ this.selectedStudent.name }}
-                            </h1>
+                        <div class="flex w-full my-2.5">
+                            <div class="flex flex-col flex-1 mr-5">
+                                <h1 class="text-start text-black font-medium">
+                                    Student To Assign To Mentor
+                                </h1>
+
+                                <h1
+                                    class="text-start border border-gray-300 rounded-md h-[41.5px] flex items-center pl-2.5"
+                                >
+                                    {{ this.selectedStudent.name }}
+                                </h1>
+                            </div>
+                            <div
+                                class="flex flex-col w-full flex-1 font-medium overflow-clip"
+                            >
+                                <h1>Select Field</h1>
+                                <Dropdown
+                                    v-model="selectedField"
+                                    :options="this.courses"
+                                    :highlightOnSelect="false"
+                                    optionLabel="name"
+                                    placeholder="Select a field"
+                                    class="w-full border border-gray-300"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,7 +129,7 @@
                             :highlightOnSelect="false"
                             optionLabel="name"
                             placeholder="Select a field"
-                            class="w-full text-xs"
+                            class="max-w-full text-xs"
                         />
                     </div>
                     <label
@@ -144,11 +160,17 @@
                 type="button"
                 label="Cancel"
                 severity="secondary"
+                class="border border-gray-300 px-4 py-2 rounded-md"
                 @click="visible = false"
             >
                 Cancel
             </button>
-            <button type="button" label="Save" @click="submitAppointment">
+            <button
+                type="button"
+                label="Save"
+                @click="submitAppointment"
+                class="bg-green-600 px-4 py-2 text-white font-semibold rounded-md"
+            >
                 Submit
             </button>
         </div>
@@ -183,6 +205,7 @@ export default {
         StudentSearch,
         Dialog,
         Toast,
+        Dropdown,
     },
     computed: {
         ...mapState(["fieldToTake"]),
@@ -218,35 +241,31 @@ export default {
                 { id: 7, name: "Teaching and Education" },
                 { id: 8, name: "Leadership and Team Building" },
             ],
+            selectedField: null,
         };
     },
     methods: {
         submitAppointment() {
-            const { title, date, mentorId, email } = this;
+            const { title, date, mentorId, email, selectedField } = this;
             const { id } = this.selectedStudent;
 
             if (this.type === "pdc") {
                 axios
                     .post("/assignappointment", {
                         title,
-                        field: this.fieldToTake,
+                        field: selectedField.id,
                         date,
                         mentorId,
                         studentId: id,
                     })
                     .then(() => {
-                        this.$router.push("/pdcmentors");
                         axios
                             .post("/sendEmailAppointment", { email: email })
                             .then(console.log("Success"));
-                    });
 
-                this.$toast.add({
-                    severity: "info",
-                    summary: "Info",
-                    detail: "Message Content",
-                    life: 3000,
-                });
+                        this.$emit("Sent");
+                        this.visible = false;
+                    });
             } else if (this.type === "student") {
                 axios
                     .post("/addAppointment", {

@@ -25,10 +25,11 @@
             </h1>
         </div>
         <div class="" v-else>
-            <div class="" v-for="Student in students">
+            <div class="" v-for="Student in students" :key="Student.id">
                 <StudentSearchCard
                     :studentDetails="Student"
                     @clicked="handleQueryData"
+                    :isActive="this.currentId === Student.id"
                 />
             </div>
         </div>
@@ -48,6 +49,7 @@ export default {
         return {
             students: null,
             searchQuery: "",
+            currentId: null,
         };
     },
     methods: {
@@ -60,6 +62,7 @@ export default {
         },
         handleQueryData(data) {
             this.$emit("query", data);
+            this.currentId = data.id;
         },
     },
 };

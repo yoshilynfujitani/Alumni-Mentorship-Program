@@ -32,14 +32,20 @@ class ScheduleController extends Controller
    
 
         $currentSchedule = Schedule::where("mentor_id", $mentorId)->orderBy('created_at', 'desc')->first();
-        
-        $currentSchedule->daysOfTheWeek = str_split($currentSchedule->daysOfTheWeek);
 
-        return $currentSchedule->daysOfTheWeek;
+        if(empty($currentSchedule)){
+            return;
+        }
+        else{
+            $currentSchedule->daysOfTheWeek = str_split($currentSchedule->daysOfTheWeek);
+            return $currentSchedule->daysOfTheWeek;
+        }
+          
     }
 
-    public function getAllSchedule(){
-        $sched = Schedule::where('mentor_id', Auth::id())
+    public function getAllSchedule(Request $request){
+        $mentorId = $request->has('mentorId') ? $request->mentorId : Auth::id();
+        $sched = Schedule::where('mentor_id', $mentorId)
         ->orderByDesc('created_at')
         ->select('daysOfTheWeek', 'created_at')
         ->paginate(10);

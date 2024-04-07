@@ -1,6 +1,9 @@
 <template lang="">
     <div
         class="flex items-center justify-between px-4 py-2 bg-white rounded-md border border-gray-100 my-2"
+        :class="{
+            'border-2 border-green-500': this.isActive,
+        }"
     >
         <div class="font-semibold text-black flex items-center gap-2 py-2">
             <img
@@ -26,7 +29,7 @@
 <script>
 import { BsPersonFillAdd } from "@kalimahapps/vue-icons";
 export default {
-    props: ["studentDetails"],
+    props: ["studentDetails", "isActive"],
     components: {
         BsPersonFillAdd,
     },

@@ -53,7 +53,7 @@
                     </button>
                 </div>
                 <div
-                    class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5 gap-2"
+                    class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5"
                 >
                     <div class="mx-5" v-if="this.mentors?.length === 0">
                         Mentor not found
