@@ -1,25 +1,47 @@
 <template lang="">
     <Layout>
-        
-        <div class="my-10 flex w-full gap-5 h-screen">
+        <div class="my-10 flex w-full gap-5 h-screen pb-20">
             <!-- Message Headers -->
             <div
                 class="p-5 bg-white rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-50 scrollbar-track-gray-50"
             >
-            <div class="">
-                <h1 class="font-bold text-2xl py-2 "><i class="pi pi-envelope text-2xl text-yellow-400 pr-1" ></i>Messages</h1>
-                <div class="w-full flex justify-between ">
-                  <div class="relative">  
-                    <input v-model="titleQuery" class="border border-gray-200 rounded-md active:border-green-200 focus:border-green-200"  placeholder="Appointment title...">
-                    <button @click="clearQuery" v-if="this.titleQuery" class="rounded-full  px-1.5 text-xs flex items-center justify-center text-gray-300 absolute right-1 top-3 "><i class="pi pi-times-circle"></i></button></div>
-                    
-                    <button @click="searchConvo" class="transition-all bg-green-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-green-500" >Search</button>
+                <div class="">
+                    <h1 class="font-bold text-2xl py-2">
+                        <i
+                            class="pi pi-envelope text-2xl text-yellow-400 pr-1"
+                        ></i
+                        >Messages
+                    </h1>
+                    <div class="w-full flex justify-between">
+                        <div class="relative">
+                            <input
+                                v-model="titleQuery"
+                                class="border border-gray-200 rounded-md active:border-green-200 focus:border-green-200"
+                                placeholder="Appointment title..."
+                            />
+                            <button
+                                @click="clearQuery"
+                                v-if="this.titleQuery"
+                                class="rounded-full px-1.5 text-xs flex items-center justify-center text-gray-300 absolute right-1 top-3"
+                            >
+                                <i class="pi pi-times-circle"></i>
+                            </button>
+                        </div>
+
+                        <button
+                            @click="searchConvo"
+                            class="transition-all bg-green-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-green-500"
+                        >
+                            Search
+                        </button>
+                    </div>
                 </div>
-            </div>
-                <div class="" >
-                    <h1 class="font-semibold py-2 text-green-700">Recent Conversation</h1>
+                <div class="">
+                    <h1 class="font-semibold py-2 text-green-700">
+                        Recent Conversation
+                    </h1>
                     <div
-                        class="rounded-md bg-gray-50 px-4 py-2  my-1 cursor-pointer"
+                        class="rounded-md bg-gray-50 px-4 py-2 my-1 cursor-pointer"
                         :class="{
                             'border-2 border-green-500':
                                 this.ConvoId === Inbox.appointmentId,
@@ -67,7 +89,9 @@
                     class="w-full h-full flex flex-col items-center justify-center"
                     v-if="!this.chat"
                 >
-                <i class="pi pi-question text-gray-500 font-bold text-2xl"></i>
+                    <i
+                        class="pi pi-question text-gray-500 font-bold text-2xl"
+                    ></i>
                     <h1 class="text-gray-400">No conversation selected</h1>
                 </div>
                 <div class="w-full h-full" v-else>
@@ -85,7 +109,6 @@
                             id="chats"
                             ref="chats"
                         >
-                        
                             <h1
                                 v-for="chats in chat"
                                 :key="chats.id"
@@ -184,7 +207,7 @@ export default {
             chat: null,
             message: "",
             listenerStatus: {},
-            titleQuery: ""
+            titleQuery: "",
         };
     },
 
@@ -210,7 +233,7 @@ export default {
             });
         },
         getConvoId() {
-            axios.post("/getConvoId", {role:1}).then(({ data }) => {
+            axios.post("/getConvoId", { role: 1 }).then(({ data }) => {
                 console.log(data);
                 this.inbox = data;
             });
@@ -218,15 +241,17 @@ export default {
 
         searchConvo() {
             const { titleQuery } = this;
-            
-            axios.post("/searchConvo", { titleQuery:titleQuery , role:1}).then(({ data }) => {
-                console.log(data);
-                this.inbox = data;
-            });
+
+            axios
+                .post("/searchConvo", { titleQuery: titleQuery, role: 1 })
+                .then(({ data }) => {
+                    console.log(data);
+                    this.inbox = data;
+                });
         },
-        clearQuery(){
-            this.titleQuery = ""
-            this.getConvoId()
+        clearQuery() {
+            this.titleQuery = "";
+            this.getConvoId();
         },
         isOnlyWhiteSpace(string) {
             const isWhitespaceString = !string.replace(/\s/g, "").length;

@@ -23,7 +23,7 @@
                 >
                     Mentors from Requested Field
                 </div>
-                <div class="mx-5 mb-2.5" v-else>
+                <div class="mx-5 mb-2.5 flex space-x-5" v-else>
                     <div class="w-80">
                         <span class="text-sm font-medium text-green-600"
                             >Filter Mentors</span
@@ -37,21 +37,21 @@
                             @change="handleCourseChange"
                         />
                     </div>
+                    <div class="self-end">
+                        <input
+                            class="rounded-md border-gray-200"
+                            placeholder="Search Mentor"
+                            v-model="mentorQuery"
+                        />
+                        <button
+                            @click="searchMentor(1)"
+                            class="text-white bg-green-600 px-3 py-2 rounded-md ml-2"
+                        >
+                            <i class="pi pi-search"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="mx-5 mb-2.5">
-                    <input
-                        class="rounded-md border-gray-200"
-                        placeholder="Search Mentor"
-                        v-model="mentorQuery"
-                    />
-                    <button
-                        @click="searchMentor(1)"
-                        class="text-white bg-green-600 px-3 py-2 rounded-md ml-2"
-                    >
-                        <i class="pi pi-search"></i>
-                    </button>
-                </div>
                 <div
                     class="grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-5"
                 >
@@ -123,12 +123,14 @@ export default {
     methods: {
         ...mapActions(["setUserDetailsAction"]),
         getMentors() {
-            const { fieldToTake, allowToAppoint, selectedCourse } = this;
+            const { fieldToTake, allowToAppoint, selectedCourse, mentorQuery } =
+                this;
             axios
                 .post(`/getmentorstudent`, {
                     fieldToTake,
                     allowToAppoint,
                     selectedCourseId: selectedCourse ? selectedCourse.id : null,
+                    mentorQuery: mentorQuery ? mentorQuery : null,
                 })
                 .then(({ data }) => {
                     this.mentors = data.data;
