@@ -15,15 +15,18 @@
                 >
             </div>
             <div
-                class="bg-white border border-gray-200 rounded-md p-5 my-5 w-full"
+                class="bg-white border border-gray-200 rounded-md p-2.5 md:p-5 my-5 w-full"
             >
                 <div
-                    class="mx-5 mb-2.5 text-lg font-semibold text-green-700"
+                    class="md:mx-5 mb-2.5 text-lg font-semibold text-green-700"
                     v-if="this.allowToAppoint === 1"
                 >
                     Mentors from Requested Field
                 </div>
-                <div class="mx-5 mb-2.5 flex space-x-5" v-else>
+                <div
+                    class="md:mx-5 mb-2.5 space-y-2.5 md:flex md:space-x-5"
+                    v-else
+                >
                     <div class="w-80">
                         <span class="text-sm font-medium text-green-600"
                             >Filter Mentors</span
@@ -37,7 +40,7 @@
                             @change="handleCourseChange"
                         />
                     </div>
-                    <div class="self-end">
+                    <div class="md:self-end flex">
                         <input
                             class="rounded-md border-gray-200"
                             placeholder="Search Mentor"
@@ -58,7 +61,7 @@
                     <div class="mx-5" v-if="this.mentors?.length === 0">
                         Mentor not found
                     </div>
-                    <div class="mx-5 my-1" v-for="Mentor in mentors" v-else>
+                    <div class="md:mx-5 my-1" v-for="Mentor in mentors" v-else>
                         <MentorCard
                             :MentorDetails="Mentor"
                             :displaybtn="

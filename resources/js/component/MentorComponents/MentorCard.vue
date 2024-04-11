@@ -1,17 +1,19 @@
 <template lang="">
     <div class="h-full w-full">
         <div
-            class="bg-white border border-gray-200 rounded-lg shadow-sm h-full w-56 py-5"
+            class="bg-white border border-gray-200 rounded-lg shadow-sm h-full md:w-56 py-5"
         >
-            <div class="flex flex-col justify-end items-center h-full">
-                <div class="items-center flex flex-col">
+            <div
+                class="flex px-5 md:px-0 md:flex-col justify-end items-center h-full w-full"
+            >
+                <div class="items-center flex md:flex-col w-full">
                     <img
-                        class="w-24 h-24 mb-3 rounded-md shadow-lg"
+                        class="w-10 h-10 md:w-24 md:h-24 mb-3 rounded-md shadow-lg"
                         src="../../../../public/DefaultAvatar.webp"
                         alt="Avatar"
                     />
                     <h5
-                        class="mb-1 text-xl text-center font-medium text-gray-900 dark:text-white"
+                        class="mb-1 text-md md:text-xl text-center font-medium text-gray-900 dark:text-white"
                     >
                         {{ MentorDetails.name }}
                     </h5>

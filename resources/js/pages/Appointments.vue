@@ -1,7 +1,7 @@
 <template lang="">
     <Layout>
         <div
-            class="w-full my-10 overflow-x-clip flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
+            class="w-full my-10 overflow-x-scroll md:overflow-x-clip flex flex-col justify-between shadow-sm sm:rounded-lg border border-gray-200"
         >
             <Toast />
             <div class="">

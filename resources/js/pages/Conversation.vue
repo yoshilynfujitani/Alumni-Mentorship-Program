@@ -1,9 +1,9 @@
 <template lang="">
     <Layout>
-        <div class="my-10 flex w-full gap-5 h-screen pb-20">
+        <div class="my-10 flex w-full md:gap-5 h-screen pb-20">
             <!-- Message Headers -->
             <div
-                class="p-5 bg-white rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-50 scrollbar-track-gray-50"
+                class="p-5 bg-white rounded-md md:min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-50 scrollbar-track-gray-50"
             >
                 <div class="">
                     <h1 class="font-bold text-2xl py-2">
@@ -83,7 +83,7 @@
 
             <!-- Messages -->
             <div
-                class="bg-white pb-32 px-5 rounded-md w-full flex-grow border border-gray-200 shadow-sm"
+                class="hidden md:block bg-white pb-32 px-5 rounded-md w-full flex-grow border border-gray-200 shadow-sm"
             >
                 <div
                     class="w-full h-full flex flex-col items-center justify-center"
@@ -185,17 +185,116 @@
                     </form>
                 </div>
             </div>
-        </div></Layout
-    >
+            <Dialog
+                :v-model="visible"
+                modal
+                header="Messages"
+                @hide="closeChat"
+                class="block md:hidden"
+            >
+                <div class="py-5 flex items-center justify-between">
+                    {{ this.ConvoWithName }}
+                </div>
+                <div class="min-h-full" v-if="this.chatLoading">Loading...</div>
+
+                <div
+                    class="overflow-y-scroll min-h-full h-full scrollbar-thin scrollbar-thumb-rounded-full px-2 scrollbar-thumb-gray-200 scrollbar-track-gray-100"
+                    v-else
+                >
+                    <div
+                        class="flex flex-col min-h-full max-h-full"
+                        id="chats"
+                        ref="chats"
+                    >
+                        <h1
+                            v-for="chats in chat"
+                            :key="chats.id"
+                            class="w-auto text-gray-900 my-1 max-w-xs"
+                            :ref="'chatIndex' + chats.id"
+                            :class="{
+                                'self-start text-left':
+                                    chats.userId !== this.userId,
+                                'self-end text-right':
+                                    chats.userId === this.userId,
+                                'bg-gray-200 w-fit px-4 py-2 rounded-full ':
+                                    chats.userId !== this.userId,
+                                'bg-green-200 w-fit px-4 py-2 rounded-full ':
+                                    chats.userId === this.userId,
+                                hidden: chats.appointmentId !== this.ConvoId,
+                            }"
+                        >
+                            <h1 :class="{}">
+                                {{ chats.chats }}
+                            </h1>
+                        </h1>
+                    </div>
+                </div>
+
+                <form
+                    class="my-2"
+                    @submit.prevent="sendChat"
+                    v-if="this.ConvoId"
+                >
+                    <div class="relative">
+                        <div
+                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                        >
+                            <svg
+                                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                />
+                            </svg>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <input
+                                v-model="message"
+                                type="search"
+                                id="search"
+                                class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                placeholder="Send message..."
+                                required
+                            />
+                            <button
+                                :disabled="isOnlyWhiteSpace(this.message)"
+                                type="submit"
+                                class="bg-green-500 px-4 py-2 rounded-md text-gray-50"
+                                :class="{
+                                    'cursor-not-allowed': isOnlyWhiteSpace(
+                                        this.message
+                                    ),
+                                }"
+                            >
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </Dialog>
+        </div>
+    </Layout>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
 import _debounce from "lodash/debounce";
+import Dialog from "primevue/dialog";
 
 export default {
     computed: {
         ...mapState(["userId"]),
+    },
+    components: {
+        Dialog,
     },
 
     data() {
@@ -208,6 +307,7 @@ export default {
             message: "",
             listenerStatus: {},
             titleQuery: "",
+            visible: false,
         };
     },
 
@@ -275,9 +375,15 @@ export default {
                 });
         }, 400),
         openChat(appointmentId, name) {
+            this.visible = true;
             this.ConvoId = appointmentId;
             this.ConvoWithName = name;
             this.getChat(appointmentId);
+        },
+        closeChat() {
+            this.visible = false;
+            this.ConvoId = null;
+            this.ConvoWithName = null;
         },
         scrollToEnd() {
             this.$nextTick(() => {

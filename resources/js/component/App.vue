@@ -4,19 +4,19 @@
 
         <div class="" v-if="loading"><h1>Loading...</h1></div>
 
-        <div class="w-full my-10">
+        <div class="md:w-full my-10 overflow-clip" v-else>
             <!-- <div class="w-full mb-2.5 bg-gray-50">
                 <Menubar :model="items" />
             </div> -->
 
-            <div class="flex items-center w-full justify-between mb-2">
+            <div class="md:flex items-center justify-between mb-2">
                 <div class="">
                     <h1
-                        class="gap-1 flex items-center text-2xl font-bold pb-2.5"
+                        class="text-lg gap-1 flex items-center md:text-2xl font-bold pb-2.5"
                     >
                         <span
                             ><i
-                                class="pi pi-chart-pie text-2xl text-yellow-400"
+                                class="text-lg pi pi-chart-pie md:text-2xl text-yellow-400"
                                 style="font-size: 1rem"
                             ></i></span
                         >Dashboard
@@ -35,7 +35,7 @@
             <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
 
             <div
-                class="bg-white mb-5 p-2.5 rounded-md flex justify-center items-center w-full gap-5"
+                class="bg-white mb-5 md:p-2.5 rounded-md md:flex justify-center items-center md:gap-5"
             >
                 <Message severity="info" :closable="false"
                     >To be able to request appointments from a mentor you must
@@ -56,7 +56,7 @@
                     @save="sendTicket"
                 >
                     <div
-                        class="flex flex-col w-[700px] justify-between gap-5 p-5 my-5"
+                        class="flex flex-col md:w-[700px] justify-between gap-5 p-5 my-5"
                     >
                         <div class="w-full">
                             <label
@@ -89,12 +89,12 @@
                 </Modal>
             </div>
             <div
-                class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
+                class="bg-white md:w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
                 :class="{ 'min-h-[100px]': this.appointments?.length === 0 }"
             >
-                <div class="w-full">
+                <div class="md:w-full">
                     <div
-                        class="px-16 w-full flex items-center justify-center gap-10"
+                        class="md:px-16 w-full md:flex items-center justify-center gap-10"
                     >
                         <!-- <DatePicker
                             expanded
@@ -102,13 +102,15 @@
                             :attributes="attributes"
                         /> -->
 
-                        <Calendar
-                            inline
-                            showWeek
-                            :numberOfMonths="1"
-                            :minDate="minDate"
-                        />
-                        <div class="border p-5 rounded border-gray-200">
+                        <div class="flex items-center justify-center pb-5">
+                            <Calendar
+                                inline
+                                showWeek
+                                :numberOfMonths="1"
+                                :minDate="minDate"
+                            />
+                        </div>
+                        <div class="md:border p-5 rounded border-gray-200">
                             <h1 class="pb-5 font-medium text-green-700 text-xl">
                                 <span
                                     ><i
@@ -128,7 +130,7 @@
                                 >
                             </h1>
                             <div
-                                class="grid grid-cols-1 laptop:grid-cols-2 gap-5 w-full h-full"
+                                class="grid grid-cols-1 laptop:grid-cols-2 gap-5 md:w-full h-full"
                             >
                                 <div
                                     class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
@@ -218,7 +220,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-full flex items-center justify-center mr-20">
+                    <div
+                        class="w-full md:w-full flex items-center justify-center mr-20 overflow-x-scroll"
+                    >
                         <table
                             class="w-full text-sm text-gray-500 dark:text-gray-400"
                         >
@@ -325,9 +329,9 @@
                     </div> -->
                 </div>
             </div>
-            <div class="flex gap-10 my-10 w-full">
-                <div class="w-1/3"><PieChart :role="1" /></div>
-                <div class="w-2/3"><BarChart :role="1" /></div>
+            <div class="flex flex-col md:flex-row gap-10 my-10 w-full">
+                <div class="md:w-1/3"><PieChart :role="1" /></div>
+                <div class="md;w-2/3"><BarChart :role="1" /></div>
             </div>
         </div>
     </Layout>

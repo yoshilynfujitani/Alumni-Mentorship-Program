@@ -8,18 +8,34 @@
                     <span class="">Mentors</span>
                 </h1>
             </div>
-            <div class="mb-5">
-                <span class="text-sm font-medium text-green-600"
-                    >Search Mentors By</span
-                >
-                <Dropdown
-                    v-model="fetchMentorBy"
-                    :options="this.mentorStatus"
-                    optionLabel="name"
-                    placeholder="Sort by Status"
-                    class="w-full md:w-14rem border-gray-200 border focus:border-2 focus:border-green-500"
-                    @change="handleFilterChange"
-                />
+            <div class="mb-5 flex space-x-2">
+                <div class="">
+                    <span class="text-sm font-medium text-green-600"
+                        >Search Mentors By</span
+                    >
+                    <Dropdown
+                        v-model="fetchMentorBy"
+                        :options="this.mentorStatus"
+                        optionLabel="name"
+                        placeholder="Sort by Status"
+                        class="w-full md:w-14rem border-gray-200 border focus:border-2 focus:border-green-500"
+                        @change="handleFilterChange"
+                    />
+                </div>
+
+                <div class="self-end">
+                    <input
+                        class="rounded-md border-gray-200 h-fit"
+                        placeholder="Search Mentor"
+                        v-model="mentorQuery"
+                    />
+                    <button
+                        @click="searchMentor"
+                        class="text-white bg-green-600 px-3 py-2 rounded-md ml-2 h-fit"
+                    >
+                        <i class="pi pi-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -315,9 +331,9 @@
             <Pagination
                 @next="goToNextPage"
                 @back="goToPrevPage"
-                :total="this.pagination.total"
-                :current_page="this.pagination.current_page"
-                :last_page="this.pagination.last_page"
+                :total="this.pagination?.total"
+                :current_page="this.pagination?.current_page"
+                :last_page="this.pagination?.last_page"
             />
         </div>
     </LayoutPDC>
@@ -372,6 +388,7 @@ export default {
             paginationSched: {},
             moment,
             currentId: null,
+            mentorQuery: null,
         };
     },
     methods: {
@@ -410,6 +427,16 @@ export default {
                 })
                 .catch((error) => {
                     console.error("Error fetching recent feedback:", error);
+                });
+        },
+        searchMentor() {
+            let { mentorQuery } = this;
+            axios
+                .post("/searchMentor", { mentorQuery: mentorQuery })
+                .then(({ data }) => {
+                    this.mentors = data.data;
+                    console.log(data.data);
+                    this.pagination = data.pagination;
                 });
         },
         getLatestSchedule() {
