@@ -9,6 +9,7 @@ import PDCApp from "@/pages/PDCPages/PDCApp.vue";
 import PDCMentors from "@/pages/PDCPages/PDCMentors.vue";
 import PDCStudents from "@/pages/PDCPages/PDCStudents.vue";
 import PDCStudentTickets from "@/pages/PDCPages/PDCStudentTickets.vue";
+import PDCPendingMentors from "@/pages/PDCPages/PDCPendingMentors.vue";
 import MentorStudentRequests from "@/pages/MentorPages/MentorStudentRequests.vue";
 import MentorApp from "@/pages/MentorPages/MentorApp.vue";
 import Conversation from "@/pages/Conversation.vue";
@@ -17,6 +18,7 @@ import ScheduleHistory from "@/pages/MentorPages/ScheduleHistory.vue";
 import Appointments from "@/pages/Appointments.vue";
 import TicketLogsStudent from "@/pages/TicketLogsStudent.vue";
 import AlumniInvite from "@/pages/PDCPages/AlumniInvite.vue";
+import MentorRequest from "@/pages/MentorRequest.vue";
 
 export const routes = [
     {
@@ -103,5 +105,15 @@ export const routes = [
         path: "/schedule",
         name: "schedule",
         component: ScheduleHistory,
+    },
+    {
+        path: "/mentorrequest",
+        name: "mentorrequest",
+        component: MentorRequest,
+    },
+    {
+        path: "/pendingmentors",
+        name: "pendingmentors",
+        component: PDCPendingMentors,
     },
 ];

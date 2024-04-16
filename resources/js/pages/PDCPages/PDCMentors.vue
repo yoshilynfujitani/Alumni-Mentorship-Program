@@ -370,7 +370,6 @@ export default {
             mentorStatus: [
                 { id: 2, name: "All" },
                 { id: 0, name: "Active" },
-                { id: 1, name: "Pending" },
             ],
             daysOfTheWeek: [
                 { id: 1, name: "Sun" },

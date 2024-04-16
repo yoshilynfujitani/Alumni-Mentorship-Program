@@ -9,34 +9,38 @@ use Auth;
 
 class StudentLoginController extends Controller
 {
-    //
-    public function login(Request $request){
-        if(User::where("email",$request->email)->exists()){
-            $user = User::where("email",$request->email)->first();
-            if(Hash::check($request->password, $user->password)){
-                Auth::login($user);
+    public function login(Request $request) {
+        $user = User::where("email", $request->email)->first();
     
-                // Include user details in the response
-                $userDetails = [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'verified' => $user->verified
-                    // Add other user details as needed
-                ];
-    
-                return response()->json([
-                    'message' => 'Login successful',
-                    'user' => $userDetails
-                ], 200);
-            } else {
-                return response()->json(['message' => 'Invalid password'], 401);
-            }
-        } else {
+        if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
+    
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid password'], 401);
+        }
+    
+        if ($user->role === 2 && $user->verified === 0) {
+            return response()->json(['message' => 'Unverified user'], 403);
+        }
+    
+        Auth::login($user);
+    
+        $userDetails = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'verified' => $user->verified
+     
+        ];
+    
+        return response()->json([
+            'message' => 'Login successful',
+            'user' => $userDetails
+        ], 200);
     }
+    
     
     public function checkUserStatus(){
         $user = Auth::user();

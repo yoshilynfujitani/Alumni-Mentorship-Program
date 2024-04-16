@@ -75,6 +75,8 @@ Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 Route::post("/setSchedule", [ScheduleController::class, "setSchedule"]);
 Route::post("/getLatestSchedule", [ScheduleController::class, "getLatestSchedule"]);
 Route::post("/getAllSchedule", [ScheduleController::class, "getAllSchedule"]);
+Route::post("/sendrequest", [MentorController::class, "getRequestToBeMentor"]);
+Route::post("/checkrequest", [MentorController::class, "checkExisitingMentorRequest"]);
 
 
 //PDC
@@ -85,6 +87,7 @@ Route::get("/getalumni", [AlumniController::class, "getAlumni"]);
 Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
 Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);
+Route::get("/getmentorapplications", [MentorController::class, "getMentorApplications"]);
 
 
 

@@ -112,7 +112,7 @@ export default {
                 .then((res) => {
                     if (res.status == 200) {
                         this.setUserDetailsAction();
-                        console.log(res);
+
                         switch (res.data.user.role) {
                             case 1:
                                 this.$router.push("/home");
@@ -132,6 +132,12 @@ export default {
                     }
                 })
                 .catch((err) => {
+                    if (err.response.status == 403) {
+                        this.$router.push({
+                            name: "mentorrequest",
+                            query: { email },
+                        });
+                    }
                     this.errorMsg = err.response.data.message;
                 });
         },

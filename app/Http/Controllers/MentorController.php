@@ -6,6 +6,7 @@ use App\Models\User;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use App\Models\MentorRequest;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -52,27 +53,60 @@ class MentorController extends Controller
             return $query->where('users.verified', 1)->paginate($queryPerPage);
         }
     
-        if ($request->searchBy == 1) {
-            return $query->where('users.verified', 0)->paginate($queryPerPage);
-        }
     
         if ($request->searchBy == 2) {
             return $query->paginate($queryPerPage);
         }
     }
 
+    public function getRequestToBeMentor(Request $request){
+        $user = User::where("email", $request->email)->first();
+        $request = new MentorRequest();
+
+        $request->userId = $user->id;
+        $request->email = $user->email;
+
+        $request->save();
+
+        return;
+    }
+
+    public function checkExisitingMentorRequest(Request $request){
+        $existing = MentorRequest::where("email", $request->email)->first();
+
+        if($existing){
+            return $existing->existingApplication = true;
+        }
+        return;
+    }
+
+    public function getMentorApplications(){
+        $applications = MentorRequest::all();
+    
+        foreach($applications as $application){
+            $user = User::find($application->userId); 
+            if($user){
+                $application->name = $user->name;
+                $application->course = $user->course;
+            }
+        }
+    
+        return $applications;
+    }
+    
+
     public function searchMentor(Request $request){
     $mentors = User::where('name','LIKE',"%{$request->mentorQuery}%")
                     ->where('role', 2);
 
+                        
     //null is default search
     if($request->searchBy === null){
         $mentors = $mentors->paginate(12);
     }
     //1 is when student is allowed to make appointments
-    else if($request->searchBy === 1){
-        $mentors = $mentors->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake])
-                            ->paginate(12);
+    else{
+        $mentors = $mentors->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake])->paginate(12);
 
         foreach ($mentors as $mentor) {
             $appointment = MentorAppointment::where('studentId', auth()->id())
