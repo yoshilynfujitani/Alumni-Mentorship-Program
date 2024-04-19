@@ -95,7 +95,7 @@ export default {
     },
     methods: {
         getSchedule() {
-            axios.get("/getAllSchedule").then(({ data }) => {
+            axios.post("/getAllSchedule").then(({ data }) => {
                 console.log(data);
                 this.pagination = data;
                 this.schedule = data.data.map((number) => {
@@ -121,7 +121,7 @@ export default {
             }
         },
         fetchRequests(page) {
-            axios.get(`/getAllSchedule?page=${page}`).then(({ data }) => {
+            axios.post(`/getAllSchedule?page=${page}`).then(({ data }) => {
                 console.log(data);
                 this.pagination = data;
                 this.schedule = data.data.map((number) => {

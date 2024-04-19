@@ -145,8 +145,8 @@ class MentorController extends Controller
         $mentors = $query->paginate(12);
     }
     // 1 is when the student is allowed to make appointments
-    else if ($request->searchBy === 1) {
-        if ($request->allowToAppoint == 1 && $request->fieldToTake) {
+   
+        else if ($request->allowToAppoint == 1 && $request->fieldToTake) {
             $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);
         }
 
@@ -163,7 +163,7 @@ class MentorController extends Controller
             $feedbacks = Feedback::where('userToRateId', $mentor->id)->get();
             $mentor->feedBackCount = $feedbacks->count();
         }
-    }
+    
 
     return $mentors;
 }

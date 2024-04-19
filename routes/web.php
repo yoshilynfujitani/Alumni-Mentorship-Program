@@ -7,6 +7,7 @@ use App\Http\Controllers\PDCController;
 
 use App\Http\Controllers\ConvoController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\FieldController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\RatingController;
@@ -88,6 +89,11 @@ Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
 Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);
 Route::get("/getmentorapplications", [MentorController::class, "getMentorApplications"]);
+Route::post("/createfield", [FieldController::class, "createField"]);
+Route::post("/editfield", [FieldController::class, "editField"]);
+Route::post("/getfields", [FieldController::class, "getFields"]);
+Route::post("/deletefield", [FieldController::class, "deleteField"]);
+
 
 
 

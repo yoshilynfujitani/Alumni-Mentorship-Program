@@ -1,45 +1,17 @@
 <template>
-    <LayoutPDC>
-        <h1>Hello</h1>
-        <button @click="sendEmail">Send Email</button>
-    </LayoutPDC>
+    <LayoutPDC><Fields /> </LayoutPDC>
 </template>
 
 <script>
-import { Calendar, DatePicker } from "v-calendar";
-import "v-calendar/style.css";
+import Fields from "../../component/PDCComponents/Fields.vue";
+
 export default {
-    components: {
-        Calendar,
-        DatePicker,
-    },
+    components: { Fields },
     data() {
         return {};
     },
-    methods: {
-        checkAuth() {
-            axios.get("/checkUser").then(({ data }) => {
-                console.log(data);
-                if (!data) {
-                    this.$router.push("/");
-                }
-            });
-        },
-
-        sendEmail() {
-            axios.get("/sendEmail").then(({ data }) => {
-                console.log(data);
-            });
-        },
-    },
+    methods: {},
 
     mounted() {},
-    watch: {
-        authenticated(newValue) {
-            if (!newValue) {
-                this.$router.push("/login");
-            }
-        },
-    },
 };
 </script>
