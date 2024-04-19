@@ -96,25 +96,15 @@
                     <div class="flex gap-x-2 flex-wrap">
                         <div
                             v-for="course in selectedCourses"
-                            :key="course.id"
+                            :key="course?.id"
                             class=""
                         >
                             <div
-                                class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-bold text-white"
-                                :class="{
-                                    'bg-[#e879f9]': course.id === 1,
-                                    'bg-blue-700': course.id === 2,
-                                    'bg-yellow-400': course.id === 3,
-                                    'bg-red-600': course.id === 4,
-                                    'bg-gray-600': course.id === 5,
-                                    'bg-green-600': course.id === 6,
-                                    'bg-[#bef264]': course.id === 7,
-                                    'bg-[#f472b6]': course.id === 8,
-                                }"
+                                class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-semibold border border-gray-300"
                             >
-                                {{ course.name }}
+                                {{ course?.name }}
                                 <i
-                                    class="pi pi-times cursor-pointer rounded-full text-xs font-bold"
+                                    class="pi pi-times cursor-pointer text-xs font-bold"
                                     :class="{ hidden: !isEditCourses }"
                                     @click="toggleCourse(course)"
                                 ></i>
@@ -144,26 +134,18 @@
                                 </div> -->
                                 <div
                                     v-for="course in availableCourses"
-                                    :key="course.id"
+                                    :key="course?.id"
                                     class=""
                                 >
                                     <button
                                         @click="toggleCourse(course)"
-                                        class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-bold text-white"
+                                        class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-semibold border border-gray-300"
                                         :class="{
-                                            'bg-[#e879f9]': course.id === 1,
-                                            'bg-blue-700': course.id === 2,
-                                            'bg-yellow-400': course.id === 3,
-                                            'bg-red-600': course.id === 4,
-                                            'bg-gray-600': course.id === 5,
-                                            'bg-green-600': course.id === 6,
-                                            'bg-[#bef264]': course.id === 7,
-                                            'bg-[#f472b6]': course.id === 8,
                                             hidden: isActive(course),
                                             'mr-2': !isActive(course),
                                         }"
                                     >
-                                        {{ course.name }}
+                                        {{ course?.name }}
                                     </button>
                                 </div>
                             </div>
@@ -518,16 +500,7 @@ export default {
             ],
             activeAvailableDays: [],
             editAvailableDays: [],
-            availableCourses: [
-                { id: 1, name: "Business Management" },
-                { id: 2, name: "Creative Arts" },
-                { id: 3, name: "Engineering and Mathematics" },
-                { id: 4, name: "Humanities Arts and Social Sciences" },
-                { id: 5, name: "IT and Computer Science" },
-                { id: 6, name: "Medical and Health Science" },
-                { id: 7, name: "Teaching and Education" },
-                { id: 8, name: "Leadership and Team Building" },
-            ],
+            availableCourses: null,
             selectedCourses: [],
             activeCourses: [],
             isEditCourses: false,
@@ -563,7 +536,12 @@ export default {
                 this.loading = false;
             });
         },
-
+        getFields() {
+            axios.post("/getfields").then(({ data }) => {
+                console.log(data);
+                this.availableCourses = data;
+            });
+        },
         sendTicket() {
             const fieldId = parseInt(this.selectedField.id);
             const { ticketRemarks } = this;
@@ -665,10 +643,10 @@ export default {
             );
             if (index === -1) {
                 // Course not found in activeCourses, add it
-                this.selectedCourses.push(course);
+                this.selectedCourses?.push(course);
             } else {
                 // Course found in activeCourses, remove it
-                this.selectedCourses.splice(index, 1);
+                this.selectedCourses?.splice(index, 1);
             }
         },
         isActive(course) {
@@ -694,16 +672,18 @@ export default {
             axios
                 .get("/getfield")
                 .then((data) => {
-                    console.log(data.data);
                     //data data is only printing the course id like 123 it does not contain the course name how to map
                     const idStrings = data.data.toString().split(",");
+
                     this.activeCourses = idStrings.map((courseId) => {
                         // Map each course ID to its corresponding name
-                        return this.availableCourses.find(
+
+                        return this.availableCourses?.find(
                             (course) => course.id === parseInt(courseId, 10)
                         );
                     });
                     this.selectedCourses = [...this.activeCourses];
+                    console.log(this.activeCourses);
                 })
                 .catch((error) => {
                     // Handle error
@@ -735,6 +715,7 @@ export default {
         this.minDate = this.getToday();
         this.getCountTotalAppointments();
         this.getLatestSchedule();
+        this.getFields();
         this.getField();
 
         var titleElement = document.querySelector(

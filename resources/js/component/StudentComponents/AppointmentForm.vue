@@ -231,16 +231,7 @@ export default {
             title: "",
             selectedStudent: "",
             minDate: null,
-            courses: [
-                { id: 1, name: "Business Management" },
-                { id: 2, name: "Creative Arts" },
-                { id: 3, name: "Engineering and Mathematics" },
-                { id: 4, name: "Humanities Arts and Social Sciences" },
-                { id: 5, name: "IT and Computer Science" },
-                { id: 6, name: " Medical and Health Science" },
-                { id: 7, name: "Teaching and Education" },
-                { id: 8, name: "Leadership and Team Building" },
-            ],
+            courses: null,
             selectedField: null,
         };
     },
@@ -298,10 +289,16 @@ export default {
             today.setHours(0, 0, 0, 0);
             return today;
         },
+        getFields() {
+            axios.post("/getfields").then(({ data }) => {
+                this.courses = data;
+            });
+        },
     },
 
     mounted() {
         this.minDate = this.getToday();
+        this.getFields();
     },
 };
 </script>

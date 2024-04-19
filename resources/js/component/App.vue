@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
+            <Toast />
 
             <div
                 class="bg-white mb-5 md:p-2.5 rounded-md md:flex justify-center items-center md:gap-5"
@@ -43,20 +43,17 @@
                     recommended to mentors with your requested field and make
                     appointments
                 </Message>
-                <Modal
+
+                <button
                     v-if="this.ticketStatus === 2 || this.ticketStatus === null"
-                    :modalContent="{
-                        title: 'Request Ticket',
-                        content: 'Please fill out the form below:',
-                        disableSaveBtn: this.selectedField === 0,
-                    }"
-                    buttonLabel="Request to PDC"
-                    cancelLabel="Back"
-                    saveLabel="Submit Ticket"
-                    @save="sendTicket"
+                    @click="visible = true"
+                    class="w-52 text-white font-semibold bg-green-600 rounded-md px-4 py-2"
                 >
-                    <div
-                        class="flex flex-col md:w-[700px] justify-between gap-5 p-5 my-5"
+                    Request Ticket
+                </button>
+                <Dialog v-model:visible="visible" modal header="Request Ticket"
+                    ><div
+                        class="flex flex-col justify-between p-5 gap-5 w-[500px]"
                     >
                         <div class="w-full">
                             <label
@@ -64,7 +61,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >Select a field to request</label
                             >
-                            <div class="card flex justify-content-center">
+                            <div class="">
                                 <Dropdown
                                     v-model="selectedField"
                                     :options="this.courses"
@@ -86,7 +83,16 @@
                             />
                         </div>
                     </div>
-                </Modal>
+                    <div class="flex justify-content-end gap-2">
+                        <button @click="visible = false">Cancel</button>
+                        <button
+                            @click="sendTicket"
+                            class="text-white font-medium bg-green-600 px-4 py-2 rounded-md"
+                        >
+                            Submit Ticket
+                        </button>
+                    </div>
+                </Dialog>
             </div>
             <div
                 class="bg-white md:w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
@@ -355,7 +361,10 @@ import { AkCircleCheck } from "@kalimahapps/vue-icons";
 import { AnOutlinedCloseCircle } from "@kalimahapps/vue-icons";
 import Textarea from "primevue/textarea";
 
+import Toast from "primevue/toast";
+
 import FloatLabel from "primevue/floatlabel";
+import Dialog from "primevue/dialog";
 
 export default {
     components: {
@@ -374,6 +383,8 @@ export default {
         Message,
         Textarea,
         FloatLabel,
+        Dialog,
+        Toast,
     },
     data() {
         return {
@@ -383,16 +394,7 @@ export default {
             ticketRemarks: "",
             pagination: null,
             ticketIsLoading: true,
-            courses: [
-                { id: 1, name: "Business Management" },
-                { id: 2, name: "Creative Arts" },
-                { id: 3, name: "Engineering and Mathematics" },
-                { id: 4, name: "Humanities Arts and Social Sciences" },
-                { id: 5, name: "IT and Computer Science" },
-                { id: 6, name: " Medical and Health Science" },
-                { id: 7, name: "Teaching and Education" },
-                { id: 8, name: "Leadership and Team Building" },
-            ],
+            courses: null,
             minDate: null,
             TotalAppointments: 0,
             items: [
@@ -406,6 +408,7 @@ export default {
                 },
             ],
             moment: moment,
+            visible: false,
         };
     },
     computed: {
@@ -430,6 +433,12 @@ export default {
                     this.loading = false;
                 });
         },
+        getFields() {
+            axios.post("/getfields").then(({ data }) => {
+                console.log(data);
+                this.courses = data;
+            });
+        },
         getCountTotalAppointments() {
             axios.get("/getCountTotalAppointments").then(({ data }) => {
                 this.TotalAppointments = data;
@@ -444,6 +453,13 @@ export default {
                 .post("/requestticket", { fieldId, ticketRemarks })
                 .then(({ data }) => {
                     this.setUserTicketStatusAction();
+                    this.visible = false;
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Ticket Sent!",
+                        detail: "Your ticket was sent succesfully and will be reviewed soon",
+                        life: 3000,
+                    });
                 });
         },
 
@@ -490,9 +506,9 @@ export default {
     mounted() {
         // this.refecthAppointments();
         this.setUserTicketStatusAction();
-        console.log(this.userId);
         this.minDate = this.getToday();
         this.getCountTotalAppointments();
+        this.getFields();
         // console.log(this.$store.getters.userDetails);
     },
     watch: {

@@ -49,14 +49,12 @@
                         :key="field.id"
                         class="text-md font-semibold py-2.5 w-full"
                     >
-                        {{ field.fieldName }}
+                        {{ field.name }}
                         <span class="space-x-2.5"
                             ><ConfirmPopup></ConfirmPopup>
                             <i
                                 class="pi pi-wrench self-end bg-yellow-400 text-white p-2 rounded-md hover:cursor-pointer"
-                                @click="
-                                    EditField($event, field.fieldName, field.id)
-                                "
+                                @click="EditField($event, field.name, field.id)"
                             ></i>
                             <ConfirmPopup></ConfirmPopup>
                             <i
@@ -125,9 +123,10 @@ export default {
                 message: "Are you sure you want to edit field?",
                 icon: "pi pi-exclamation-triangle",
                 rejectClass: "p-button-secondary p-button-outlined p-button-sm",
-                acceptClass: "p-button-sm",
+                acceptClass:
+                    "p-button-warning p-button-sm bg-yellow-400 px-2 py-1 ml-2 text-white",
                 rejectLabel: "Cancel",
-                acceptLabel: "Save",
+                acceptLabel: "Edit",
                 accept: () => {
                     this.fieldName = fieldName;
                     this.fieldIdToEdit = fieldId;
@@ -141,7 +140,8 @@ export default {
                 message: "Do you want to delete this record?",
                 icon: "pi pi-info-circle",
                 rejectClass: "p-button-secondary p-button-outlined p-button-sm",
-                acceptClass: "p-button-danger p-button-sm",
+                acceptClass:
+                    "p-button-danger p-button-sm bg-red-400 px-2 py-1 ml-2 text-white",
                 rejectLabel: "Cancel",
                 acceptLabel: "Delete",
                 accept: () => {

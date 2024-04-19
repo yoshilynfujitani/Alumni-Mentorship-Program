@@ -131,23 +131,12 @@
                                 </div>
                             </Dialog>
                         </td>
-                        <td class="px-6 py-4 items-center justify-center">
+                        <td
+                            class="px-6 py-4 items-center justify-center"
+                            align="center"
+                        >
                             <div class="" v-if="Ticket.ticketStatus !== 0">
-                                <h1
-                                    class="font-bold text-center"
-                                    :class="{
-                                        'text-yellow-400':
-                                            Ticket.ticketStatus === 0,
-                                        'text-green-400 ':
-                                            Ticket.ticketStatus === 1,
-                                        'text-red-400':
-                                            Ticket.ticketStatus === 2,
-                                        'text-green-700':
-                                            Ticket.ticketStatus === 3,
-                                    }"
-                                >
-                                    {{ Ticket.statusName }}
-                                </h1>
+                                <i class="pi pi-check font-bold"></i>
                             </div>
                             <div
                                 class="flex items-center justify-center"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Field;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FieldController extends Controller
 {
@@ -27,7 +28,10 @@ class FieldController extends Controller
     }
 
     public function getFields(){
-        return Field::all();
+        $fields = Field::all(['id',  DB::raw('fieldName as name')]);
+     
+
+        return $fields;
     }
 
     public function deleteField(Request $request){

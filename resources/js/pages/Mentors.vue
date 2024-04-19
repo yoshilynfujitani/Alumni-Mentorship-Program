@@ -33,7 +33,7 @@
                         >
                         <Dropdown
                             v-model="selectedCourse"
-                            :options="this.courses"
+                            :options="this?.courses"
                             optionLabel="name"
                             placeholder="Select a Field"
                             class="w-full md:w-14rem border-gray-200 border focus:border-2 focus:border-green-500"
@@ -100,16 +100,7 @@ export default {
     data() {
         return {
             mentors: [],
-            courses: [
-                { id: 1, name: "Business Management" },
-                { id: 2, name: "Creative Arts" },
-                { id: 3, name: "Engineering and Mathematics" },
-                { id: 4, name: "Humanities Arts and Social Sciences" },
-                { id: 5, name: "IT and Computer Science" },
-                { id: 6, name: " Medical and Health Science" },
-                { id: 7, name: "Teaching and Education" },
-                { id: 8, name: "Leadership and Team Building" },
-            ],
+            courses: null,
             selectedCourse: null,
             pagination: null,
             mentorQuery: "",
@@ -143,6 +134,12 @@ export default {
         handleCourseChange() {
             // Call getMentors when the selected course changes
             this.getMentors();
+        },
+        getFields() {
+            axios.post("/getfields").then(({ data }) => {
+                console.log(data);
+                this.courses = data;
+            });
         },
 
         goToPrevPage() {
@@ -199,6 +196,7 @@ export default {
     mounted() {
         this.getMentors();
         this.setUserDetailsAction();
+        this.getFields();
     },
 };
 </script>

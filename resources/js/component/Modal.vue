@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="overflow-hidden">
         <div class="flex justify-center cursor-auto">
             <button
                 @click="modalopened"
