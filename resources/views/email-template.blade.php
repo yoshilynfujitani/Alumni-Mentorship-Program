@@ -8,11 +8,11 @@
 </head>
 <body>
     <div class="container" style="padding: 1rem; background: #f5f5f5;">
-        <p>Good Morning XYZ!</p>
+        <p>Good Day! {{$userName}}</p>
         <p>
-            Welcome to Laravel. This is a demo of sending emails through
-            the Mailgun email service.
+           You've been invited as a mentor! Click the link below to confirm your participation.
         </p>
+        <a href="http://studentportal.test/invitedalumni?email={{$email}}&code={{$code}}">Accept Invitation</a>
     </div>
 </body>
 </html>

@@ -16,9 +16,17 @@ class HelloEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+     protected $userName;
+    protected $code;
+    protected $email;
+
+    public function __construct($userName, $code,$email)
     {
         //
+         $this->userName = $userName;
+        $this->code = $code;
+        $this->email = $email;
     }
 
     /**
@@ -29,6 +37,12 @@ class HelloEmail extends Mailable
     public function build()
     {
        
-        return $this->from("kosakishin06@gmail.com")->view('email-template');
+        return $this->from("kosakishin06@gmail.com")
+                    ->view('email-template')
+                    ->with([
+                        'userName' => $this->userName,
+                        'code' => $this->code,
+                        'email' => $this->email,
+                    ]);
     }
 }
