@@ -12,7 +12,7 @@
         <p>
            You've been invited as a mentor! Click the link below to confirm your participation.
         </p>
-        <a href="http://studentportal.test/invitedalumni?email={{$email}}&code={{$code}}">Accept Invitation</a>
+        <a href="http://studentportal.test?code={{$code}}">Accept Invitation</a>
     </div>
 </body>
 </html>

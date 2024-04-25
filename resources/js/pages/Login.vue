@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapActions } from "vuex";
 export default {
     data() {
@@ -107,39 +108,58 @@ export default {
         login() {
             this.clearErrMsg();
             const { email, password } = this;
-            axios
-                .post("/login", { email, password })
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.setUserDetailsAction();
 
-                        switch (res.data.user.role) {
-                            case 1:
-                                this.$router.push("/home");
-                                break;
-                            case 2:
-                                if (res.data.user.verified) {
-                                    this.$router.push("/mentorhome");
-                                } else {
-                                    this.$router.push("/login");
-                                }
-
-                                break;
-                            case 3:
-                                this.$router.push("/pdchome");
-                                break;
+            if (this.$route.query.code) {
+                axios
+                    .post("/verifyinvite", {
+                        email,
+                        code: this.$route.query.code,
+                    })
+                    .then(({ data }) => {
+                        if (data) {
+                            this.$router.push("/home");
+                        } else {
+                            this.$router.push({
+                                name: "mentorrequest",
+                                query: { email },
+                            });
                         }
-                    }
-                })
-                .catch((err) => {
-                    if (err.response.status == 403) {
-                        this.$router.push({
-                            name: "mentorrequest",
-                            query: { email },
-                        });
-                    }
-                    this.errorMsg = err.response.data.message;
-                });
+                    });
+            } else {
+                axios
+                    .post("/login", { email, password })
+                    .then((res) => {
+                        if (res.status == 200) {
+                            this.setUserDetailsAction();
+
+                            switch (res.data.user.role) {
+                                case 1:
+                                    this.$router.push("/home");
+                                    break;
+                                case 2:
+                                    if (res.data.user.verified) {
+                                        this.$router.push("/mentorhome");
+                                    } else {
+                                        this.$router.push("/login");
+                                    }
+
+                                    break;
+                                case 3:
+                                    this.$router.push("/pdchome");
+                                    break;
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        if (err.response.status == 403) {
+                            this.$router.push({
+                                name: "mentorrequest",
+                                query: { email },
+                            });
+                        }
+                        this.errorMsg = err.response.data.message;
+                    });
+            }
         },
         clearErrMsg() {
             this.errorMsg = "";

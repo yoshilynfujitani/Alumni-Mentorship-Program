@@ -93,6 +93,7 @@ Route::post("/createfield", [FieldController::class, "createField"]);
 Route::post("/editfield", [FieldController::class, "editField"]);
 Route::post("/getfields", [FieldController::class, "getFields"]);
 Route::post("/deletefield", [FieldController::class, "deleteField"]);
+Route::post("/verifyinvite", [AlumniController::class, "VerifyInvite"]);
 
 
 
