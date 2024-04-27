@@ -46,9 +46,20 @@ class ConvoController extends Controller
                 ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
                 ->get();
         }
-        elseif($request->role == 2){
+        else if($request->role == 2){
             $ConvoId = mentorAppointment::where('mentorId', Auth::id())
                 ->join('adminportal.users AS user', 'user.id', '=', 'studentId')
+                ->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
+                ->where(function ($query) {
+                    $query->where('Status', 1)
+                        ->orWhere('Status', 3);
+                })
+                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
+                ->get();
+        }
+        else if($request->role == 3){
+            $ConvoId = mentorAppointment::
+                join('adminportal.users AS user', 'user.id', '=', 'studentId')
                 ->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
                 ->where(function ($query) {
                     $query->where('Status', 1)

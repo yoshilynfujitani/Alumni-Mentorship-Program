@@ -19,6 +19,7 @@ import Appointments from "@/pages/Appointments.vue";
 import TicketLogsStudent from "@/pages/TicketLogsStudent.vue";
 import AlumniInvite from "@/pages/PDCPages/AlumniInvite.vue";
 import MentorRequest from "@/pages/MentorRequest.vue";
+import PDCConversation from "./pages/PDCPages/PDCConversation.vue";
 
 export const routes = [
     {
@@ -115,5 +116,10 @@ export const routes = [
         path: "/pendingmentors",
         name: "pendingmentors",
         component: PDCPendingMentors,
+    },
+    {
+        path: "/allconvo",
+        name: "allconvo",
+        component: PDCConversation,
     },
 ];

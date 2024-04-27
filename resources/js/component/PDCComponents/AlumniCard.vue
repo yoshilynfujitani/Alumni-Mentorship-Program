@@ -19,7 +19,7 @@
                     @click="sendEmail(Alum.email, Alum.name)"
                     href="#"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >Invite Alumni</a
+                    >{{ isLoading ? "Sending..." : "Invite Alumni" }}</a
                 >
             </div>
         </div>
@@ -28,8 +28,14 @@
 <script>
 export default {
     props: ["Alum"],
+    data() {
+        return {
+            isLoading: false,
+        };
+    },
     methods: {
         sendEmail(email, name) {
+            this.isLoading = true;
             axios
                 .post("/sendEmail", { email: email, userName: name })
                 .then(({ data }) => {
@@ -39,6 +45,7 @@ export default {
                         detail: data,
                         life: 3000,
                     });
+                    this.isLoading = false;
                 });
         },
     },

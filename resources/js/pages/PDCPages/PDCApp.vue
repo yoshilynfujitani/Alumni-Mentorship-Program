@@ -1,5 +1,7 @@
 <template>
-    <LayoutPDC><Fields /> </LayoutPDC>
+    <LayoutPDC
+        ><div class="py-20 self-start"><Fields /></div
+    ></LayoutPDC>
 </template>
 
 <script>

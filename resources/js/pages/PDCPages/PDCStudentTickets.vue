@@ -1,16 +1,10 @@
 <template lang="">
     <LayoutPDC>
-        <div class="self-start">
-            <h1>Tickets</h1>
+        <div class="self-start pt-20">
+            <h1 class="text-2xl font-bold">Student Tickets</h1>
         </div>
         <Toast />
 
-        <!-- <div class="grid grid-cols-4 gap-5 mx-auto my-10">
-            <div class="mx-auto" v-for="Mentor in mentors">
-                <MentorCard :MentorDetails="Mentor" />
-            </div>
-
-        </div> -->
         <div v-if="isLoading">
             <UnSpinnerAlt class="animate-spin text-green-500" />
         </div>
@@ -59,20 +53,7 @@
                             {{ Ticket.name }}
                         </th>
                         <td class="px-6 py-4 flex items-center justify-center">
-                            <Button
-                                @click="
-                                    RejectTicket(
-                                        $event,
-                                        2,
-                                        Ticket.studentId,
-                                        Ticket.field,
-                                        Ticket.id
-                                    )
-                                "
-                                label="Delete"
-                                severity="danger"
-                                outlined
-                            ></Button>
+                            <i class="pi pi-eye"></i>
                         </td>
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             {{ Ticket.fieldName }}

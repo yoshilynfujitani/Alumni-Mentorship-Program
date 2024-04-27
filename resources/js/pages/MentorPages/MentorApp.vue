@@ -632,25 +632,25 @@ export default {
         cancelEditCourses() {
             this.selectedCourses = [...this.activeCourses];
             this.isEditCourses = !this.isEditCourses;
-
-            console.log(this.selectedCourses);
-            console.log(this.activeCourses);
         },
         toggleCourse(course) {
-            console.log(this.compareEditandActiveCourses());
-            const index = this.selectedCourses.findIndex(
-                (c) => c.id === course.id
-            );
-            if (index === -1) {
-                // Course not found in activeCourses, add it
-                this.selectedCourses?.push(course);
+            if (course && course.id) {
+                const index = this.selectedCourses?.findIndex(
+                    (c) => c.id === course.id
+                );
+                if (index === -1) {
+                    // Course not found in selectedCourses, add it
+                    this.selectedCourses.push(course);
+                } else {
+                    // Course found in selectedCourses, remove it
+                    this.selectedCourses.splice(index, 1);
+                }
             } else {
-                // Course found in activeCourses, remove it
-                this.selectedCourses?.splice(index, 1);
+                console.error("Course or course id is undefined or null.");
             }
         },
         isActive(course) {
-            return this.selectedCourses.some((c) => c.id === course.id);
+            return this.selectedCourses?.some((c) => c?.id === course?.id);
         },
         saveCourses() {
             const CourseId = this.selectedCourses.map((course) => course.id);
@@ -672,18 +672,22 @@ export default {
             axios
                 .get("/getfield")
                 .then((data) => {
-                    //data data is only printing the course id like 123 it does not contain the course name how to map
-                    const idStrings = data.data.toString().split(",");
-
-                    this.activeCourses = idStrings.map((courseId) => {
-                        // Map each course ID to its corresponding name
-
-                        return this.availableCourses?.find(
-                            (course) => course.id === parseInt(courseId, 10)
-                        );
-                    });
-                    this.selectedCourses = [...this.activeCourses];
-                    console.log(this.activeCourses);
+                    if (!data.data || data.data.length === 0) {
+                        // If the response data is empty, set activeCourses and selectedCourses to an empty array
+                        this.activeCourses = [];
+                        this.selectedCourses = [];
+                        console.log("Field is empty.");
+                    } else {
+                        // Split the response data and map each course ID to its corresponding name
+                        const idStrings = data.data.toString().split(",");
+                        this.activeCourses = idStrings.map((courseId) => {
+                            return this.availableCourses?.find(
+                                (course) => course.id === parseInt(courseId, 10)
+                            );
+                        });
+                        this.selectedCourses = [...this.activeCourses];
+                        console.log(this.activeCourses);
+                    }
                 })
                 .catch((error) => {
                     // Handle error

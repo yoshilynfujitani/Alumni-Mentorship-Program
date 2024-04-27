@@ -1,7 +1,7 @@
 <template>
     <LayoutPDC>
         <Toast />
-        <div class="self-start">
+        <div class="self-start pt-20">
             <div class="self-start">
                 <h1 class="flex items-center text-2xl gap-1 font-bold">
                     <i class="pi pi-users text-2xl text-yellow-400"></i>
@@ -44,7 +44,7 @@
         </div>
 
         <div
-            class="self-start overflow-x-auto w-full min-h-full shadow-md sm:rounded-lg"
+            class="self-start mb-20 overflow-x-auto w-full min-h-full shadow-sm sm:rounded-lg"
             v-else
         >
             <table

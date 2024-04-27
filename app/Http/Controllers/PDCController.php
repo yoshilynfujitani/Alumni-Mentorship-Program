@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 
 use Carbon\Carbon;
-use App\Models\Convo;
 use App\Models\User;
+use App\Models\Convo;
 use Illuminate\Http\Request;
+use App\Models\MentorRequest;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,12 @@ class PDCController extends Controller
     //
     public function updateMentorStatus(Request $request){
         $userRecord = User::find($request->mentorId);
+        $application = MentorRequest::find($request->mentorId);
 
+        $application->verified = $request->statusId;
         $userRecord->verified = $request->statusId;
 
+        $application->save();
         $userRecord->save();
         return $userRecord;
     }

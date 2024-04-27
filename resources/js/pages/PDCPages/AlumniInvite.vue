@@ -1,9 +1,13 @@
 <template>
     <LayoutPDC>
         <Toast />
-
-        <div class="grid grid-cols-5 w-full     " v-for="Alum in Alumni">
-            <AlumniCard :Alum="Alum" />
+        <div class="w-full py-20">
+            <h1 class="self-start text-2xl font-bold py-2.5">MMSU Alumni</h1>
+            <div class="grid grid-cols-5 w-full gap-5">
+                <div class="" v-for="Alum in Alumni">
+                    <AlumniCard :Alum="Alum" />
+                </div>
+            </div>
         </div>
     </LayoutPDC>
 </template>

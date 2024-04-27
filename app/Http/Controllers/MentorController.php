@@ -72,7 +72,7 @@ class MentorController extends Controller
     }
 
     public function checkExisitingMentorRequest(Request $request){
-        $existing = MentorRequest::where("email", $request->email)->first();
+        $existing = MentorRequest::where("email", $request->email)->where('verified',0)->first();
 
         if($existing){
             return $existing->existingApplication = true;

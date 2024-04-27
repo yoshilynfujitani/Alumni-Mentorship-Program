@@ -108,8 +108,11 @@ export default {
         login() {
             this.clearErrMsg();
             const { email, password } = this;
-
-            if (this.$route.query.code) {
+            console.log(this.$route.query.code);
+            if (
+                this.$route.query.code !== undefined &&
+                this.$route.query.code !== ""
+            ) {
                 axios
                     .post("/verifyinvite", {
                         email,
@@ -117,7 +120,7 @@ export default {
                     })
                     .then(({ data }) => {
                         if (data) {
-                            this.$router.push("/home");
+                            this.$router.push("/mentorhome");
                         } else {
                             this.$router.push({
                                 name: "mentorrequest",
