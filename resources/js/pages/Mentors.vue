@@ -19,15 +19,11 @@
             >
                 <div
                     class="md:mx-5 mb-2.5 text-lg font-semibold text-green-700"
-                    v-if="this.allowToAppoint === 1"
                 >
                     Mentors from Requested Field
                 </div>
-                <div
-                    class="md:mx-5 mb-2.5 space-y-2.5 md:flex md:space-x-5"
-                    v-else
-                >
-                    <div class="w-80">
+                <div class="md:mx-5 mb-2.5 space-y-2.5 md:flex md:space-x-5">
+                    <div class="w-80" v-if="this.allowToAppoint !== 1">
                         <span class="text-sm font-medium text-green-600"
                             >Filter Mentors</span
                         >
