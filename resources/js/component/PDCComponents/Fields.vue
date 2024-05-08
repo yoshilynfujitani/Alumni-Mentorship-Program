@@ -1,10 +1,10 @@
 <template>
     <div
-        class="w-full border border-gray-300 p-5 rounded-md max-h-[500px] overflow-y-scroll"
+        class="border border-gray-300 pb-5 rounded-md max-h-[400px] overflow-y-scroll"
     >
         <Toast />
-        <div class="" v-if="this.isCreate">
-            <h1 class="text-2xl font-bold pb-5">Create a new Field</h1>
+        <div class="p-5" v-if="this.isCreate">
+            <h1 class="text-xl font-bold">Create a new Field</h1>
             <div class="space-x-2.5">
                 <input
                     v-model="fieldName"
@@ -14,9 +14,15 @@
                 />
                 <button
                     @click="createField"
-                    class="bg-blue-500 px-4 py-2 text-white font-medum rounded-md"
+                    class="bg-blue-500 px-4 py-2 text-white font-medium rounded-md"
                 >
                     Create Field
+                </button>
+                <button
+                    @click="isCreate = !isCreate"
+                    class="bg-red-500 px-4 py-2 text-white font-medium rounded-md"
+                >
+                    <i class="pi pi-times"></i>
                 </button>
             </div>
         </div>
@@ -37,22 +43,26 @@
                 </button>
             </div>
         </div>
-        <div class="" v-else>
-            <h1 class="text-2xl font-bold pb-5">List of fields</h1>
+        <div class="p-2.5 pt-0" v-else>
+            <div class="sticky top-0 shadow-sm mb-5">
+                <h1 class="text-xl font-semibold bg-white p-2.5">
+                    List of fields
+                </h1>
+            </div>
             <button
                 class="text-blue-500 font-semibold px-2 py-1 border-2 border-blue-400 rounded-md"
                 @click="this.isCreate = true"
             >
                 Create Field
             </button>
-            <div class="">
+            <div class="grid grid-cols-2 gap-x-2">
                 <div
                     class="border border-gray-200 p-2.5 rounded-md flex justify-between gap-5 my-2.5"
                     v-for="field in fields"
                 >
                     <h1
                         :key="field.id"
-                        class="text-md font-semibold py-2.5 w-full"
+                        class="text-sm font-semibold py-2.5 w-full"
                     >
                         {{ field.name }}
                     </h1>
