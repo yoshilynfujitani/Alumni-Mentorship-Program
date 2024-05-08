@@ -60,6 +60,7 @@ Route::post("/getConvoId", [ConvoController::class, "getConvoId"]);
 Route::post("/updateUserRating", [RatingController::class, "calculateRating"]);
 Route::post("/searchConvo", [ConvoController::class, "searchConvo"]);
 Route::post("/searchMentor", [MentorController::class, "searchMentor"]);
+Route::post("/searchAlumni", [AlumniController::class, "searchAlumni"]);
 
 //Mentor
 Route::post("/mentorsignupAPI", [MentorController::class, "signup"]);

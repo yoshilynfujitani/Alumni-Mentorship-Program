@@ -11,7 +11,8 @@
         saveLabel="Send"
         :saveOption="false"
         @save="sendChat"
-        ><div class="w-auto flex flex-col"></div>
+    >
+        <div class="w-auto flex flex-col"></div>
     </ChatModal>
 </template>
 <script>

@@ -1,5 +1,7 @@
 <template>
-    <div class="w-full">
+    <div
+        class="w-full border border-gray-300 p-5 rounded-md max-h-[500px] overflow-y-scroll"
+    >
         <Toast />
         <div class="" v-if="this.isCreate">
             <h1 class="text-2xl font-bold pb-5">Create a new Field</h1>
@@ -18,7 +20,7 @@
                 </button>
             </div>
         </div>
-        <div class="" v-if="this.isEdit">
+        <div class="" v-else-if="this.isEdit">
             <h1 class="text-2xl font-bold pb-5">Edit Field</h1>
             <div class="space-x-2.5">
                 <input
@@ -44,25 +46,28 @@
                 Create Field
             </button>
             <div class="">
-                <div class="" v-for="field in fields">
+                <div
+                    class="border border-gray-200 p-2.5 rounded-md flex justify-between gap-5 my-2.5"
+                    v-for="field in fields"
+                >
                     <h1
                         :key="field.id"
                         class="text-md font-semibold py-2.5 w-full"
                     >
                         {{ field.name }}
-                        <span class="space-x-2.5"
-                            ><ConfirmPopup></ConfirmPopup>
-                            <i
-                                class="pi pi-wrench self-end bg-yellow-400 text-white p-2 rounded-md hover:cursor-pointer"
-                                @click="EditField($event, field.name, field.id)"
-                            ></i>
-                            <ConfirmPopup></ConfirmPopup>
-                            <i
-                                class="pi pi-trash self-end bg-red-400 text-white p-2 rounded-md hover:cursor-pointer"
-                                @click="DeleteField($event, field.id)"
-                            ></i
-                        ></span>
                     </h1>
+                    <span class="space-x-2.5 flex"
+                        ><ConfirmPopup></ConfirmPopup>
+                        <i
+                            class="pi pi-wrench self-end bg-yellow-400 text-white p-2 rounded-md hover:cursor-pointer"
+                            @click="EditField($event, field.name, field.id)"
+                        ></i>
+                        <ConfirmPopup></ConfirmPopup>
+                        <i
+                            class="pi pi-trash self-end bg-red-400 text-white p-2 rounded-md hover:cursor-pointer"
+                            @click="DeleteField($event, field.id)"
+                        ></i
+                    ></span>
                 </div>
             </div>
         </div>

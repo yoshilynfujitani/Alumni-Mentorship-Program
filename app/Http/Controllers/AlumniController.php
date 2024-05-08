@@ -30,4 +30,11 @@ class AlumniController extends Controller
         }
      
     }
+
+    public function searchAlumni(Request $request){
+          $data = User::where('verified', 0)
+          ->where('name','LIKE',"%{$request->alumniQuery}%")->get();
+
+        return $data;
+    }
 }

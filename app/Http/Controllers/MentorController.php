@@ -76,7 +76,7 @@ class MentorController extends Controller
 
         if($existing){
             return $existing->existingApplication = true;
-        }
+        }   
         return;
     }
 
