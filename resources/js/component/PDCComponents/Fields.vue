@@ -3,6 +3,7 @@
         class="border border-gray-300 pb-5 rounded-md max-h-[400px] overflow-y-scroll"
     >
         <Toast />
+        <ConfirmPopup></ConfirmPopup>
         <div class="p-5" v-if="this.isCreate">
             <h1 class="text-xl font-bold">Create a new Field</h1>
             <div class="space-x-2.5">
@@ -66,13 +67,12 @@
                     >
                         {{ field.name }}
                     </h1>
-                    <span class="space-x-2.5 flex"
-                        ><ConfirmPopup></ConfirmPopup>
+                    <span class="space-x-2.5 flex">
                         <i
                             class="pi pi-wrench self-end bg-yellow-400 text-white p-2 rounded-md hover:cursor-pointer"
                             @click="EditField($event, field.name, field.id)"
                         ></i>
-                        <ConfirmPopup></ConfirmPopup>
+
                         <i
                             class="pi pi-trash self-end bg-red-400 text-white p-2 rounded-md hover:cursor-pointer"
                             @click="DeleteField($event, field.id)"

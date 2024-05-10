@@ -12,7 +12,7 @@
                             <input
                                 v-model="titleQuery"
                                 class="border border-gray-200 rounded-md active:border-green-200 focus:border-green-200"
-                                placeholder="Appointment title..."
+                                placeholder="Search User..."
                             />
                             <button
                                 @click="clearQuery"
@@ -203,7 +203,7 @@ export default {
             const { titleQuery } = this;
 
             axios
-                .post("/searchConvo", { titleQuery, role: 2 })
+                .post("/searchConvo", { titleQuery, role: 3 })
                 .then(({ data }) => {
                     console.log(data);
                     this.inbox = data;

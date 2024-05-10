@@ -87,6 +87,8 @@ Route::get("/gettickets", [TicketController::class, "getTickets"]);
 Route::get("/getticketsofstudent", [TicketController::class, "getTicketsOfStudent"]);
 Route::get("/getalumni", [AlumniController::class, "getAlumni"]);
 Route::post("/verifyticket", [TicketController::class, "verifyTicket"]);
+Route::post("/searchticket", [TicketController::class, "searchTicket"]);
+Route::post("/searchrequest", [MentorController::class, "searchRequest"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
 Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);
 Route::get("/getmentorapplications", [MentorController::class, "getMentorApplications"]);

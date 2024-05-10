@@ -81,7 +81,7 @@ class MentorController extends Controller
     }
 
     public function getMentorApplications(){
-        $applications = MentorRequest::all();
+        $applications = MentorRequest::orderBy('created_at', 'DESC')->paginate(10);
     
         foreach($applications as $application){
             $user = User::find($application->userId); 
@@ -92,6 +92,14 @@ class MentorController extends Controller
         }
     
         return $applications;
+    }
+
+    public function searchRequest(Request $request){
+        return MentorRequest::join('users', 'users.id', '=', 'mentorrequest.userId')
+        ->select('users.name', 'users.course')
+        ->where('name', 'LIKE', "%{$request->ticketQuery}%")
+        ->orderBy('mentorrequest.created_at', 'DESC')
+        ->paginate(10);
     }
     
 

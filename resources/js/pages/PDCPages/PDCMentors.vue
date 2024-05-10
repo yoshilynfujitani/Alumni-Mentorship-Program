@@ -44,7 +44,7 @@
         </div>
 
         <div
-            class="self-start mb-20 overflow-x-auto w-full min-h-full shadow-sm sm:rounded-lg"
+            class="self-start mb-20 overflow-x-auto w-full min-h-full shadow-md sm:rounded-lg"
             v-else
         >
             <table
@@ -54,23 +54,10 @@
                     class="text-xs text-gray-700 uppercase dark:text-gray-400"
                 >
                     <tr>
-                        <th
-                            scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
-                        >
-                            Instructor's Name
-                        </th>
+                        <th scope="col" class="px-6 py-3">Instructor's Name</th>
                         <th scope="col" class="px-6 py-3">College</th>
-                        <th
-                            scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800"
-                        >
-                            Field
-                        </th>
-                        <th
-                            scope="col"
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-center"
-                        >
+                        <th scope="col" class="px-6 py-3">Field</th>
+                        <th scope="col" class="px-6 py-3 text-center">
                             Others
                         </th>
                     </tr>
@@ -79,11 +66,11 @@
                     <tr
                         v-for="Mentor in mentors"
                         :key="Mentor.id"
-                        class="border-b border-gray-200 dark:border-gray-700"
+                        class="border-gray-200 dark:border-gray-700"
                     >
                         <th
                             scope="row"
-                            class="flex items-center gap-2 px-6 py-7 h-full font-medium text-gray-900 bg-gray-50 dark:text-white dark:bg-gray-800"
+                            class="flex items-center gap-2 px-6 py-7 h-full font-medium text-gray-900"
                         >
                             <img
                                 class="w-7 h-7 rounded-full"
@@ -92,7 +79,7 @@
                             />{{ Mentor.name }}
                         </th>
                         <td class="px-6 py-4">{{ Mentor.course }}</td>
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        <td class="px-6 py-4">
                             {{ Mentor.fieldName }}
                         </td>
                         <td
@@ -228,7 +215,7 @@
                                 </div>
                                 <div class="" v-else>
                                     <thead
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                        class="text-xs text-gray-700 uppercase"
                                     >
                                         <tr class="">
                                             <th scope="col" class="pl-6 py-2">

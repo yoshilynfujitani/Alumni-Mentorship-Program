@@ -1,7 +1,21 @@
 <template lang="">
     <LayoutPDC>
         <div class="self-start pt-20">
-            <h1 class="text-2xl font-bold">Student Tickets</h1>
+            <h1 class="text-2xl font-bold pb-2.5">Student Tickets</h1>
+            <div class="space-x-2.5 pb-5">
+                <input
+                    v-model="ticketQuery"
+                    type="text"
+                    class="border-gray-300 rounded-md"
+                    placeholder="Search name..."
+                />
+                <button
+                    class="bg-green-600 px-4 py-2 rounded-md text-white"
+                    @click="searchticket"
+                >
+                    Search
+                </button>
+            </div>
         </div>
         <Toast />
 
@@ -20,42 +34,33 @@
                     class="text-xs text-gray-700 uppercase dark:text-gray-400"
                 >
                     <tr>
-                        <th
-                            scope="col"
-                            class="pl-6 py-2 bg-gray-50 dark:bg-gray-800"
-                        >
-                            Student's Name
-                        </th>
+                        <th scope="col" class="pl-6 py-2">Student's Name</th>
                         <th scope="col" class="text-center">
                             Student's Detail
                         </th>
-                        <th
-                            scope="col"
-                            class="pl-6 bg-gray-50 dark:bg-gray-800"
-                        >
-                            Field
-                        </th>
+                        <th scope="col" class="pl-6">Field</th>
                         <th scope="col" class="text-center">Status</th>
                         <th scope="col" class="text-center">Remarks</th>
                         <th scope="col" class="text-center">Verify</th>
                     </tr>
                 </thead>
+                <ConfirmPopup></ConfirmPopup>
                 <tbody>
                     <tr
                         v-for="Ticket in tickets"
                         :key="Ticket.id"
-                        class="border-b border-gray-200 dark:border-gray-700"
+                        class="border-b border-gray-200"
                     >
                         <th
                             scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
+                            class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap"
                         >
                             {{ Ticket.name }}
                         </th>
                         <td class="px-6 py-4 flex items-center justify-center">
                             <i class="pi pi-eye"></i>
                         </td>
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        <td class="px-6 py-4">
                             {{ Ticket.fieldName }}
                         </td>
                         <td class="px-6 py-4 justify-center">
@@ -74,43 +79,10 @@
                             </h1>
                         </td>
                         <td class="px-6 py-4 items-center flex justify-center">
-                            <button
-                                label="View"
-                                @click="viewTicket(Ticket)"
-                                class="text-sm"
-                            >
-                                <i class="pi pi-envelope"></i>
-                            </button>
-                            <Dialog
-                                v-model:visible="visible"
-                                modal
-                                header="Ticket Remarks"
-                                :style="{ width: '25rem' }"
-                            >
-                                <div class="">
-                                    <h1 class="text-sm font-medium">
-                                        {{
-                                            moment(
-                                                selectedTicket.created_at,
-                                                "YYYY-MM-DD HH:mm:ss"
-                                            ).format("MMMM Do YYYY")
-                                        }}
-                                    </h1>
-                                    <div
-                                        class="my-2.5 min-h-[200px] rounded-md border border-gray-200 p-4"
-                                    >
-                                        {{ selectedTicket.ticketRemarks }}
-                                    </div>
-                                </div>
-                                <div class="flex justify-content-end gap-2">
-                                    <Button
-                                        type="button"
-                                        label="Cancel"
-                                        severity="secondary"
-                                        @click="visible = false"
-                                    ></Button>
-                                </div>
-                            </Dialog>
+                            <StudentTicketRemarks
+                                :remarks="Ticket.ticketRemarks"
+                                :date="Ticket.created_at"
+                            />
                         </td>
                         <td
                             class="px-6 py-4 items-center justify-center"
@@ -123,7 +95,6 @@
                                 class="flex items-center justify-center"
                                 v-else
                             >
-                                <ConfirmPopup></ConfirmPopup>
                                 <div class="flex gap-2 justify-content-center">
                                     <button
                                         @click="
@@ -159,6 +130,15 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="my-5">
+                <Pagination
+                    @next="goToNextPage"
+                    @back="goToPrevPage"
+                    :total="this.pagination?.total"
+                    :current_page="this.pagination?.current_page"
+                    :last_page="this.pagination?.last_page"
+                />
+            </div>
         </div>
     </LayoutPDC>
 </template>
@@ -170,7 +150,8 @@ import ConfirmPopup from "primevue/confirmpopup";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
-
+import StudentTicketRemarks from "../../component/PDCComponents/StudentTicketRemarks.vue";
+import Pagination from "../../utils/Pagination.vue";
 export default {
     components: {
         MentorCard,
@@ -179,21 +160,19 @@ export default {
         Toast,
         Button,
         Dialog,
+        StudentTicketRemarks,
+        Pagination,
     },
     data() {
         return {
             tickets: [],
-
+            ticketQuery: "",
             isLoading: false,
-            visible: false,
+            pagination: null,
             moment: moment,
         };
     },
     methods: {
-        viewTicket(selectedTicket) {
-            this.selectedTicket = selectedTicket;
-            this.visible = true;
-        },
         getTickets() {
             this.isLoading = true;
 
@@ -201,10 +180,40 @@ export default {
                 console.log(data);
 
                 this.tickets = data.data;
+                this.pagination = data;
                 this.isLoading = false;
             });
         },
-
+        goToPrevPage() {
+            if (this.pagination.current_page > 1) {
+                const prevPage = this.pagination.current_page - 1;
+                this.fetchRequests(prevPage);
+            }
+        },
+        goToNextPage() {
+            if (this.pagination.current_page < this.pagination.last_page) {
+                const nextPage = this.pagination.current_page + 1;
+                this.fetchRequests(nextPage);
+            }
+        },
+        fetchRequests(page) {
+            axios.get(`/gettickets?page=${page}`).then(({ data }) => {
+                console.log(data);
+                this.pagination = data;
+                this.tickets = data.data;
+            });
+        },
+        searchticket() {
+            const { ticketQuery } = this;
+            this.pagination = "";
+            this.isLoading = true;
+            axios
+                .post("/searchticket", { ticketQuery: ticketQuery })
+                .then(({ data }) => {
+                    this.tickets = data;
+                    this.isLoading = false;
+                });
+        },
         verify(requestStatus, studentId, field, ticketId) {
             axios
                 .post("/verifyticket", {
@@ -218,6 +227,7 @@ export default {
                     this.getTickets();
                 });
         },
+
         AcceptTicket(event, requestStatus, studentId, field, ticketId) {
             this.$confirm.require({
                 target: event.currentTarget,

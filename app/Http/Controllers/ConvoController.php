@@ -85,31 +85,32 @@ class ConvoController extends Controller
     // }
 
     public function searchConvo(Request $request)
-    {   
-        
-        if($request->role == 1){
-            $convo = mentorAppointment::where('studentId', Auth::id())
+{   
+    $convo = mentorAppointment::query(); 
+
+    if ($request->role == 1) {
+        $convo->where('studentId', Auth::id())
             ->join('adminportal.users AS user', 'user.id', '=', 'mentorId');
-        }
-        elseif($request->role == 2){
-            $convo = mentorAppointment::where('mentorId', Auth::id())
-            ->join('adminportal.users AS user', 'user.id', '=', 'studentId') ;
-        }
-
-    
-
-            $convo =  $convo->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
-            ->where('title', 'LIKE', "%{$request->titleQuery}%")
-           
-            ->where(function($query) {
-                $query->where('Status', 1)
-                      ->orWhere('Status', 3);
-            })
-        
-            ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
-            ->get();
-    
-        return $convo;
+    } elseif ($request->role == 2) {
+        $convo->where('mentorId', Auth::id())
+            ->join('adminportal.users AS user', 'user.id', '=', 'studentId');
+    } elseif ($request->role == 3) {
+        // No additional conditions for role 3
+         $convo->join('adminportal.users AS user', 'user.id', '=', 'studentId');
     }
+
+    $convo->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
+        ->where('user.name', 'LIKE', "%{$request->titleQuery}%")
+        ->where(function($query) {
+            $query->where('Status', 1)
+                  ->orWhere('Status', 3);
+        })
+        ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId');
+
+    $convoResult = $convo->get(); 
+
+    return $convoResult;
+}
+
 
 }

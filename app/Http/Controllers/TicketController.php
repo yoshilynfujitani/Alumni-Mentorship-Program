@@ -29,7 +29,7 @@ class TicketController extends Controller
     
     public function getTickets(){
         
-        return Ticket::orderBy('created_at')
+        return Ticket::orderBy('created_at', 'DESC')
         ->join('users', 'users.id','=', 'ticketlogs.studentId')
         ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
         ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
@@ -39,13 +39,23 @@ class TicketController extends Controller
     public function getTicketsOfStudent(){
         
         return Ticket::where('studentId', Auth::id())
-        ->orderBy('created_at')
+        ->orderBy('created_at', 'DESC')
         ->join('users', 'users.id','=', 'ticketlogs.studentId')
         ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
         ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
         ->select('users.name','users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
         ->paginate(10);
     }
+
+    public function searchTicket(Request $request){
+        return Ticket::join('users', 'users.id', '=', 'ticketlogs.studentId')
+        ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+        ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
+        ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+        ->where('name', 'LIKE', "%{$request->ticketQuery}%")
+        ->orderBy('ticketlogs.created_at', 'DESC')
+        ->get();
+        }
 
     public function  verifyTicket(Request $request){
         DB::transaction(function () use ($request) {
