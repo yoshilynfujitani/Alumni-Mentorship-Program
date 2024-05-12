@@ -109,11 +109,16 @@ class MentorController extends Controller
 
                         
     //null is default search
-    if($request->searchBy === null){
+    if($request->searchBy === null && $request->selectedCourseId === null){
         $mentors = $mentors->paginate(12);
     }
     //1 is when student is allowed to make appointments
+    else if($request->selectedCourseId && $request->fieldToTake === null){
+         $mentors = $mentors->whereRaw('FIND_IN_SET(?, users.field)', [$request->selectedCourseId])->paginate(12);
+      
+    }
     else{
+        dd("hello");
         $mentors = $mentors->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake])->paginate(12);
 
         foreach ($mentors as $mentor) {
@@ -134,47 +139,55 @@ class MentorController extends Controller
 
     
 
-  public function getMentorsStudent(Request $request) {
-     $query = DB::connection('admin')->table('users')
+public function getMentorsStudent(Request $request) {
+    $query = DB::connection('admin')->table('users')
         ->join('userfields', 'userfields.fieldId', '=', 'users.field')
         ->where('users.role', 2)
         ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating');
 
     // Apply mentor name search if provided
-    if ($request->mentorQuery) {
+    if ($request->mentorQuery && $request->selectedCourseId === null) {
         $query->where('userfields.fieldName', 'LIKE', "%{$request->mentorQuery}%");
     }
+     else if ($request->mentorQuery === null &&  $request->selectedCourseId  ) {
+        $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->selectedCourseId]);
+       
+    }
+
+    else if($request->mentorQuery  &&  $request->selectedCourseId ){
+            $query->where('name','LIKE',"%{$request->mentorQuery}%");
+            $query = $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->selectedCourseId]);
+                
+    }
+
 
     // Null is the default search
-    if ($request->searchBy === null) {
-        if ($request->allowToAppoint == 1 && $request->fieldToTake) {
-            $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);
-        }
-        $mentors = $query->paginate(12);
-    }
-    // 1 is when the student is allowed to make appointments
-   
-        else if ($request->allowToAppoint == 1 && $request->fieldToTake) {
-            $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);
-        }
-
-        $mentors = $query->paginate(12);
-
-        foreach ($mentors as $mentor) {
-            $appointment = MentorAppointment::where('studentId', auth()->id())
-                ->where('status', 0)
-                ->where('mentorId', $mentor->id)
-                ->exists();
-
-            $mentor->hasAppointment = $appointment;
-
-            $feedbacks = Feedback::where('userToRateId', $mentor->id)->get();
-            $mentor->feedBackCount = $feedbacks->count();
-        }
+    // if ($request->searchBy === null) {
+    //     if ($request->allowToAppoint == 1 && $request->fieldToTake) {
+    //         $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);
+    //     }
+    // } 
+    else if ($request->allowToAppoint == 1 && $request->fieldToTake) {
+        $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);}
     
+
+    $mentors = $query->paginate(12);
+
+    foreach ($mentors as $mentor) {
+        $appointment = MentorAppointment::where('studentId', auth()->id())
+            ->where('status', 0)
+            ->where('mentorId', $mentor->id)
+            ->exists();
+
+        $mentor->hasAppointment = $appointment;
+
+        $feedbacks = Feedback::where('userToRateId', $mentor->id)->get();
+        $mentor->feedBackCount = $feedbacks->count();
+    }
 
     return $mentors;
 }
+
 
     
     public function getMentorAppointment(){

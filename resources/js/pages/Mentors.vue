@@ -173,13 +173,14 @@ export default {
                 });
         },
         searchMentor() {
-            const { fieldToTake, mentorQuery } = this;
+            const { fieldToTake, mentorQuery, selectedCourse } = this;
             const searchBy = this.allowToAppoint ? 1 : null;
             axios
                 .post("/searchMentor", {
                     fieldToTake: fieldToTake,
                     mentorQuery: mentorQuery,
                     searchBy: searchBy,
+                    selectedCourseId: selectedCourse ? selectedCourse.id : null,
                 })
                 .then(({ data }) => {
                     console.log(data);

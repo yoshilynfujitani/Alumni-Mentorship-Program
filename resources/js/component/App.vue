@@ -51,8 +51,8 @@
                 >
                     Request Ticket
                 </button>
-                <Dialog v-model:visible="visible" modal header="Request Ticket"
-                    ><div
+                <Dialog v-model:visible="visible" modal header="Request Ticket">
+                    <div
                         class="flex flex-col justify-between p-5 gap-5 w-[500px]"
                     >
                         <div class="w-full">
@@ -83,8 +83,28 @@
                             />
                         </div>
                     </div>
+                    <div
+                        class="w-full flex items-center justify-center"
+                        v-if="TicketError"
+                    >
+                        <Message
+                            severity="error"
+                            class="w-fit"
+                            :closable="false"
+                            >Please fill out all entries on the ticket
+                            form</Message
+                        >
+                    </div>
                     <div class="flex justify-content-end gap-2">
-                        <button @click="visible = false">Cancel</button>
+                        <button
+                            @click="
+                                visible = false;
+                                TicketError = false;
+                            "
+                        >
+                            Cancel
+                        </button>
+
                         <button
                             @click="sendTicket"
                             class="text-white font-medium bg-green-600 px-4 py-2 rounded-md"
@@ -409,6 +429,7 @@ export default {
             ],
             moment: moment,
             visible: false,
+            TicketError: false,
         };
     },
     computed: {
@@ -447,8 +468,12 @@ export default {
         },
 
         sendTicket() {
-            const fieldId = parseInt(this.selectedField.id);
             const { ticketRemarks } = this;
+            if (!this.selectedField || !ticketRemarks) {
+                return (this.TicketError = true);
+            }
+            const fieldId = parseInt(this.selectedField.id);
+
             axios
                 .post("/requestticket", { fieldId, ticketRemarks })
                 .then(({ data }) => {

@@ -74,9 +74,20 @@
 
                         <button
                             type="submit"
+                            :class="{ 'opacity-50': isLoggingIn }"
                             class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
-                            Sign in
+                            <h1
+                                class="flex items-center justify-center gap-2"
+                                v-if="isLoggingIn"
+                            >
+                                Logging In
+                                <i
+                                    class="pi pi-spin pi-spinner"
+                                    style="font-size: 1rem"
+                                ></i>
+                            </h1>
+                            <h1 v-else>Log In</h1>
                         </button>
 
                         <p
@@ -101,11 +112,13 @@ export default {
             password: "",
             message: this.$route.query.messageSent,
             errorMsg: "",
+            isLoggingIn: false,
         };
     },
     methods: {
         ...mapActions(["setUserDetailsAction"]),
         login() {
+            this.isLoggingIn = true;
             this.clearErrMsg();
             const { email, password } = this;
             console.log(this.$route.query.code);
@@ -120,8 +133,14 @@ export default {
                     })
                     .then(({ data }) => {
                         if (data) {
-                            this.$router.push("/mentorhome");
+                            axios
+                                .post("/login", { email, password })
+                                .then((res) => {
+                                    this.isLoggingIn = false;
+                                    this.$router.push("/mentorhome");
+                                });
                         } else {
+                            this.isLoggingIn = false;
                             this.$router.push({
                                 name: "mentorrequest",
                                 query: { email },
@@ -133,6 +152,7 @@ export default {
                     .post("/login", { email, password })
                     .then((res) => {
                         if (res.status == 200) {
+                            this.isLoggingIn = false;
                             this.setUserDetailsAction();
 
                             switch (res.data.user.role) {
@@ -154,6 +174,7 @@ export default {
                         }
                     })
                     .catch((err) => {
+                        this.isLoggingIn = false;
                         if (err.response.status == 403) {
                             this.$router.push({
                                 name: "mentorrequest",
