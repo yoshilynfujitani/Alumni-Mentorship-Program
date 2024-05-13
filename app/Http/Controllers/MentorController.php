@@ -118,7 +118,7 @@ class MentorController extends Controller
       
     }
     else{
-        dd("hello");
+      
         $mentors = $mentors->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake])->paginate(12);
 
         foreach ($mentors as $mentor) {
