@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer("mentor_id");
             $table->integer("daysOfTheWeek");
+            $table->string("start");
+            $table->string("end");
             $table->timestamps();
         });
     }

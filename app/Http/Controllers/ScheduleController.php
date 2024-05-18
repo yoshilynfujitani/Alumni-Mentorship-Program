@@ -21,6 +21,8 @@ class ScheduleController extends Controller
 
         $mentorschedule->mentor_id = Auth::id();
         $mentorschedule->daysOfTheWeek = (int)$daysOfTheWeek;
+        $mentorschedule->start = $request->start;
+        $mentorschedule->end = $request->end;
 
         $mentorschedule->save();
     }
@@ -38,7 +40,7 @@ class ScheduleController extends Controller
         }
         else{
             $currentSchedule->daysOfTheWeek = str_split($currentSchedule->daysOfTheWeek);
-            return $currentSchedule->daysOfTheWeek;
+            return $currentSchedule;
         }
           
     }
@@ -47,7 +49,7 @@ class ScheduleController extends Controller
         $mentorId = $request->has('mentorId') ? $request->mentorId : Auth::id();
         $sched = Schedule::where('mentor_id', $mentorId)
         ->orderByDesc('created_at')
-        ->select('daysOfTheWeek', 'created_at')
+        ->select('daysOfTheWeek','start','end', 'created_at')
         ->paginate(10);
 
         return $sched;

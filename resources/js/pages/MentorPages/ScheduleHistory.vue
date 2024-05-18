@@ -4,7 +4,7 @@
             <div class="border border-gray-200 rounded-md bg-white">
                 <h1 class="text-2xl font-bold p-5">Schedule History</h1>
                 <table
-                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                    class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
                 >
                     <thead
                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -12,6 +12,9 @@
                         <tr>
                             <th scope="col" class="pl-6 py-2">
                                 Available Day for Appointment
+                            </th>
+                            <th scope="col" class="text-center">
+                                Time Available
                             </th>
                             <th scope="col" class="text-center">
                                 Effective Date
@@ -22,9 +25,9 @@
                         <tr
                             v-for="(day, index) in schedule"
                             :key="index"
-                            class="border-b border-gray-200 dark:border-gray-700"
+                            class="border-b border-gray-200"
                         >
-                            <td class="px-6 py-4 font-medium whitespace-nowrap">
+                            <td class="px-6 py-4 font-medium w-fit">
                                 <div class="flex gap-2">
                                     <div
                                         class="px-2 py-1 text-lg border rounded-md font-semibold"
@@ -42,6 +45,13 @@
                                         {{ dayOfWeek.name }}
                                     </div>
                                 </div>
+                            </td>
+                            <td class="text-center px-[100px] py-4">
+                                <span class="text-green-600">{{
+                                    day.start
+                                }}</span>
+                                to
+                                <span class="text-red-600">{{ day.end }}</span>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 {{
@@ -96,7 +106,7 @@ export default {
     methods: {
         getSchedule() {
             axios.post("/getAllSchedule").then(({ data }) => {
-                console.log(data);
+                console.log();
                 this.pagination = data;
                 this.schedule = data.data.map((number) => {
                     return {
@@ -104,6 +114,8 @@ export default {
                             Number
                         ),
                         created_at: number.created_at,
+                        start: number.start,
+                        end: number.end,
                     };
                 });
             });

@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Order */
+@layer reset, primevue;
+
+/* Reset CSS */
+@layer reset {
+    button,
+    input {
+        /* CSS to Reset */
+    }
+}
 ::-webkit-scrollbar {
     width: 10px;
 }

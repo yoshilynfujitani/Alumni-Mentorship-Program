@@ -36,10 +36,40 @@
                         Appointments
                     </h1>
 
-                    <div class="flex my-2 gap-3" v-if="!isEdit">
+                    <div
+                        class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
+                        v-if="!isEdit"
+                    >
+                        <div class="flex gap-2.5">
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">Start Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeStart"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select Start Time"
+                                    disabled
+                                />
+                            </div>
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">End Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeEnd"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select End Time"
+                                    disabled
+                                />
+                            </div>
+                        </div>
                         <div
-                            class="border px-2 py-1 rounded-md bg-white"
+                            class="border px-2 py-1 rounded-md bg-white flex items-center justify-center h-10"
                             v-for="day in daysOfTheWeek"
+                            :key="day.id"
                             :class="{
                                 'border-blue-600  text-blue-600 font-semibold':
                                     isActiveDay(day.id),
@@ -56,7 +86,35 @@
                         </button>
                     </div>
 
-                    <div class="flex gap-3 my-2" v-else>
+                    <div
+                        class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
+                        v-else
+                    >
+                        <div class="flex gap-2.5">
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">Start Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeStart"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select Start Time"
+                                    dateFormat="..."
+                                />
+                            </div>
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">End Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeEnd"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select End Time"
+                                />
+                            </div>
+                        </div>
                         <div
                             class="border px-2 py-1 rounded-md cursor-pointer"
                             v-for="day in daysOfTheWeek"
@@ -74,13 +132,13 @@
                             @click="saveSchedule"
                             class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
                         >
-                            Save Schedule
+                            Save
                         </button>
                         <button
                             @click="cancelEdit"
-                            class="border border-green-600 font-semibold text-green-600 px-4 py-1 rounded-md"
+                            class="border border-green-600 font-semibold text-green-600 px-2 py-1 rounded-md"
                         >
-                            Cancel
+                            <i class="pi pi-times text-sm"></i>
                         </button>
                     </div>
                 </div>
@@ -104,7 +162,7 @@
                             >
                                 {{ course?.name }}
                                 <i
-                                    class="pi pi-times cursor-pointer text-xs font-bold"
+                                    class="pi pi-times cursor-pointer text-xs font-bold text-red-500"
                                     :class="{ hidden: !isEditCourses }"
                                     @click="toggleCourse(course)"
                                 ></i>
@@ -457,6 +515,10 @@ export default {
             minDate: null,
             TotalAppointments: 0,
             isEdit: false,
+            currenttimeStart: null,
+            timeStart: null,
+            timeEnd: null,
+            currenttimeEnd: null,
             items: [
                 {
                     label: "Home",
@@ -602,21 +664,60 @@ export default {
             }
         },
         cancelEdit() {
+            this.currenttimeStart = this.timeStart;
+            this.currenttimeEnd = this.timeEnd;
             this.editAvailableDays = [...this.activeAvailableDays];
             this.isEdit = !this.isEdit;
         },
 
         saveSchedule() {
-            console.log(this.activeAvailableDays);
-            const { activeAvailableDays, editAvailableDays } = this;
+            const {
+                activeAvailableDays,
+                editAvailableDays,
+                currenttimeEnd,
+                currenttimeStart,
+                timeStart,
+                timeEnd,
+            } = this;
+
+            let timeEndFormatted;
+            let timeStartFormatted;
+
             if (
                 activeAvailableDays.sort().join(",") ===
-                editAvailableDays.sort().join(",")
+                    editAvailableDays.sort().join(",") &&
+                timeStart === currenttimeStart &&
+                timeEnd === currenttimeEnd
             ) {
                 this.isEdit = !this.isEdit;
             } else {
+                if (timeStart !== currenttimeStart) {
+                    timeStartFormatted = currenttimeStart.toLocaleTimeString(
+                        [],
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                        }
+                    );
+                } else {
+                    timeStartFormatted = currenttimeStart;
+                }
+                if (timeEnd !== currenttimeEnd) {
+                    timeEndFormatted = currenttimeEnd.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                    });
+                } else {
+                    timeEndFormatted = currenttimeEnd;
+                }
                 axios
-                    .post("/setSchedule", { editAvailableDays })
+                    .post("/setSchedule", {
+                        editAvailableDays,
+                        start: timeStartFormatted,
+                        end: timeEndFormatted,
+                    })
                     .then(({ data }) => {
                         this.getLatestSchedule();
                         this.isEdit = !this.isEdit;
@@ -625,12 +726,22 @@ export default {
         },
         getLatestSchedule() {
             axios.post("/getLatestSchedule").then(({ data }) => {
-                this.activeAvailableDays = data.map((day) => parseInt(day, 10));
+                this.timeStart = data.start;
+                this.currenttimeStart = this.timeStart;
+                this.timeEnd = data.end;
+                this.currenttimeEnd = this.timeEnd;
+                this.activeAvailableDays = data?.daysOfTheWeek.map((day) =>
+                    parseInt(day, 10)
+                );
                 this.editAvailableDays = [...this.activeAvailableDays];
+                console.log(this.timeStart);
+                console.log(this.currenttimeStart);
+                console.log(this.timeEnd);
+                console.log(this.currenttimeEnd);
             });
         },
         cancelEditCourses() {
-            this.selectedCourses = [...this.activeCourses];
+            this.this.selectedCourses = [...this.activeCourses];
             this.isEditCourses = !this.isEditCourses;
         },
         toggleCourse(course) {
@@ -749,5 +860,12 @@ export default {
 
 .p-calendar .p-datepicker-title::after {
     content: attr(data-month) " " attr(data-year);
+}
+
+.p-inputtext {
+    border: 0px;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+    width: fit-content;
 }
 </style>
