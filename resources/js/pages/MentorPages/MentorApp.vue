@@ -40,32 +40,35 @@
                         class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
                         v-if="!isEdit"
                     >
-                        <div class="flex gap-2.5">
-                            <div class="w-fit">
-                                <h1 class="text-sm pb-1.5">Start Time</h1>
-                                <Calendar
-                                    id="calendar-timeonly"
-                                    v-model="currenttimeStart"
-                                    timeOnly
-                                    hourFormat="12"
-                                    class="custom-calendar"
-                                    placeholder="Select Start Time"
-                                    disabled
-                                />
-                            </div>
-                            <div class="w-fit">
-                                <h1 class="text-sm pb-1.5">End Time</h1>
-                                <Calendar
-                                    id="calendar-timeonly"
-                                    v-model="currenttimeEnd"
-                                    timeOnly
-                                    hourFormat="12"
-                                    class="custom-calendar"
-                                    placeholder="Select End Time"
-                                    disabled
-                                />
+                        <div class="flex flex-col gap-2.5">
+                            <div class="flex gap-2.5">
+                                <div class="w-fit">
+                                    <h1 class="text-sm pb-1.5">Start Time</h1>
+                                    <Calendar
+                                        id="calendar-timeonly"
+                                        v-model="currenttimeStart"
+                                        timeOnly
+                                        hourFormat="12"
+                                        class="custom-calendar"
+                                        placeholder="Select Start Time"
+                                        disabled
+                                    />
+                                </div>
+                                <div class="w-fit">
+                                    <h1 class="text-sm pb-1.5">End Time</h1>
+                                    <Calendar
+                                        id="calendar-timeonly"
+                                        v-model="currenttimeEnd"
+                                        timeOnly
+                                        hourFormat="12"
+                                        class="custom-calendar"
+                                        placeholder="Select End Time"
+                                        disabled
+                                    />
+                                </div>
                             </div>
                         </div>
+
                         <div
                             class="border px-2 py-1 rounded-md bg-white flex items-center justify-center h-10"
                             v-for="day in daysOfTheWeek"
@@ -90,29 +93,35 @@
                         class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
                         v-else
                     >
-                        <div class="flex gap-2.5">
-                            <div class="w-fit">
-                                <h1 class="text-sm pb-1.5">Start Time</h1>
-                                <Calendar
-                                    id="calendar-timeonly"
-                                    v-model="currenttimeStart"
-                                    timeOnly
-                                    hourFormat="12"
-                                    class="custom-calendar"
-                                    placeholder="Select Start Time"
-                                    dateFormat="..."
-                                />
+                        <div class="flex flex-col gap-2.5">
+                            <div class="" v-if="errorTime">
+                                <Message severity="error" :closable="false"
+                                    >Please enter a valid date!</Message
+                                >
                             </div>
-                            <div class="w-fit">
-                                <h1 class="text-sm pb-1.5">End Time</h1>
-                                <Calendar
-                                    id="calendar-timeonly"
-                                    v-model="currenttimeEnd"
-                                    timeOnly
-                                    hourFormat="12"
-                                    class="custom-calendar"
-                                    placeholder="Select End Time"
-                                />
+                            <div class="flex gap-2.5">
+                                <div class="w-fit">
+                                    <h1 class="text-sm pb-1.5">Start Time</h1>
+                                    <Calendar
+                                        id="calendar-timeonly"
+                                        v-model="currenttimeStart"
+                                        timeOnly
+                                        hourFormat="12"
+                                        class="custom-calendar"
+                                        placeholder="Select Start Time"
+                                    />
+                                </div>
+                                <div class="w-fit">
+                                    <h1 class="text-sm pb-1.5">End Time</h1>
+                                    <Calendar
+                                        id="calendar-timeonly"
+                                        v-model="currenttimeEnd"
+                                        timeOnly
+                                        hourFormat="12"
+                                        class="custom-calendar"
+                                        placeholder="Select End Time"
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div
@@ -566,6 +575,7 @@ export default {
             selectedCourses: [],
             activeCourses: [],
             isEditCourses: false,
+            errorTime: false,
         };
     },
     computed: {
@@ -652,6 +662,7 @@ export default {
         isActiveDay(dayId) {
             return this.editAvailableDays.includes(dayId);
         },
+
         toggleDay(dayId) {
             if (this.isEdit) {
                 if (this.editAvailableDays.includes(dayId)) {
@@ -667,9 +678,21 @@ export default {
             this.currenttimeStart = this.timeStart;
             this.currenttimeEnd = this.timeEnd;
             this.editAvailableDays = [...this.activeAvailableDays];
+            if (this.errorTime) {
+                this.errorTime = false;
+            }
             this.isEdit = !this.isEdit;
         },
-
+        checkTimeFormat(time) {
+            //checks if format is Number:Number AM/PM
+            const timePattern = /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i;
+            if (!timePattern.test(time)) {
+                this.errorTime = true;
+                return false;
+            } else {
+                return true;
+            }
+        },
         saveSchedule() {
             const {
                 activeAvailableDays,
@@ -700,18 +723,28 @@ export default {
                             hour12: true,
                         }
                     );
+                    if (!this.checkTimeFormat(timeStartFormatted)) {
+                        return;
+                    }
                 } else {
                     timeStartFormatted = currenttimeStart;
                 }
+
+                // Check and format timeEnd
                 if (timeEnd !== currenttimeEnd) {
                     timeEndFormatted = currenttimeEnd.toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
                         hour12: true,
                     });
+                    if (!this.checkTimeFormat(timeEndFormatted)) {
+                        return;
+                    }
                 } else {
                     timeEndFormatted = currenttimeEnd;
                 }
+
+                // Only run axios if both timeStartFormatted and timeEndFormatted are valid
                 axios
                     .post("/setSchedule", {
                         editAvailableDays,
@@ -721,6 +754,7 @@ export default {
                     .then(({ data }) => {
                         this.getLatestSchedule();
                         this.isEdit = !this.isEdit;
+                        this.errorTime = false;
                     });
             }
         },
@@ -734,10 +768,6 @@ export default {
                     parseInt(day, 10)
                 );
                 this.editAvailableDays = [...this.activeAvailableDays];
-                console.log(this.timeStart);
-                console.log(this.currenttimeStart);
-                console.log(this.timeEnd);
-                console.log(this.currenttimeEnd);
             });
         },
         cancelEditCourses() {

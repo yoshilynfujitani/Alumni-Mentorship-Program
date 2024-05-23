@@ -93,23 +93,29 @@
                     </div>
 
                     <div
-                        class="overflow-y-scroll min-h-full h-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
+                        class="overflow-y-scroll min-h-full h-full w-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
                         v-else
                     >
-                        <div class="flex flex-col" id="chats" ref="chats">
-                            <div class="flex flex-col">
+                        <div
+                            class="flex flex-col w-full"
+                            id="chats"
+                            ref="chats"
+                        >
+                            <div class="flex flex-col w-full">
                                 <h1
                                     v-for="chats in chat"
                                     :key="chats.id"
                                     :ref="'chatIndex' + chats.id"
-                                    class="w-auto flex items-center  text-gray-900 my-1 self-end relative"
+                                    class="w-auto flex items-center text-gray-900 my-1 self-end relative"
                                 >
-                                <p class="text-sm text-gray-400 mr-2"> {{
-                                    moment(
-                                        chats.created_at,
-                                        "YYYY-MM-DD HH:mm:ss"
-                                    ).format(" HH:mm:ss")
-                                }}</p>
+                                    <p class="text-sm text-gray-400 mr-2">
+                                        {{
+                                            moment(
+                                                chats.created_at,
+                                                "YYYY-MM-DD HH:mm:ss"
+                                            ).format(" HH:mm:ss")
+                                        }}
+                                    </p>
                                     <h1
                                         class=""
                                         :class="{
@@ -252,14 +258,16 @@ export default {
         },
         sendChat: _debounce(function () {
             const { message, ConvoId } = this;
-            let created_at = new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' ');
-
+            let created_at = new Date(Date.now())
+                .toISOString()
+                .slice(0, 19)
+                .replace("T", " ");
 
             axios
                 .post("/sendconvo", {
                     appointmentId: ConvoId,
                     message,
-                    created_at: created_at
+                    created_at: created_at,
                 })
                 .then(({ data }) => {
                     console.log("Message sent successfully:", data);
@@ -304,8 +312,7 @@ export default {
                         chats: e.message,
                         userId: e.userId,
                         appointmentId: e.appointmentId,
-                        created_at: e.created_at
-                        
+                        created_at: e.created_at,
                     });
                     this.scrollToEnd(); // Scroll to the end when a new message is received
                 }
