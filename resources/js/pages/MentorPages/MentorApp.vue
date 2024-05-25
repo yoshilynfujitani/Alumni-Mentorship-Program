@@ -595,7 +595,6 @@ export default {
             axios
                 .post("/getOngoingAppointments", { userType: 2 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.appointments = data.data;
                     this.pagination = data;
 
@@ -610,7 +609,6 @@ export default {
         },
         getFields() {
             axios.post("/getfields").then(({ data }) => {
-                console.log(data);
                 this.availableCourses = data;
             });
         },
@@ -642,8 +640,6 @@ export default {
             axios
                 .get(`/getOngoingAppointments?page=${page}`)
                 .then(({ data }) => {
-                    console.log(data);
-
                     this.appointments = data.data;
                     this.pagination = data;
                 })
@@ -703,53 +699,23 @@ export default {
                 timeEnd,
             } = this;
 
-            let timeEndFormatted;
-            let timeStartFormatted;
-
             if (
                 activeAvailableDays.sort().join(",") ===
                     editAvailableDays.sort().join(",") &&
-                timeStart === currenttimeStart &&
-                timeEnd === currenttimeEnd
+                timeStart ===
+                    moment(currenttimeStart, "h:mm A").format("h:mm A") &&
+                timeEnd === moment(currenttimeEnd, "h:mm A").format("h:mm A")
             ) {
                 this.isEdit = !this.isEdit;
             } else {
-                if (timeStart !== currenttimeStart) {
-                    timeStartFormatted = currenttimeStart.toLocaleTimeString(
-                        [],
-                        {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                        }
-                    );
-                    if (!this.checkTimeFormat(timeStartFormatted)) {
-                        return;
-                    }
-                } else {
-                    timeStartFormatted = currenttimeStart;
-                }
-
-                // Check and format timeEnd
-                if (timeEnd !== currenttimeEnd) {
-                    timeEndFormatted = currenttimeEnd.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                    });
-                    if (!this.checkTimeFormat(timeEndFormatted)) {
-                        return;
-                    }
-                } else {
-                    timeEndFormatted = currenttimeEnd;
-                }
-
                 // Only run axios if both timeStartFormatted and timeEndFormatted are valid
                 axios
                     .post("/setSchedule", {
                         editAvailableDays,
-                        start: timeStartFormatted,
-                        end: timeEndFormatted,
+                        start: moment(currenttimeStart, "h:mm A").format(
+                            "h:mm A"
+                        ),
+                        end: moment(currenttimeEnd, "h:mm A").format("h:mm A"),
                     })
                     .then(({ data }) => {
                         this.getLatestSchedule();
@@ -796,7 +762,6 @@ export default {
         saveCourses() {
             const CourseId = this.selectedCourses.map((course) => course.id);
             const FieldId = CourseId.join(",");
-            console.log(FieldId);
 
             axios
                 .post("/updatefield", { FieldId: FieldId })
@@ -817,7 +782,6 @@ export default {
                         // If the response data is empty, set activeCourses and selectedCourses to an empty array
                         this.activeCourses = [];
                         this.selectedCourses = [];
-                        console.log("Field is empty.");
                     } else {
                         // Split the response data and map each course ID to its corresponding name
                         const idStrings = data.data.toString().split(",");
@@ -827,7 +791,6 @@ export default {
                             );
                         });
                         this.selectedCourses = [...this.activeCourses];
-                        console.log(this.activeCourses);
                     }
                 })
                 .catch((error) => {
