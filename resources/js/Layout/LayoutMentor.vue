@@ -135,6 +135,30 @@
             class="flex flex-col items-center min-h-screen px-10 laptop:mx-[50px] desktop:mx-[150px]"
         >
             <slot />
+            <a href="https://www.google.com/" target="_blank">
+                <div
+                    class="rounded-full bottom-0 right-0 fixed m-5"
+                    @mouseover="logohover = true"
+                    @mouseleave="logohover = false"
+                >
+                    <div class="flex items-center gap-2.5">
+                        <Transition>
+                            <div
+                                v-if="logohover"
+                                class="py-2 px-2 bg-green-50 rounded-full border-2 border-green-400 text-sm text-green-600 flex items-center gap-1.5"
+                            >
+                                <i class="pi pi-envelope"></i>Have questions?
+                                Email Us!
+                            </div>
+                        </Transition>
+                        <img
+                            src="../../../public/mmsu_logo.png"
+                            alt=""
+                            class="w-12 h-12 transition-all hover:cursor-pointer hover:scale-125"
+                        />
+                    </div>
+                </div>
+            </a>
         </div>
         <div class="bg-green-400 px-10">footer</div>
     </div>
@@ -143,6 +167,11 @@
 <script>
 export default {
     emits: ["userStatus"],
+    data() {
+        return {
+            logohover: false,
+        };
+    },
     methods: {
         logout() {
             axios.post("/logout").then(() => {
@@ -161,9 +190,27 @@ export default {
                 }
             });
         },
+        popupEmail() {
+            this.logohover = true;
+            setTimeout(() => {
+                this.logohover = false;
+            }, 5000);
+        },
     },
     mounted() {
         this.checkAuth();
+        this.popupEmail();
     },
 };
 </script>
+<style>
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+</style>
