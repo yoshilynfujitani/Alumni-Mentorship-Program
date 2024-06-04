@@ -194,12 +194,40 @@ export default {
             this.logohover = true;
             setTimeout(() => {
                 this.logohover = false;
-            }, 5000);
+            }, 2000);
+        },
+        updateLastActive() {
+            axios
+                .post("user/update-last-active")
+                .then((response) => {
+                    console.log("Last active timestamp updated.");
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error updating last active timestamp:",
+                        error
+                    );
+                });
+        },
+        startHeartbeat() {
+            setInterval(() => {
+                axios.get("/checkUser").then(({ data }) => {
+                    if (data.loggedIn) {
+                        this.updateLastActive();
+                    }
+                });
+            }, 60000); // every minute
         },
     },
     mounted() {
         this.checkAuth();
         this.popupEmail();
+        axios.get("/checkUser").then(({ data }) => {
+            if (data.loggedIn) {
+                this.updateLastActive();
+                this.startHeartbeat();
+            }
+        });
     },
 };
 </script>

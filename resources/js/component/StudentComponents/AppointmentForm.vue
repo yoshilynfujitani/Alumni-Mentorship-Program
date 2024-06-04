@@ -122,7 +122,10 @@
                     />
                 </div>
                 <div class="my-2">
-                    <div class="card flex justify-content-center">
+                    <div
+                        class="card flex justify-content-center"
+                        v-if="this.type === 'pdc'"
+                    >
                         <Dropdown
                             v-model="selectedField"
                             :options="this.courses"

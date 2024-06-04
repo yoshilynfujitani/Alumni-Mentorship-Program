@@ -737,7 +737,7 @@ export default {
             });
         },
         cancelEditCourses() {
-            this.this.selectedCourses = [...this.activeCourses];
+            this.selectedCourses = [...this.activeCourses];
             this.isEditCourses = !this.isEditCourses;
         },
         toggleCourse(course) {

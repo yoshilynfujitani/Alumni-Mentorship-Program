@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Auth;
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StudentLoginController extends Controller
 {
@@ -54,6 +55,30 @@ class StudentLoginController extends Controller
         return ['ticketStatus' =>$ticketStatus, 'fieldToTake'=>$fieldToTake, 'allowToAppoint'=>$allowToAppoint, 'userId'=>Auth::id()
     ,'rating'=>$rating, 'username'=> $username];
     }
+    public function updateLastActive(Request $request)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $user->last_active_at = now();
+            $user->save();
+
+            return response()->json(['message' => 'Last active timestamp updated.']);
+        }
+
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    public function isOnline($id)
+{
+    $user = User::findOrFail($id);
+    $lastActiveAt = $user->last_active_at;
+    
+    if ($lastActiveAt && Carbon::now()->diffInMinutes($lastActiveAt) <= 5) {
+        return response()->json(['online' => true]);
+    }
+    
+    return response()->json(['online' => false]);
+}
 
     public function getUserTicketStatus(){
         $user = Auth::user();

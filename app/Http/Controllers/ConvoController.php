@@ -43,7 +43,7 @@ class ConvoController extends Controller
                     $query->where('Status', 1)
                         ->orWhere('Status', 3);
                 })
-                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
+                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId', 'mentorId as userId')
                 ->get();
         }
         else if($request->role == 2){
@@ -54,7 +54,7 @@ class ConvoController extends Controller
                     $query->where('Status', 1)
                         ->orWhere('Status', 3);
                 })
-                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
+                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId', 'studentId as userId')
                 ->get();
         }
         else if($request->role == 3){

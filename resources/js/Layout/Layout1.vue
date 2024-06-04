@@ -316,7 +316,6 @@ export default {
             appointmentAccess: this.appointmentAccess,
         };
     },
-
     methods: {
         logout() {
             axios.post("/logout").then(() => {
@@ -346,11 +345,39 @@ export default {
                 this.$emit("appointment-access-data", this.appointmentAccess);
             });
         },
+        updateLastActive() {
+            axios
+                .post("user/update-last-active")
+                .then((response) => {
+                    console.log("Last active timestamp updated.");
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error updating last active timestamp:",
+                        error
+                    );
+                });
+        },
+        startHeartbeat() {
+            setInterval(() => {
+                axios.get("/checkUser").then(({ data }) => {
+                    if (data.loggedIn) {
+                        this.updateLastActive();
+                    }
+                });
+            }, 60000); // every minute
+        },
     },
     mounted() {
         this.checkAuth();
         this.checkUserStatus();
         this.popupEmail();
+        axios.get("/checkUser").then(({ data }) => {
+            if (data.loggedIn) {
+                this.updateLastActive();
+                this.startHeartbeat();
+            }
+        });
     },
 };
 </script>
