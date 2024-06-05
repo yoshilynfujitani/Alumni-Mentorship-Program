@@ -8,7 +8,7 @@
             >
                 <div class="items-center flex md:flex-col w-full">
                     <img
-                        class="w-10 h-10 md:w-24 md:h-24 mb-3 rounded-md shadow-lg"
+                        class="w-10 h-10 md:w-24 md:h-24 mb-3 rounded-full shadow-lg"
                         src="../../../../public/DefaultAvatar.webp"
                         alt="Avatar"
                     />

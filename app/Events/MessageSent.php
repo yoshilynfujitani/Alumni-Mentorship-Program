@@ -25,9 +25,11 @@ class MessageSent implements ShouldBroadcast
     public $userId;
     public $appointmentId;
     public $created_at;
+    public $fileName;
+    public $filePath;
 
 
-    public function __construct($message, $userId, $appointmentId, $created_at)
+    public function __construct($message, $userId, $appointmentId, $created_at, $fileName, $filePath)
     {
         //
     
@@ -35,6 +37,8 @@ class MessageSent implements ShouldBroadcast
         $this->userId = $userId;
         $this->appointmentId = $appointmentId;
         $this->created_at = $created_at;
+        $this->fileName = $fileName;
+        $this->filePath = $filePath;
     }
 
     /**

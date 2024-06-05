@@ -45,6 +45,7 @@ Route::post("/logout", [StudentLoginController::class, "logout"]);
 Route::post('/user/update-last-active', [StudentLoginController::class, 'updateLastActive']);
 
 Route::get('/user/{id}/online', [StudentLoginController::class, 'isOnline']);
+Route::post('/downloadfile', [ConvoController::class, 'downloadFile']);
 
 
 

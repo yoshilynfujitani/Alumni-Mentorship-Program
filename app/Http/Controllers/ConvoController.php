@@ -9,6 +9,7 @@ use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use App\Models\mentorAppointment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Broadcast;
 
 class ConvoController extends Controller
@@ -22,17 +23,34 @@ class ConvoController extends Controller
     }
 
     public function sendChat(Request $request){
-        $newConvo = new Convo();
-
-        $newConvo->userId = Auth::id();
-        $newConvo->appointmentId = $request->appointmentId;
-        $newConvo->chats = $request->message;
-        $newConvo->created_at = $request->created_at;
-
-        $newConvo->save();
-
-        return event(new MessageSent($request->message, Auth::id(), $request->appointmentId, $request->created_at ));
+         $newConvo = new Convo();
+    $newConvo->userId = Auth::id();
+    $newConvo->appointmentId = $request->appointmentId;
+    $newConvo->chats = $request->message;
+    $newConvo->created_at = $request->created_at;
+// dd($request->file('file')->getClientOriginalName());
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $fileName = $file->getClientOriginalName();
+        $filePath = $file->store('chat_files');
+        $newConvo->fileName = $fileName;
+        $newConvo->filePath = $filePath;
     }
+
+    $newConvo->save();  
+
+        return event(new MessageSent($request->message, Auth::id(), $request->appointmentId, $request->created_at, $request->file('file')->getClientOriginalName(),$newConvo->file_path ));
+    }
+
+    public function downloadFile(Request $request){
+        $filePath = $request->filePath;
+
+        if (!Storage::exists($filePath)) {
+            abort(404);
+        }
+        return response()->download(storage_path('app/' . $filePath));
+    }
+
 
     public function getConvoId(Request $request){
         if($request->role == 1){
