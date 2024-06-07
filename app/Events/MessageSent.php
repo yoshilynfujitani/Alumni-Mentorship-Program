@@ -27,9 +27,10 @@ class MessageSent implements ShouldBroadcast
     public $created_at;
     public $fileName;
     public $filePath;
+    public $role;
 
 
-    public function __construct($message, $userId, $appointmentId, $created_at, $fileName, $filePath)
+    public function __construct($message, $userId, $appointmentId, $created_at, $fileName, $filePath, $role)
     {
         //
     
@@ -39,6 +40,7 @@ class MessageSent implements ShouldBroadcast
         $this->created_at = $created_at;
         $this->fileName = $fileName;
         $this->filePath = $filePath;
+        $this->role = $role;
     }
 
     /**

@@ -1,5 +1,5 @@
 <template>
-    <LayoutMentor>
+    <LayoutEmployee>
         <div class="my-10 flex w-full gap-5 h-screen pb-20">
             <!-- Message Headers -->
             <div
@@ -80,18 +80,18 @@
                 :userName="ConvoWithName"
             />
         </div>
-    </LayoutMentor>
+    </LayoutEmployee>
 </template>
 
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import LayoutMentor from "../../Layout/LayoutMentor.vue";
+import LayoutEmployee from "../../Layout/LayoutEmployee.vue";
 import Chatbox from "../../component/Chatbox.vue";
 
 export default {
     components: {
-        LayoutMentor,
+        LayoutEmployee,
         Chatbox,
     },
     data() {

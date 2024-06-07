@@ -11,7 +11,7 @@
                 />
                 <span
                     class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-                    >PDC Portal</span
+                    >MAIN ADMIN</span
                 >
             </div>
             <ul class="space-y-2 font-medium flex flex-col justify-between">

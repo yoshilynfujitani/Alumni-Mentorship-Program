@@ -22,13 +22,19 @@ class ConvoController extends Controller
         return $getConvo ;
     }
 
-    public function sendChat(Request $request){
-         $newConvo = new Convo();
-    $newConvo->userId = Auth::id();
+    public function sendChat(Request $request) {
+    $fileName = null; // Initialize $fileName to ensure it's defined
+    $filePath = null; // Initialize $filePath to ensure it's defined
+
+    $user = Auth::user(); // used for role
+
+    $newConvo = new Convo();
+    $newConvo->userId = $user->id;
     $newConvo->appointmentId = $request->appointmentId;
     $newConvo->chats = $request->message;
+    $newConvo->role = $user->id;
     $newConvo->created_at = $request->created_at;
-// dd($request->file('file')->getClientOriginalName());
+
     if ($request->hasFile('file')) {
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
@@ -39,8 +45,18 @@ class ConvoController extends Controller
 
     $newConvo->save();  
 
-        return event(new MessageSent($request->message, Auth::id(), $request->appointmentId, $request->created_at, $request->file('file')->getClientOriginalName(),$newConvo->file_path ));
-    }
+
+    return event(new MessageSent(
+        $request->message, 
+        $user->id, 
+        $request->appointmentId, 
+        $request->created_at, 
+        $fileName,
+        $filePath,
+        $user->role 
+    ));
+}
+
 
     public function downloadFile(Request $request){
         $filePath = $request->filePath;

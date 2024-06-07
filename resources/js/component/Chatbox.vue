@@ -35,27 +35,50 @@
             <div
                 class="overflow-y-scroll px-5 min-h-full h-full w-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
             >
+                <h1 class="text-center my-2.5">Load more</h1>
+
+                <!-- Chat messages -->
                 <div
                     class="flex flex-col min-h-full max-h-full"
                     id="chats"
                     ref="chats"
                 >
                     <div
-                        v-for="chats in chat"
+                        v-for="(chats, index) in chat"
                         :key="chats.id"
-                        class="w-auto text-white my-1 max-w-xs"
+                        class="w-full text-white my-1 font-medium flex flex-col"
                         :ref="'chatIndex' + chats.id"
-                        :class="{
-                            'self-start text-left': chats.userId !== userId,
-                            'self-end text-right': chats.userId === userId,
-                            'bg-gray-400 w-fit px-4 py-2 rounded-full':
-                                chats.userId !== userId && !chats.fileName,
-                            'bg-green-500 w-fit px-4 py-2 rounded-full':
-                                chats.userId === userId && !chats.fileName,
-                            ' w-fit  rounded-full': chats.fileName,
-                        }"
                     >
-                        <p v-if="!chats.fileName">{{ chats.chats }}</p>
+                        <div
+                            v-if="shouldShowUserLabel(chats, index)"
+                            class="text-xs text-gray-400 italic"
+                            :class="{
+                                'self-start text-left': chats.userId !== userId,
+                                'self-end text-right': chats.userId === userId,
+                            }"
+                        >
+                            <h1 v-if="chats.role === 3">PDC Admin</h1>
+                            <h1 v-if="chats.role === 2">Mentor</h1>
+                            <h1 v-if="chats.role === 1">Student</h1>
+                        </div>
+                        <p
+                            v-if="!chats.fileName"
+                            class="w-auto text-white max-w-xs font-medium"
+                            :class="{
+                                'self-start text-left': chats.userId !== userId,
+                                'self-end text-right': chats.userId === userId,
+                                'bg-gray-400 w-fit px-4 py-2 rounded-full':
+                                    chats.userId !== userId && !chats.fileName,
+                                'bg-green-500 w-fit px-4 py-2 rounded-full':
+                                    chats.userId === userId && !chats.fileName,
+                                ' w-fit  rounded-full': chats.fileName,
+                                'bg-yellow-400 w-fit px-4 py-2 self-start text-left':
+                                    chats.role === 3 && chats.userId !== userId,
+                            }"
+                        >
+                            {{ chats.chats }}
+                        </p>
+
                         <div v-else class="flex flex-col">
                             <p
                                 class="bg-green-500 px-4 py-2 rounded-full"
@@ -257,7 +280,14 @@ export default {
                 }
             });
         },
+        shouldShowUserLabel(message, index) {
+            // Always show the label for the first message
+            if (index === 0) return true;
 
+            // Show the label if the user is different from the previous message
+            const previousMessage = this?.chat[index - 1];
+            return previousMessage.userId !== message.userId;
+        },
         listen(appointmentId) {
             if (
                 !this.subscription ||
@@ -270,15 +300,16 @@ export default {
 
                 const data = (e) => {
                     console.log(e);
-
+                    // this is for the real time chat
                     this.chat.push({
-                        id: e.id, // Assuming e.id is the unique identifier for each chat
+                        id: e.id,
                         chats: e.message,
                         userId: e.userId,
                         appointmentId: e.appointmentId,
                         created_at: e.created_at,
                         fileName: e.fileName,
                         filePath: e.filePath,
+                        role: e.role,
                     });
                     this.scrollToEnd(); // Scroll to the end when a new message is received
                 };
