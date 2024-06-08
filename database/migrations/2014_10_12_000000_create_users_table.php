@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer("verified")->default(0);
             $table->string('password');
-            $table->string('course')->nullable();
+            $table->integer('course')->nullable();
             $table->string('field')->nullable();
             $table->integer('role');
             $table->integer('rating')->default(0);

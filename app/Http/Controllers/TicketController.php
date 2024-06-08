@@ -26,16 +26,30 @@ class TicketController extends Controller
 
         return;
     }
-    
-    public function getTickets(){
-        
-        return Ticket::orderBy('created_at', 'DESC')
-        ->join('users', 'users.id','=', 'ticketlogs.studentId')
-        ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
-        ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-        ->select('users.name','users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
-        ->paginate(10);
+   public function getTickets(){
+    $user = Auth::user();
+    $data = null;
+
+    if ($user->role === 3) {
+        $data = Ticket::orderBy('created_at', 'DESC')
+            ->join('users', 'users.id', '=', 'ticketlogs.studentId')
+            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->paginate(10);
+    } else {
+        $data = Ticket::orderBy('created_at', 'DESC')
+            ->where('users.course', '=', $user->course)
+            ->join('users', 'users.id', '=', 'ticketlogs.studentId')
+            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->paginate(10);
     }
+
+    return $data;
+}
+
     public function getTicketsOfStudent(){
         
         return Ticket::where('studentId', Auth::id())
@@ -48,13 +62,29 @@ class TicketController extends Controller
     }
 
     public function searchTicket(Request $request){
-        return Ticket::join('users', 'users.id', '=', 'ticketlogs.studentId')
-        ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
-        ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-        ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
-        ->where('name', 'LIKE', "%{$request->ticketQuery}%")
-        ->orderBy('ticketlogs.created_at', 'DESC')
-        ->get();
+        $user = Auth::user();
+        $data = null;
+
+        if($user->role === 3){
+            $data = Ticket::join('users', 'users.id', '=', 'ticketlogs.studentId')
+            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->where('name', 'LIKE', "%{$request->ticketQuery}%")
+            ->orderBy('ticketlogs.created_at', 'DESC')
+            ->get();
+        }
+        else{
+            $data = Ticket::where('users.course', '=', $user->course)
+            ->join('users', 'users.id', '=', 'ticketlogs.studentId')
+            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->where('name', 'LIKE', "%{$request->ticketQuery}%")
+            ->orderBy('ticketlogs.created_at', 'DESC')
+            ->get();
+        }
+        return $data;
         }
 
     public function  verifyTicket(Request $request){
@@ -86,7 +116,7 @@ class TicketController extends Controller
         $data = Ticket::where('ticketlogs.studentId', $request->studentId)
             ->join("userstatus", "userstatus.statusId", "=", "ticketStatus")
             ->orderBy('ticketlogs.created_at', 'desc') 
-            ->take(5)
+            ->take(8)
             ->select('ticketlogs.created_at', 'ticketlogs.ticketStatus', 'userstatus.statusName')
             ->get();
             

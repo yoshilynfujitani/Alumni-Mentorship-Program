@@ -121,7 +121,7 @@ export default {
             this.isLoggingIn = true;
             this.clearErrMsg();
             const { email, password } = this;
-            console.log(this.$route.query.code);
+
             if (
                 this.$route.query.code !== undefined &&
                 this.$route.query.code !== ""
@@ -168,6 +168,9 @@ export default {
 
                                     break;
                                 case 3:
+                                    this.$router.push("/admin/home");
+                                    break;
+                                case 4:
                                     this.$router.push("/admin/home");
                                     break;
                             }

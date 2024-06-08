@@ -12,7 +12,7 @@
                 {{ Alum.name }}
             </h5>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{
-                Alum.course
+                Alum.CollegeName
             }}</span>
             <div class="flex mt-4 md:mt-6">
                 <a

@@ -100,13 +100,13 @@ export default {
 
     methods: {
         getConvoId() {
-            axios.post("/getConvoId", { role: 3 }).then(({ data }) => {
+            axios.post("/getConvoId").then(({ data }) => {
                 this.inbox = data;
             });
         },
         searchConvo() {
             axios
-                .post("/searchConvo", { titleQuery: this.titleQuery, role: 3 })
+                .post("/searchConvo", { titleQuery: this.titleQuery })
                 .then(({ data }) => {
                     this.inbox = data;
                 });

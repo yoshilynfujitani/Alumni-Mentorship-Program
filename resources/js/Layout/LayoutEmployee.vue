@@ -10,8 +10,15 @@
                     class="w-10 h-10"
                 />
                 <span
+                    v-if="this.role === 3"
                     class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
                     >Main Admin</span
+                >
+
+                <span
+                    v-if="this.role === 4"
+                    class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+                    >PDC {{ this.college }}</span
                 >
             </div>
             <ul class="space-y-2 font-medium flex flex-col justify-between">
@@ -30,7 +37,42 @@
                             </a>
                         </router-link>
                     </li>
-
+                    <Accordion :activeIndex="0">
+                        <AccordionTab header="Requests">
+                            <li>
+                                <router-link to="/admin/studenttickets">
+                                    <a
+                                        href="#"
+                                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                                    >
+                                        <i
+                                            class="pi pi-ticket"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                        <span class="ms-3"
+                                            >Student Requests</span
+                                        >
+                                    </a>
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/admin/pendingmentors">
+                                    <a
+                                        href="#"
+                                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                                    >
+                                        <i
+                                            class="pi pi-ticket"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                        <span class="ms-3"
+                                            >Mentor Requests</span
+                                        >
+                                    </a>
+                                </router-link>
+                            </li>
+                        </AccordionTab>
+                    </Accordion>
                     <li>
                         <router-link to="/admin/mentors">
                             <a
@@ -59,34 +101,7 @@
                             </a>
                         </router-link>
                     </li>
-                    <li>
-                        <router-link to="/admin/studenttickets">
-                            <a
-                                href="#"
-                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                            >
-                                <i
-                                    class="pi pi-ticket"
-                                    style="font-size: 1rem"
-                                ></i>
-                                <span class="ms-3">Student Requests</span>
-                            </a>
-                        </router-link>
-                    </li>
-                    <li>
-                        <router-link to="/admin/pendingmentors">
-                            <a
-                                href="#"
-                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                            >
-                                <i
-                                    class="pi pi-ticket"
-                                    style="font-size: 1rem"
-                                ></i>
-                                <span class="ms-3">Mentor Requests</span>
-                            </a>
-                        </router-link>
-                    </li>
+
                     <li>
                         <router-link to="/admin/allconvo">
                             <a
@@ -108,10 +123,10 @@
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
                                 <i
-                                    class="pi pi-send"
+                                    class="pi pi-verified"
                                     style="font-size: 1rem"
                                 ></i>
-                                <span class="ms-3">Conversations</span>
+                                <span class="ms-3">Manage PDC Accounts</span>
                             </a>
                         </router-link>
                     </li>
@@ -177,11 +192,16 @@
 </template>
 
 <script>
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
+
 export default {
-    components: {},
+    components: { Accordion, AccordionTab },
     data() {
         return {
             logohover: false,
+            role: null,
+            college: null,
         };
     },
     methods: {
@@ -194,6 +214,9 @@ export default {
             axios.get("/checkUser").then(({ data }) => {
                 if (!data) {
                     this.$router.push("/");
+                } else {
+                    this.role = data.role;
+                    this.college = data.college;
                 }
             });
         },

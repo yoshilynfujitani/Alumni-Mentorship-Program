@@ -39,14 +39,27 @@ class MentorController extends Controller
         return $mentor;
     }
     public function getMentors(Request $request ){
-      
+      $user = Auth::user();
+
         $queryPerPage = 10;
-        $query = DB::connection('admin')->table('users')
+        if($user->role === 3){
+            $query = DB::connection('admin')->table('users')
             ->orderBy('created_at')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
             ->join('userfields', 'users.field', '=', 'userfields.fieldId')
             ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
             ->where('users.role', 2);
+        }
+        else{
+             $query = DB::connection('admin')->table('users')
+            ->where('course', $user->course)
+            ->orderBy('created_at')
+            ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
+            ->join('userfields', 'users.field', '=', 'userfields.fieldId')
+            ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
+            ->where('users.role', 2);
+        }
+       
     
             // dd($request->searchBy);
         if ($request->searchBy == 0 || $request->searchBy == null) {
@@ -80,19 +93,29 @@ class MentorController extends Controller
         return;
     }
 
-    public function getMentorApplications(){
-        $applications = MentorRequest::orderBy('created_at', 'DESC')->paginate(10);
-    
-        foreach($applications as $application){
-            $user = User::find($application->userId); 
-            if($user){
-                $application->name = $user->name;
-                $application->course = $user->course;
-            }
-        }
-    
-        return $applications;
+   public function getMentorApplications() {
+    $authUser = Auth::user();
+    $applications = null;
+
+    if ($authUser->role === 3) {
+        // For admins, get all mentor requests with user details
+        $applications = MentorRequest::join('users', 'users.id', '=', 'mentorrequest.userId')
+            ->select('mentorrequest.*', 'users.name', 'users.course')
+            ->orderBy('mentorrequest.created_at', 'DESC')
+            ->paginate(10);
+    } else {
+        // For other users, get mentor requests filtered by their course with user details
+        $applications = MentorRequest::join('users', 'users.id', '=', 'mentorrequest.userId')
+            ->where('users.course', $authUser->course)
+            ->select('mentorrequest.*', 'users.name', 'users.course')
+            ->orderBy('mentorrequest.created_at', 'DESC')
+            ->paginate(10);
     }
+
+    return $applications;
+}
+
+    
 
     public function searchRequest(Request $request){
         return MentorRequest::join('users', 'users.id', '=', 'mentorrequest.userId')

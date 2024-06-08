@@ -6,6 +6,7 @@ use Auth;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class StudentLoginController extends Controller
@@ -94,29 +95,37 @@ class StudentLoginController extends Controller
     }
 
     public function checkLogin()
-    {
-        if (Auth::check()) {
-            
-            $user = Auth::user();
-    
-            
-            $userName = $user->name;
-           
-    
-            
-            return [
-                'loggedIn' => true,
-                'userName' => $userName,
-                'userId' => Auth::id()
-               
-            ];
-        } else {
-            
-            return [
-                'loggedIn' => false,
-            ];
+{
+    if (Auth::check()) {
+        $user = Auth::user();
+        
+        $userName = $user->name;
+        $role = $user->role;
+        
+        $collegeId = $user->course;
+        $college = DB::connection('admin')->table('colleges')->where('id', $collegeId)->select('CollegeName')->first();
+
+        // Initialize collegeName to null
+        $collegeName = null;
+        
+        if ($college) {
+            $collegeName = $college->CollegeName;
         }
+        
+        return [
+            'college' => $collegeName,
+            'role' => $role,
+            'loggedIn' => true,
+            'userName' => $userName,
+            'userId' => $user->id
+        ];
+    } else {
+        return [
+            'loggedIn' => false,
+        ];
     }
+}
+
     
 
     public function logout() {
