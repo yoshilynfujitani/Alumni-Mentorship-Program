@@ -157,18 +157,18 @@ export default {
 
                             switch (res.data.user.role) {
                                 case 1:
-                                    this.$router.push("/home");
+                                    this.$router.push("/student/home");
                                     break;
                                 case 2:
                                     if (res.data.user.verified) {
-                                        this.$router.push("/mentorhome");
+                                        this.$router.push("/mentor/home");
                                     } else {
                                         this.$router.push("/login");
                                     }
 
                                     break;
                                 case 3:
-                                    this.$router.push("/pdchome");
+                                    this.$router.push("/admin/home");
                                     break;
                             }
                         }

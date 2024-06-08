@@ -1,209 +1,200 @@
 <template>
-    <LayoutPDC>
-        <div class="py-10 self-start w-full">
-            <h1
-                class="text-2xl font-bold w-full border rounded-md border-gray-200 p-2.5"
-            >
-                Dashboard
-            </h1>
-            <div class="dark:bg-gray-800 flex justify-center items-center">
-                <section class="grid gap-6 md:grid-cols-4 my-5 mx-auto w-full">
-                    <div
-                        class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900"
-                    >
-                        <dl class="space-y-2">
-                            <dt
-                                class="text-sm font-medium text-gray-500 dark:text-gray-400"
+    <div class="py-10 self-start w-full">
+        <h1
+            class="text-2xl font-bold w-full border rounded-md border-gray-200 p-2.5"
+        >
+            Dashboard
+        </h1>
+        <div class="dark:bg-gray-800 flex justify-center items-center">
+            <section class="grid gap-6 md:grid-cols-4 my-5 mx-auto w-full">
+                <div class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900">
+                    <dl class="space-y-2">
+                        <dt
+                            class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        >
+                            Total Requests
+                        </dt>
+
+                        <dd
+                            class="text-5xl font-light md:text-6xl dark:text-white"
+                        >
+                            192.1k
+                        </dd>
+
+                        <dd
+                            class="flex items-center space-x-1 text-sm font-medium text-green-500 dark:text-green-400"
+                        >
+                            <span>32k increase</span>
+
+                            <svg
+                                class="w-7 h-7"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
                             >
-                                Total Requests
-                            </dt>
-
-                            <dd
-                                class="text-5xl font-light md:text-6xl dark:text-white"
-                            >
-                                192.1k
-                            </dd>
-
-                            <dd
-                                class="flex items-center space-x-1 text-sm font-medium text-green-500 dark:text-green-400"
-                            >
-                                <span>32k increase</span>
-
-                                <svg
-                                    class="w-7 h-7"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17.25 15.25V6.75H8.75"
-                                    ></path>
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17 7L6.75 17.25"
-                                    ></path>
-                                </svg>
-                            </dd>
-                        </dl>
-                    </div>
-
-                    <div
-                        class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900"
-                    >
-                        <dl class="space-y-2">
-                            <dt
-                                class="text-sm font-medium text-gray-500 dark:text-gray-400"
-                            >
-                                Completion Rate
-                            </dt>
-
-                            <dd
-                                class="text-5xl font-light md:text-6xl dark:text-white"
-                            >
-                                21%
-                            </dd>
-
-                            <dd
-                                class="flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400"
-                            >
-                                <span>7% increase</span>
-
-                                <svg
-                                    class="w-7 h-7"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17.25 8.75V17.25H8.75"
-                                    ></path>
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17 17L6.75 6.75"
-                                    ></path>
-                                </svg>
-                            </dd>
-                        </dl>
-                    </div>
-                    <div
-                        class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900"
-                    >
-                        <dl class="space-y-2">
-                            <dt
-                                class="text-sm font-medium text-gray-500 dark:text-gray-400"
-                            >
-                                Rejection Rate
-                            </dt>
-
-                            <dd
-                                class="text-5xl font-light md:text-6xl dark:text-white"
-                            >
-                                21%
-                            </dd>
-
-                            <dd
-                                class="flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400"
-                            >
-                                <span>7% increase</span>
-
-                                <svg
-                                    class="w-7 h-7"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17.25 8.75V17.25H8.75"
-                                    ></path>
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17 17L6.75 6.75"
-                                    ></path>
-                                </svg>
-                            </dd>
-                        </dl>
-                    </div>
-
-                    <div
-                        class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900"
-                    >
-                        <dl class="space-y-2">
-                            <dt
-                                class="text-sm font-medium text-gray-500 dark:text-gray-400"
-                            >
-                                Average time on page
-                            </dt>
-
-                            <dd
-                                class="text-5xl font-light md:text-6xl dark:text-white"
-                            >
-                                03:12
-                            </dd>
-
-                            <dd
-                                class="flex items-center space-x-1 text-sm font-medium text-green-500 dark:text-green-400"
-                            >
-                                <span>3% increase</span>
-
-                                <svg
-                                    class="w-7 h-7"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17.25 15.25V6.75H8.75"
-                                    ></path>
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M17 7L6.75 17.25"
-                                    ></path>
-                                </svg>
-                            </dd>
-                        </dl>
-                    </div>
-                </section>
-            </div>
-            <div class="flex w-full space-x-5">
-                <div class="border rounded-md border-gray-300">
-                    <Chart
-                        type="line"
-                        :data="chartData"
-                        :options="chartOptions"
-                        class="min-h-[400px] w-[650px]"
-                    />
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17.25 15.25V6.75H8.75"
+                                ></path>
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17 7L6.75 17.25"
+                                ></path>
+                            </svg>
+                        </dd>
+                    </dl>
                 </div>
-                <div class="w-full"><Fields /></div>
-            </div></div
-    ></LayoutPDC>
+
+                <div class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900">
+                    <dl class="space-y-2">
+                        <dt
+                            class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        >
+                            Completion Rate
+                        </dt>
+
+                        <dd
+                            class="text-5xl font-light md:text-6xl dark:text-white"
+                        >
+                            21%
+                        </dd>
+
+                        <dd
+                            class="flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400"
+                        >
+                            <span>7% increase</span>
+
+                            <svg
+                                class="w-7 h-7"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17.25 8.75V17.25H8.75"
+                                ></path>
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17 17L6.75 6.75"
+                                ></path>
+                            </svg>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900">
+                    <dl class="space-y-2">
+                        <dt
+                            class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        >
+                            Rejection Rate
+                        </dt>
+
+                        <dd
+                            class="text-5xl font-light md:text-6xl dark:text-white"
+                        >
+                            21%
+                        </dd>
+
+                        <dd
+                            class="flex items-center space-x-1 text-sm font-medium text-red-500 dark:text-red-400"
+                        >
+                            <span>7% increase</span>
+
+                            <svg
+                                class="w-7 h-7"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17.25 8.75V17.25H8.75"
+                                ></path>
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17 17L6.75 6.75"
+                                ></path>
+                            </svg>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="p-6 bg-white shadow rounded-2xl dark:bg-gray-900">
+                    <dl class="space-y-2">
+                        <dt
+                            class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        >
+                            Average time on page
+                        </dt>
+
+                        <dd
+                            class="text-5xl font-light md:text-6xl dark:text-white"
+                        >
+                            03:12
+                        </dd>
+
+                        <dd
+                            class="flex items-center space-x-1 text-sm font-medium text-green-500 dark:text-green-400"
+                        >
+                            <span>3% increase</span>
+
+                            <svg
+                                class="w-7 h-7"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17.25 15.25V6.75H8.75"
+                                ></path>
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M17 7L6.75 17.25"
+                                ></path>
+                            </svg>
+                        </dd>
+                    </dl>
+                </div>
+            </section>
+        </div>
+        <div class="flex w-full space-x-5">
+            <div class="border rounded-md border-gray-300">
+                <Chart
+                    type="line"
+                    :data="chartData"
+                    :options="chartOptions"
+                    class="min-h-[400px] w-[650px]"
+                />
+            </div>
+            <div class="w-full"><Fields /></div>
+        </div>
+    </div>
 </template>
 
 <script>

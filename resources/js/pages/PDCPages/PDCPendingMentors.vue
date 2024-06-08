@@ -1,108 +1,95 @@
 <template>
-    <LayoutPDC>
-        <div class="self-start my-20 overflow-x-auto w-full min-h-full">
-            <h1 class="pb-2.5 text-2xl font-bold">Mentor Requests</h1>
-            <div class="space-x-2.5">
-                <input
-                    v-model="ticketQuery"
-                    type="text"
-                    class="border-gray-300 rounded-md"
-                    placeholder="Search name..."
-                />
-                <button
-                    class="bg-green-600 px-4 py-2 rounded-md text-white"
-                    @click="searchticket"
+    <div class="self-start my-10 overflow-x-auto w-full min-h-full">
+        <h1 class="pb-2.5 text-2xl font-bold">Mentor Requests</h1>
+        <div class="space-x-2.5">
+            <input
+                v-model="ticketQuery"
+                type="text"
+                class="border-gray-300 rounded-md"
+                placeholder="Search name..."
+            />
+            <button
+                class="bg-green-600 px-4 py-2 rounded-md text-white"
+                @click="searchticket"
+            >
+                Search
+            </button>
+        </div>
+        <Toast />
+        <ConfirmPopup></ConfirmPopup>
+        <div class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg">
+            <table
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            >
+                <thead
+                    class="text-xs text-gray-700 uppercase dark:text-gray-400"
                 >
-                    Search
-                </button>
-            </div>
-            <Toast />
-            <ConfirmPopup></ConfirmPopup>
-            <div class="shadow-md py-5 rounded-md">
-                <table
-                    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                >
-                    <thead
-                        class="text-xs text-gray-700 uppercase dark:text-gray-400"
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Instructor's Name</th>
+                        <th scope="col" class="px-6 py-3">Email</th>
+                        <th scope="col" class="px-6 py-3">College</th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Others
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="Mentor in mentors"
+                        :key="Mentor.id"
+                        class="border-gray-200 dark:border-gray-700 border-b"
                     >
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Instructor's Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">Email</th>
-                            <th scope="col" class="px-6 py-3">College</th>
-                            <th scope="col" class="px-6 py-3 text-center">
-                                Others
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="Mentor in mentors"
-                            :key="Mentor.id"
-                            class="border-gray-200 dark:border-gray-700"
+                        <th
+                            scope="row"
+                            class="flex items-center gap-2 px-6 py-7 h-full font-medium text-gray-900"
                         >
-                            <th
-                                scope="row"
-                                class="flex items-center gap-2 px-6 py-7 h-full font-medium text-gray-900"
-                            >
-                                <img
-                                    class="w-7 h-7 rounded-full"
-                                    src="../../../../public/DefaultAvatar.webp"
-                                    alt="Avatar"
-                                />{{ Mentor.name }}
-                            </th>
-                            <td class="px-6 py-4">{{ Mentor.email }}</td>
-                            <td class="px-6 py-4">
-                                {{ Mentor.course }}
-                            </td>
-                            <td class="flex gap-2 justify-center">
-                                <div class="" v-if="Mentor.verified">
-                                    <i class="pi pi-check"></i>
-                                </div>
-                                <div class="" v-else>
-                                    <div
-                                        class="flex gap-2 justify-content-center"
+                            <img
+                                class="w-7 h-7 rounded-full"
+                                src="../../../../public/DefaultAvatar.webp"
+                                alt="Avatar"
+                            />{{ Mentor.name }}
+                        </th>
+                        <td class="px-6 py-4">{{ Mentor.email }}</td>
+                        <td class="px-6 py-4">
+                            {{ Mentor.course }}
+                        </td>
+                        <td class="flex gap-2 justify-center">
+                            <div class="" v-if="Mentor.verified">
+                                <i class="pi pi-check"></i>
+                            </div>
+                            <div class="" v-else>
+                                <div class="flex gap-2 justify-content-center">
+                                    <button
+                                        @click="
+                                            AcceptTicket($event, 1, Mentor.id)
+                                        "
+                                        class="px-2 py-1 bg-green-400 text-white rounded font-medium"
                                     >
-                                        <button
-                                            @click="
-                                                AcceptTicket(
-                                                    $event,
-                                                    1,
-                                                    Mentor.id
-                                                )
-                                            "
-                                            class="px-2 py-1 bg-green-400 text-white rounded font-medium"
-                                        >
-                                            Approve
-                                        </button>
-                                        <button
-                                            @click="
-                                                RejectTicket(
-                                                    $event,
-                                                    2,
-                                                    Mentor.id
-                                                )
-                                            "
-                                            class="px-2 py-1 bg-red-400 text-white rounded font-medium"
-                                        >
-                                            Reject
-                                        </button>
-                                    </div>
+                                        Approve
+                                    </button>
+                                    <button
+                                        @click="
+                                            RejectTicket($event, 2, Mentor.id)
+                                        "
+                                        class="px-2 py-1 bg-red-400 text-white rounded font-medium"
+                                    >
+                                        Reject
+                                    </button>
                                 </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <Pagination
-                    @next="goToNextPage"
-                    @back="goToPrevPage"
-                    :total="this.pagination?.total"
-                    :current_page="this.pagination?.current_page"
-                    :last_page="this.pagination?.last_page"
-                />
-            </div></div
-    ></LayoutPDC>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <Pagination
+                @next="goToNextPage"
+                @back="goToPrevPage"
+                :total="this.pagination?.total"
+                :current_page="this.pagination?.current_page"
+                :last_page="this.pagination?.last_page"
+            />
+        </div>
+    </div>
 </template>
 <script>
 import ConfirmPopup from "primevue/confirmpopup";

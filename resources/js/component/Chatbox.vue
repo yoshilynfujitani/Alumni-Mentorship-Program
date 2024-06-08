@@ -33,9 +33,10 @@
             <div class="min-h-full" v-if="chatLoading">Loading...</div>
 
             <div
+                v-else
                 class="overflow-y-scroll px-5 min-h-full h-full w-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
             >
-                <h1 class="text-center my-2.5">Load more</h1>
+                <!-- <h1 class="text-center my-2.5">Load more</h1> -->
 
                 <!-- Chat messages -->
                 <div
@@ -164,8 +165,13 @@
                         <button
                             type="submit"
                             class="bg-green-800 px-4 py-2 rounded-md text-gray-50"
+                            :class="{ 'opacity-60': isSending }"
+                            :disabled="isSending"
                         >
-                            Send
+                            <p v-if="!isSending">Send</p>
+                            <p v-else>
+                                <i class="pi pi-spin pi-spinner"></i>
+                            </p>
                         </button>
                     </div>
                 </div>
@@ -193,6 +199,7 @@ export default {
             subscription: null,
             selectedFile: null,
             fileName: null,
+            isSending: false,
         };
     },
     components: {
@@ -203,7 +210,9 @@ export default {
     },
     methods: {
         sendChat: _debounce(function () {
-            const { message, convoId, selectedFile } = this;
+            const { message, convoId, selectedFile, i } = this;
+
+            this.isSending = true;
 
             const created_at = new Date()
                 .toISOString()
@@ -230,6 +239,7 @@ export default {
                 })
                 .then(({ data }) => {
                     console.log("Message sent successfully:", data);
+                    this.isSending = false;
                     this.message = null;
                     this.selectedFile = null;
                     this.fileName = null; // Reset the filename
@@ -311,8 +321,9 @@ export default {
                         filePath: e.filePath,
                         role: e.role,
                     });
-                    this.scrollToEnd(); // Scroll to the end when a new message is received
+                    // Scroll to the end when a new message is received
                 };
+                this.scrollToEnd();
 
                 this.subscription = {
                     channel: `chat${appointmentId}`,

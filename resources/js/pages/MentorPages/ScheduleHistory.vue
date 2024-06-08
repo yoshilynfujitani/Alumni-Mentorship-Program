@@ -1,81 +1,71 @@
 <template>
-    <LayoutMentor>
-        <div class="my-10 w-full">
-            <div class="border border-gray-200 rounded-md bg-white">
-                <h1 class="text-2xl font-bold p-5">Schedule History</h1>
-                <table
-                    class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+    <div class="my-10 w-full">
+        <div class="border border-gray-200 rounded-md bg-white">
+            <h1 class="text-2xl font-bold p-5">Schedule History</h1>
+            <table
+                class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            >
+                <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                 >
-                    <thead
-                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                    <tr>
+                        <th scope="col" class="pl-6 py-2">
+                            Available Day for Appointment
+                        </th>
+                        <th scope="col" class="text-center">Time Available</th>
+                        <th scope="col" class="text-center">Effective Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(day, index) in schedule"
+                        :key="index"
+                        class="border-b border-gray-200"
                     >
-                        <tr>
-                            <th scope="col" class="pl-6 py-2">
-                                Available Day for Appointment
-                            </th>
-                            <th scope="col" class="text-center">
-                                Time Available
-                            </th>
-                            <th scope="col" class="text-center">
-                                Effective Date
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="(day, index) in schedule"
-                            :key="index"
-                            class="border-b border-gray-200"
-                        >
-                            <td class="px-6 py-4 font-medium w-fit">
-                                <div class="flex gap-2">
-                                    <div
-                                        class="px-2 py-1 text-lg border rounded-md font-semibold"
-                                        v-for="dayOfWeek in daysOfTheWeek"
-                                        :key="dayOfWeek.id"
-                                        :class="{
-                                            'border-blue-600 text-blue-600  ':
-                                                day.days.includes(dayOfWeek.id),
-                                            'border-red-200 text-red-500':
-                                                !day.days.includes(
-                                                    dayOfWeek.id
-                                                ),
-                                        }"
-                                    >
-                                        {{ dayOfWeek.name }}
-                                    </div>
+                        <td class="px-6 py-4 font-medium w-fit">
+                            <div class="flex gap-2">
+                                <div
+                                    class="px-2 py-1 text-lg border rounded-md font-semibold"
+                                    v-for="dayOfWeek in daysOfTheWeek"
+                                    :key="dayOfWeek.id"
+                                    :class="{
+                                        'border-blue-600 text-blue-600  ':
+                                            day.days.includes(dayOfWeek.id),
+                                        'border-red-200 text-red-500':
+                                            !day.days.includes(dayOfWeek.id),
+                                    }"
+                                >
+                                    {{ dayOfWeek.name }}
                                 </div>
-                            </td>
-                            <td class="text-center px-[100px] py-4">
-                                <span class="text-green-600">{{
-                                    day.start
-                                }}</span>
-                                to
-                                <span class="text-red-600">{{ day.end }}</span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                {{
-                                    moment(
-                                        day.created_at,
-                                        "YYYY-MM-DD HH:mm:ss"
-                                    ).format("MMMM Do YYYY")
-                                }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="my-5">
-                    <Pagination
-                        @next="goToNextPage"
-                        @back="goToPrevPage"
-                        :total="this.pagination?.total"
-                        :current_page="this.pagination?.current_page"
-                        :last_page="this.pagination?.last_page"
-                    />
-                </div>
+                            </div>
+                        </td>
+                        <td class="text-center px-[100px] py-4">
+                            <span class="text-green-600">{{ day.start }}</span>
+                            to
+                            <span class="text-red-600">{{ day.end }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {{
+                                moment(
+                                    day.created_at,
+                                    "YYYY-MM-DD HH:mm:ss"
+                                ).format("MMMM Do YYYY")
+                            }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="my-5">
+                <Pagination
+                    @next="goToNextPage"
+                    @back="goToPrevPage"
+                    :total="this.pagination?.total"
+                    :current_page="this.pagination?.current_page"
+                    :last_page="this.pagination?.last_page"
+                />
             </div>
         </div>
-    </LayoutMentor>
+    </div>
 </template>
 
 <script>

@@ -87,13 +87,11 @@
 import axios from "axios";
 import { mapState } from "vuex";
 
-import Layout1 from "../Layout/Layout1.vue";
 import Chatbox from "../component/Chatbox.vue";
 
 export default {
     components: {
         Chatbox,
-        Layout1,
     },
     data() {
         return {

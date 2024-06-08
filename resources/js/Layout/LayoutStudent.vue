@@ -150,7 +150,7 @@
             <ul class="space-y-2 font-medium flex flex-col justify-between">
                 <div class="pb-[300px] space-y-4">
                     <li>
-                        <router-link to="/home">
+                        <router-link to="/student/home">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -165,7 +165,7 @@
                     </li>
 
                     <li>
-                        <router-link to="/mentors">
+                        <router-link to="/student/mentors">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -180,7 +180,7 @@
                     </li>
 
                     <li>
-                        <router-link to="/appointments">
+                        <router-link to="/student/appointments">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -195,7 +195,7 @@
                     </li>
 
                     <li>
-                        <router-link to="/chat">
+                        <router-link to="/student/chat">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -209,7 +209,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/studenttickets">
+                        <router-link to="/student/studenttickets">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -264,10 +264,8 @@
         </div>
     </div>
     <div class="m-0 md:ml-[250px] bg-[#fdfdff]">
-        <div
-            class="min-h-screen md:flex flex-col px-5 items-center md:px-10 laptop:mx-[50px] desktop:mx-[150px] overflow-clip"
-        >
-            <slot />
+        <div class="min-h-screen md:flex flex-col px-5 md:px-20">
+            <router-view></router-view>
             <a href="https://www.google.com/" target="_blank">
                 <div
                     class="rounded-full bottom-0 right-0 fixed m-5"
@@ -347,7 +345,7 @@ export default {
         },
         updateLastActive() {
             axios
-                .post("user/update-last-active")
+                .get("user/update-last-active")
                 .then((response) => {
                     console.log("Last active timestamp updated.");
                 })

@@ -1,7 +1,7 @@
 <template lang="">
     <div class="h-full w-full">
         <div
-            class="bg-white border border-gray-200 rounded-lg shadow-sm h-full md:w-56 py-5"
+            class="bg-white border border-gray-200 rounded-lg shadow-sm h-full w-56 py-5 px-2.5"
         >
             <div
                 class="flex px-5 md:px-0 md:flex-col justify-end items-center h-full w-full"

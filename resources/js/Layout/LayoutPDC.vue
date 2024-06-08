@@ -1,32 +1,5 @@
 <template lang="">
-    <button
-        data-drawer-target="logo-sidebar"
-        data-drawer-toggle="logo-sidebar"
-        aria-controls="logo-sidebar"
-        type="button"
-        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-    >
-        <span class="sr-only">Open sidebar</span>
-        <svg
-            class="w-6 h-6"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                clip-rule="evenodd"
-                fill-rule="evenodd"
-                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-            ></path>
-        </svg>
-    </button>
-
-    <aside
-        id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-        aria-label="Sidebar"
-    >
+    <aside class="fixed top-0 left-0 z-40 w-64 h-screen">
         <div
             class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
         >
@@ -38,13 +11,13 @@
                 />
                 <span
                     class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-                    >Mentor Portal</span
+                    >{{ this.role }}</span
                 >
             </div>
             <ul class="space-y-2 font-medium flex flex-col justify-between">
-                <div class="pb-[350px] space-y-4">
+                <div class="space-y-4">
                     <li>
-                        <router-link to="/mentor/home">
+                        <router-link to="/pdchome">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -59,21 +32,63 @@
                     </li>
 
                     <li>
-                        <router-link to="/mentor/studentrequests">
+                        <router-link to="/pdcmentors">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
                                 <i
-                                    class="pi pi-briefcase"
+                                    class="pi pi-users"
                                     style="font-size: 1rem"
                                 ></i>
-                                <span class="ms-3">Appointments</span>
+                                <span class="ms-3">Mentors</span>
                             </a>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/mentor/chat">
+                        <router-link to="/alumniinvite">
+                            <a
+                                href="#"
+                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            >
+                                <i
+                                    class="pi pi-megaphone"
+                                    style="font-size: 1rem"
+                                ></i>
+                                <span class="ms-3">Invite Alumni</span>
+                            </a>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="/pdcstudenttickets">
+                            <a
+                                href="#"
+                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            >
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
+                                <span class="ms-3">Student Requests</span>
+                            </a>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="/pendingmentors">
+                            <a
+                                href="#"
+                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            >
+                                <i
+                                    class="pi pi-ticket"
+                                    style="font-size: 1rem"
+                                ></i>
+                                <span class="ms-3">Mentor Requests</span>
+                            </a>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="/allconvo">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -82,21 +97,21 @@
                                     class="pi pi-send"
                                     style="font-size: 1rem"
                                 ></i>
-                                <span class="ms-3">Conversation</span>
+                                <span class="ms-3">Conversations</span>
                             </a>
                         </router-link>
                     </li>
-                    <li>
-                        <router-link to="/mentor/schedule">
+                    <li v-if="this.role === 3">
+                        <router-link to="/allconvo">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
                                 <i
-                                    class="pi pi-book"
+                                    class="pi pi-send"
                                     style="font-size: 1rem"
                                 ></i>
-                                <span class="ms-3">Schedule History</span>
+                                <span class="ms-3">Conversations</span>
                             </a>
                         </router-link>
                     </li>
@@ -130,9 +145,9 @@
             </ul>
         </div>
     </aside>
-    <div class="ml-[250px] bg-[#fdfdff]">
-        <div class="flex flex-col items-center min-h-screen px-5 md:px-20">
-            <router-view></router-view>
+    <div class="ml-[300px] mx-10">
+        <div class="flex flex-col items-center min-h-screen">
+            <slot />
             <a href="https://www.google.com/" target="_blank">
                 <div
                     class="rounded-full bottom-0 right-0 fixed m-5"
@@ -158,13 +173,13 @@
                 </div>
             </a>
         </div>
-        <div class="bg-green-400 px-10">footer</div>
     </div>
 </template>
 
 <script>
 export default {
-    emits: ["userStatus"],
+    props: ["role"],
+    components: {},
     data() {
         return {
             logohover: false,
@@ -180,11 +195,6 @@ export default {
             axios.get("/checkUser").then(({ data }) => {
                 if (!data) {
                     this.$router.push("/");
-                } else {
-                    // this.$emit("userStatus", {
-                    //     userName: data.userName,
-                    //     userId: data.userId,
-                    // });
                 }
             });
         },
@@ -192,51 +202,12 @@ export default {
             this.logohover = true;
             setTimeout(() => {
                 this.logohover = false;
-            }, 2000);
-        },
-        updateLastActive() {
-            axios
-                .get("user/update-last-active")
-                .then((response) => {
-                    console.log("Last active timestamp updated.");
-                })
-                .catch((error) => {
-                    console.error(
-                        "Error updating last active timestamp:",
-                        error
-                    );
-                });
-        },
-        startHeartbeat() {
-            setInterval(() => {
-                axios.get("/checkUser").then(({ data }) => {
-                    if (data.loggedIn) {
-                        this.updateLastActive();
-                    }
-                });
-            }, 60000); // every minute
+            }, 5000);
         },
     },
     mounted() {
         this.checkAuth();
         this.popupEmail();
-        axios.get("/checkUser").then(({ data }) => {
-            if (data.loggedIn) {
-                this.updateLastActive();
-                this.startHeartbeat();
-            }
-        });
     },
 };
 </script>
-<style>
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-    opacity: 0;
-}
-</style>

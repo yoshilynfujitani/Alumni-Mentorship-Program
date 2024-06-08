@@ -1,482 +1,459 @@
 <template>
-    <LayoutMentor>
-        <div class="" v-if="loading"><h1>Loading...</h1></div>
+    <div class="" v-if="loading"><h1>Loading...</h1></div>
 
-        <div class="w-full my-10">
-            <div class="w-full">
-                <div
-                    class="flex items-center w-full justify-between border bg-white px-2.5 py-1.5 mb-2.5 rounded-md border-gray-200"
-                >
-                    <div class="">
-                        <h1 class="gap-1 flex items-center text-2xl font-bold">
-                            <span
-                                ><i
-                                    class="pi pi-chart-pie text-2xl text-yellow-400"
-                                    style="font-size: 1rem"
-                                ></i></span
-                            >Dashboard
-                        </h1>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <img
-                            src="../../../../public/DefaultAvatar.webp"
-                            class="w-10 h-10 rounded-full"
-                            alt=""
-                        />
-                        <h1>{{ this.username }}</h1>
-                    </div>
-                </div>
-
-                <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
-                <div class="pb-5 flex flex-col">
-                    <h1
-                        class="text-green-700 font-medium flex items-center gap-1"
-                    >
-                        <i class="pi pi-calendar"></i> Available Day for
-                        Appointments
+    <div class="w-full my-10 px-20">
+        <div class="w-full">
+            <div
+                class="flex items-center w-full justify-between border bg-white px-2.5 py-1.5 mb-2.5 rounded-md border-gray-200"
+            >
+                <div class="">
+                    <h1 class="gap-1 flex items-center text-2xl font-bold">
+                        <span
+                            ><i
+                                class="pi pi-chart-pie text-2xl text-yellow-400"
+                                style="font-size: 1rem"
+                            ></i></span
+                        >Dashboard
                     </h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <img
+                        src="../../../../public/DefaultAvatar.webp"
+                        class="w-10 h-10 rounded-full"
+                        alt=""
+                    />
+                    <h1>{{ this.username }}</h1>
+                </div>
+            </div>
 
-                    <div
-                        class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
-                        v-if="!isEdit"
-                    >
-                        <div class="flex flex-col gap-2.5">
-                            <div class="flex gap-2.5">
-                                <div class="w-fit">
-                                    <h1 class="text-sm pb-1.5">Start Time</h1>
-                                    <Calendar
-                                        id="calendar-timeonly"
-                                        v-model="currenttimeStart"
-                                        timeOnly
-                                        hourFormat="12"
-                                        class="custom-calendar"
-                                        placeholder="Select Start Time"
-                                        disabled
-                                    />
-                                </div>
-                                <div class="w-fit">
-                                    <h1 class="text-sm pb-1.5">End Time</h1>
-                                    <Calendar
-                                        id="calendar-timeonly"
-                                        v-model="currenttimeEnd"
-                                        timeOnly
-                                        hourFormat="12"
-                                        class="custom-calendar"
-                                        placeholder="Select End Time"
-                                        disabled
-                                    />
-                                </div>
+            <!-- <div class="" v-if="this.ticketStatus === null">Loading...</div> -->
+            <div class="pb-5 flex flex-col">
+                <h1 class="text-green-700 font-medium flex items-center gap-1">
+                    <i class="pi pi-calendar"></i> Available Day for
+                    Appointments
+                </h1>
+
+                <div
+                    class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
+                    v-if="!isEdit"
+                >
+                    <div class="flex flex-col gap-2.5">
+                        <div class="flex gap-2.5">
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">Start Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeStart"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select Start Time"
+                                    disabled
+                                />
+                            </div>
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">End Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeEnd"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select End Time"
+                                    disabled
+                                />
                             </div>
                         </div>
+                    </div>
 
-                        <div
-                            class="border px-2 py-1 rounded-md bg-white flex items-center justify-center h-10"
-                            v-for="day in daysOfTheWeek"
-                            :key="day.id"
-                            :class="{
-                                'border-blue-600  text-blue-600 font-semibold':
-                                    isActiveDay(day.id),
-                                'border-gray-200': !isActiveDay(day.id),
-                            }"
-                        >
-                            {{ day.name }}
+                    <div
+                        class="border px-2 py-1 rounded-md bg-white flex items-center justify-center h-10"
+                        v-for="day in daysOfTheWeek"
+                        :key="day.id"
+                        :class="{
+                            'border-blue-600  text-blue-600 font-semibold':
+                                isActiveDay(day.id),
+                            'border-gray-200': !isActiveDay(day.id),
+                        }"
+                    >
+                        {{ day.name }}
+                    </div>
+                    <button
+                        @click="isEdit = !isEdit"
+                        class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
+                    >
+                        <i class="pi pi-wrench"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
+                    v-else
+                >
+                    <div class="flex flex-col gap-2.5">
+                        <div class="" v-if="errorTime">
+                            <Message severity="error" :closable="false"
+                                >Please enter a valid date!</Message
+                            >
                         </div>
+                        <div class="flex gap-2.5">
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">Start Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeStart"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select Start Time"
+                                />
+                            </div>
+                            <div class="w-fit">
+                                <h1 class="text-sm pb-1.5">End Time</h1>
+                                <Calendar
+                                    id="calendar-timeonly"
+                                    v-model="currenttimeEnd"
+                                    timeOnly
+                                    hourFormat="12"
+                                    class="custom-calendar"
+                                    placeholder="Select End Time"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="border px-2 py-1 rounded-md cursor-pointer"
+                        v-for="day in daysOfTheWeek"
+                        :key="day.id"
+                        :class="{
+                            'border-blue-600  text-blue-600 font-semibold':
+                                isActiveDay(day.id),
+                            'border-gray-200': !isActiveDay(day.id),
+                        }"
+                        @click="toggleDay(day.id)"
+                    >
+                        {{ day.name }}
+                    </div>
+                    <button
+                        @click="saveSchedule"
+                        class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
+                    >
+                        Save
+                    </button>
+                    <button
+                        @click="cancelEdit"
+                        class="border border-green-600 font-semibold text-green-600 px-2 py-1 rounded-md"
+                    >
+                        <i class="pi pi-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pb-5">
+                <h1 class="text-green-700 font-medium flex items-center gap-1">
+                    <i class="pi pi-building"></i> Preferred Field for
+                    Appointments
+                </h1>
+
+                <div class="flex gap-x-2 flex-wrap">
+                    <div
+                        v-for="course in selectedCourses"
+                        :key="course?.id"
+                        class=""
+                    >
+                        <div
+                            class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-semibold border border-gray-300"
+                        >
+                            {{ course?.name }}
+                            <i
+                                class="pi pi-times cursor-pointer text-xs font-bold text-red-500"
+                                :class="{ hidden: !isEditCourses }"
+                                @click="toggleCourse(course)"
+                            ></i>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div class="">
+                    <div v-if="!isEditCourses">
                         <button
-                            @click="isEdit = !isEdit"
+                            @click="isEditCourses = !isEditCourses"
                             class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
                         >
                             <i class="pi pi-wrench"></i>
                         </button>
                     </div>
-
-                    <div
-                        class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
-                        v-else
-                    >
-                        <div class="flex flex-col gap-2.5">
-                            <div class="" v-if="errorTime">
-                                <Message severity="error" :closable="false"
-                                    >Please enter a valid date!</Message
-                                >
-                            </div>
-                            <div class="flex gap-2.5">
-                                <div class="w-fit">
-                                    <h1 class="text-sm pb-1.5">Start Time</h1>
-                                    <Calendar
-                                        id="calendar-timeonly"
-                                        v-model="currenttimeStart"
-                                        timeOnly
-                                        hourFormat="12"
-                                        class="custom-calendar"
-                                        placeholder="Select Start Time"
-                                    />
-                                </div>
-                                <div class="w-fit">
-                                    <h1 class="text-sm pb-1.5">End Time</h1>
-                                    <Calendar
-                                        id="calendar-timeonly"
-                                        v-model="currenttimeEnd"
-                                        timeOnly
-                                        hourFormat="12"
-                                        class="custom-calendar"
-                                        placeholder="Select End Time"
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                    <div v-else class="">
+                        <h1 class="font-semibold">Available Fields</h1>
                         <div
-                            class="border px-2 py-1 rounded-md cursor-pointer"
-                            v-for="day in daysOfTheWeek"
-                            :key="day.id"
-                            :class="{
-                                'border-blue-600  text-blue-600 font-semibold':
-                                    isActiveDay(day.id),
-                                'border-gray-200': !isActiveDay(day.id),
-                            }"
-                            @click="toggleDay(day.id)"
+                            class="flex flex-wrap border my-2.5 p-2.5 border-gray-200 rounded-md"
                         >
-                            {{ day.name }}
-                        </div>
-                        <button
-                            @click="saveSchedule"
-                            class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
-                        >
-                            Save
-                        </button>
-                        <button
-                            @click="cancelEdit"
-                            class="border border-green-600 font-semibold text-green-600 px-2 py-1 rounded-md"
-                        >
-                            <i class="pi pi-times text-sm"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="pb-5">
-                    <h1
-                        class="text-green-700 font-medium flex items-center gap-1"
-                    >
-                        <i class="pi pi-building"></i> Preferred Field for
-                        Appointments
-                    </h1>
-
-                    <div class="flex gap-x-2 flex-wrap">
-                        <div
-                            v-for="course in selectedCourses"
-                            :key="course?.id"
-                            class=""
-                        >
-                            <div
-                                class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-semibold border border-gray-300"
-                            >
-                                {{ course?.name }}
-                                <i
-                                    class="pi pi-times cursor-pointer text-xs font-bold text-red-500"
-                                    :class="{ hidden: !isEditCourses }"
-                                    @click="toggleCourse(course)"
-                                ></i>
-                            </div>
-                        </div>
-                        <br />
-                    </div>
-                    <div class="">
-                        <div v-if="!isEditCourses">
-                            <button
-                                @click="isEditCourses = !isEditCourses"
-                                class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
-                            >
-                                <i class="pi pi-wrench"></i>
-                            </button>
-                        </div>
-                        <div v-else class="">
-                            <h1 class="font-semibold">Available Fields</h1>
-                            <div
-                                class="flex flex-wrap border my-2.5 p-2.5 border-gray-200 rounded-md"
-                            >
-                                <!-- <div
+                            <!-- <div
                                     class=""
                                     v-if="!this.compareEditandActiveCourses()"
                                 >
                                     All courses selected
                                 </div> -->
-                                <div
-                                    v-for="course in availableCourses"
-                                    :key="course?.id"
-                                    class=""
-                                >
-                                    <button
-                                        @click="toggleCourse(course)"
-                                        class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-semibold border border-gray-300"
-                                        :class="{
-                                            hidden: isActive(course),
-                                            'mr-2': !isActive(course),
-                                        }"
-                                    >
-                                        {{ course?.name }}
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="space-x-2">
-                                <button
-                                    @click="saveCourses"
-                                    class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
-                                >
-                                    Save Courses
-                                </button>
-                                <button
-                                    @click="cancelEditCourses"
-                                    class="font-bold border px-4 py-1 rounded-md"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
-                    :class="{
-                        'min-h-[100px]': this.appointments?.length === 0,
-                    }"
-                >
-                    <div class="">
-                        <div class="flex items-center justify-center gap-10">
-                            <Calendar
-                                v-model="date"
-                                inline
-                                :numberOfMonths="1"
-                                :minDate="minDate"
-                                class=""
-                            />
-                            <div class="border p-5 rounded border-gray-200">
-                                <h1
-                                    class="pb-5 font-medium text-green-700 text-xl"
-                                >
-                                    <span
-                                        ><i
-                                            class="pi pi-chart-bar text-xl rounded-full text-yellow-400"
-                                            style="font-size: 1rem"
-                                        ></i
-                                    ></span>
-                                    User Statistics
-                                    <span
-                                        class="text-xs text-gray-400 font-normal italic"
-                                        >as of
-                                        {{
-                                            this.minDate?.toLocaleDateString(
-                                                "en-US"
-                                            )
-                                        }}</span
-                                    >
-                                </h1>
-                                <div
-                                    class="grid grid-cols-1 laptop:grid-cols-2 gap-5 w-full h-full"
-                                >
-                                    <div
-                                        class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
-                                    >
-                                        <div class="">
-                                            <i
-                                                class="pi pi-briefcase text-2xl bg-green-100 rounded-full px-2 py-1 text-green-400"
-                                                style="font-size: 1rem"
-                                            ></i>
-                                        </div>
-                                        <div class="">
-                                            <h1
-                                                class="text-gray-800 font-medium"
-                                            >
-                                                Total Appointments
-                                            </h1>
-                                            <p class="text-gray-500">
-                                                {{ this.TotalAppointments }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
-                                    >
-                                        <div class="">
-                                            <i
-                                                class="pi pi-star text-2xl bg-yellow-100 rounded-full px-2 py-1 text-yellow-400"
-                                                style="font-size: 1rem"
-                                            ></i>
-                                        </div>
-                                        <div class="">
-                                            <h1
-                                                class="text-gray-800 font-medium"
-                                            >
-                                                Rating
-                                            </h1>
-                                            <p
-                                                :class="{
-                                                    'text-red-400':
-                                                        this.rating < 3,
-                                                    'text-yellow-400':
-                                                        this.rating == 3,
-                                                    'text-green-400':
-                                                        this.rating > 3,
-                                                }"
-                                            >
-                                                {{ this.rating }}.0
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
-                                    >
-                                        <div class="">
-                                            <i
-                                                class="pi pi-bell text-2xl bg-blue-100 rounded-full px-2 py-1 text-blue-400"
-                                                style="font-size: 1rem"
-                                            ></i>
-                                        </div>
-                                        <div class="">
-                                            <h1
-                                                class="text-gray-800 font-medium"
-                                            >
-                                                Ongoing Appointments
-                                            </h1>
-                                            <p class="text-gray-500">
-                                                {{ this.appointments.length }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
-                                    >
-                                        <div class="">
-                                            <i
-                                                class="pi pi-flag text-2xl bg-gray-100 rounded-full px-2 py-1 text-gray-400"
-                                                style="font-size: 1rem"
-                                            ></i>
-                                        </div>
-                                        <div class="">
-                                            <h1
-                                                class="text-gray-800 font-medium"
-                                            >
-                                                Feedbacks
-                                            </h1>
-                                            <p
-                                                class="text-white text-sm bg-gray-800 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
-                                            >
-                                                View
-                                                <span
-                                                    class="pi pi-arrow-right text-xs"
-                                                ></span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full">
-                            <h1
-                                class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
-                            >
-                                Your Appointments
-                            </h1>
-
                             <div
-                                class="mx-5 flex items-center justify-center"
-                                v-if="this.appointments?.length == 0"
+                                v-for="course in availableCourses"
+                                :key="course?.id"
+                                class=""
                             >
-                                <h1 class="flex flex-col items-center gap-5">
-                                    <i
-                                        class="pi pi-calendar-times text-6xl text-gray-300"
-                                    ></i>
-                                    <span class="text-gray-500"
-                                        >You have no ongoing appointments.</span
-                                    >
-                                </h1>
-                            </div>
-                            <div class="flex flex-col" v-else>
-                                <table class="text-sm">
-                                    <thead
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 py-10"
-                                    >
-                                        <tr class="">
-                                            <th scope="col" class="py-2.5">
-                                                Request Title
-                                            </th>
-                                            <th scope="col" class="">Field</th>
-                                            <th scope="col" class="">
-                                                Start Date
-                                            </th>
-                                            <th scope="col" class="">
-                                                Student
-                                            </th>
-                                            <th scope="" class="pr-2.5">
-                                                Status
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-center">
-                                        <tr
-                                            v-for="appointment in appointments"
-                                            :key="appointment.appointmentId"
-                                            class="bg-white dark:bg-gray-800 dark:border-gray-700"
-                                        >
-                                            <th
-                                                scope="row"
-                                                class="font-medium py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                                            >
-                                                {{ appointment.title }}
-                                            </th>
-                                            <td>{{ appointment.field }}</td>
-                                            <td>
-                                                {{
-                                                    moment(
-                                                        appointment.startSchedule,
-                                                        "YYYY-MM-DD HH:mm:ss"
-                                                    ).format("MMMM Do YYYY")
-                                                }}
-                                            </td>
-                                            <td>{{ appointment.name }}</td>
-                                            <td class="pr-2.5">
-                                                <h1
-                                                    class="font-bold"
-                                                    :class="{
-                                                        'text-yellow-400':
-                                                            appointment.Status ===
-                                                            0,
-                                                        'text-green-400':
-                                                            appointment.Status ===
-                                                            1,
-                                                        'text-red-400':
-                                                            appointment.Status ===
-                                                            2,
-                                                        'text-green-700':
-                                                            appointment.Status ===
-                                                            3,
-                                                    }"
-                                                >
-                                                    {{ appointment.statusName }}
-                                                </h1>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <button
+                                    @click="toggleCourse(course)"
+                                    class="px-2 py-1 my-1.5 rounded-md flex items-center gap-1 font-semibold border border-gray-300"
+                                    :class="{
+                                        hidden: isActive(course),
+                                        'mr-2': !isActive(course),
+                                    }"
+                                >
+                                    {{ course?.name }}
+                                </button>
                             </div>
                         </div>
-                        <div class="mt-5" v-if="this.appointments?.length > 0">
-                            <Pagination
-                                @next="goToNextPage"
-                                @back="goToPrevPage"
-                                :total="this.pagination?.total"
-                                :current_page="this.pagination?.current_page"
-                                :last_page="this.pagination?.last_page"
-                            />
+                        <div class="space-x-2">
+                            <button
+                                @click="saveCourses"
+                                class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
+                            >
+                                Save Courses
+                            </button>
+                            <button
+                                @click="cancelEditCourses"
+                                class="font-bold border px-4 py-1 rounded-md"
+                            >
+                                Cancel
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="flex gap-10 my-10 w-full">
-                    <div class="w-1/3"><PieChart :role="2" /></div>
-                    <div class="w-2/3"><BarChart :role="2" /></div>
                 </div>
             </div>
+
+            <div
+                class="bg-white w-full overflow-x-clip py-10 flex flex-col rounded-md justify-between shadow-sm border border-gray-200"
+                :class="{
+                    'min-h-[100px]': this.appointments?.length === 0,
+                }"
+            >
+                <div class="">
+                    <div class="flex items-center justify-center gap-10">
+                        <Calendar
+                            v-model="date"
+                            inline
+                            :numberOfMonths="1"
+                            :minDate="minDate"
+                            class=""
+                        />
+                        <div class="border p-5 rounded border-gray-200">
+                            <h1 class="pb-5 font-medium text-green-700 text-xl">
+                                <span
+                                    ><i
+                                        class="pi pi-chart-bar text-xl rounded-full text-yellow-400"
+                                        style="font-size: 1rem"
+                                    ></i
+                                ></span>
+                                User Statistics
+                                <span
+                                    class="text-xs text-gray-400 font-normal italic"
+                                    >as of
+                                    {{
+                                        this.minDate?.toLocaleDateString(
+                                            "en-US"
+                                        )
+                                    }}</span
+                                >
+                            </h1>
+                            <div
+                                class="grid grid-cols-1 laptop:grid-cols-2 gap-5 w-full h-full"
+                            >
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-briefcase text-2xl bg-green-100 rounded-full px-2 py-1 text-green-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Total Appointments
+                                        </h1>
+                                        <p class="text-gray-500">
+                                            {{ this.TotalAppointments }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-star text-2xl bg-yellow-100 rounded-full px-2 py-1 text-yellow-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Rating
+                                        </h1>
+                                        <p
+                                            :class="{
+                                                'text-red-400': this.rating < 3,
+                                                'text-yellow-400':
+                                                    this.rating == 3,
+                                                'text-green-400':
+                                                    this.rating > 3,
+                                            }"
+                                        >
+                                            {{ this.rating }}.0
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-bell text-2xl bg-blue-100 rounded-full px-2 py-1 text-blue-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Ongoing Appointments
+                                        </h1>
+                                        <p class="text-gray-500">
+                                            {{ this.appointments.length }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-gray-200 rounded-md p-5 h-full flex items-center gap-5"
+                                >
+                                    <div class="">
+                                        <i
+                                            class="pi pi-flag text-2xl bg-gray-100 rounded-full px-2 py-1 text-gray-400"
+                                            style="font-size: 1rem"
+                                        ></i>
+                                    </div>
+                                    <div class="">
+                                        <h1 class="text-gray-800 font-medium">
+                                            Feedbacks
+                                        </h1>
+                                        <p
+                                            class="text-white text-sm bg-gray-800 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
+                                        >
+                                            View
+                                            <span
+                                                class="pi pi-arrow-right text-xs"
+                                            ></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <h1
+                            class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+                        >
+                            Your Appointments
+                        </h1>
+
+                        <div
+                            class="mx-5 flex items-center justify-center"
+                            v-if="this.appointments?.length == 0"
+                        >
+                            <h1 class="flex flex-col items-center gap-5">
+                                <i
+                                    class="pi pi-calendar-times text-6xl text-gray-300"
+                                ></i>
+                                <span class="text-gray-500"
+                                    >You have no ongoing appointments.</span
+                                >
+                            </h1>
+                        </div>
+                        <div class="flex flex-col" v-else>
+                            <table class="text-sm">
+                                <thead
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 py-10"
+                                >
+                                    <tr class="">
+                                        <th scope="col" class="py-2.5">
+                                            Request Title
+                                        </th>
+                                        <th scope="col" class="">Field</th>
+                                        <th scope="col" class="">Start Date</th>
+                                        <th scope="col" class="">Student</th>
+                                        <th scope="" class="pr-2.5">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    <tr
+                                        v-for="appointment in appointments"
+                                        :key="appointment.appointmentId"
+                                        class="bg-white dark:bg-gray-800 dark:border-gray-700"
+                                    >
+                                        <th
+                                            scope="row"
+                                            class="font-medium py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                                        >
+                                            {{ appointment.title }}
+                                        </th>
+                                        <td>{{ appointment.field }}</td>
+                                        <td>
+                                            {{
+                                                moment(
+                                                    appointment.startSchedule,
+                                                    "YYYY-MM-DD HH:mm:ss"
+                                                ).format("MMMM Do YYYY")
+                                            }}
+                                        </td>
+                                        <td>{{ appointment.name }}</td>
+                                        <td class="pr-2.5">
+                                            <h1
+                                                class="font-bold"
+                                                :class="{
+                                                    'text-yellow-400':
+                                                        appointment.Status ===
+                                                        0,
+                                                    'text-green-400':
+                                                        appointment.Status ===
+                                                        1,
+                                                    'text-red-400':
+                                                        appointment.Status ===
+                                                        2,
+                                                    'text-green-700':
+                                                        appointment.Status ===
+                                                        3,
+                                                }"
+                                            >
+                                                {{ appointment.statusName }}
+                                            </h1>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="mt-5" v-if="this.appointments?.length > 0">
+                        <Pagination
+                            @next="goToNextPage"
+                            @back="goToPrevPage"
+                            :total="this.pagination?.total"
+                            :current_page="this.pagination?.current_page"
+                            :last_page="this.pagination?.last_page"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-10 my-10 w-full">
+                <div class="w-1/3"><PieChart :role="2" /></div>
+                <div class="w-2/3"><BarChart :role="2" /></div>
+            </div>
         </div>
-    </LayoutMentor>
+    </div>
 </template>
 
 <script>
@@ -495,7 +472,6 @@ import Modal from "../../component/Modal.vue";
 import Textarea from "primevue/textarea";
 
 import FloatLabel from "primevue/floatlabel";
-import LayoutMentor from "../../Layout/LayoutMentor.vue";
 
 export default {
     components: {
@@ -509,8 +485,6 @@ export default {
         Message,
         Textarea,
         FloatLabel,
-        LayoutMentor,
-        LayoutMentor,
     },
     data() {
         return {

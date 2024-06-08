@@ -11,13 +11,13 @@
                 />
                 <span
                     class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-                    >MAIN ADMIN</span
+                    >Main Admin</span
                 >
             </div>
             <ul class="space-y-2 font-medium flex flex-col justify-between">
                 <div class="space-y-4">
                     <li>
-                        <router-link to="/pdchome">
+                        <router-link to="/admin/home">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -32,7 +32,7 @@
                     </li>
 
                     <li>
-                        <router-link to="/pdcmentors">
+                        <router-link to="/admin/mentors">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -46,7 +46,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/alumniinvite">
+                        <router-link to="/admin/alumniinvite">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -60,7 +60,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/pdcstudenttickets">
+                        <router-link to="/admin/studenttickets">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -74,7 +74,7 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/pendingmentors">
+                        <router-link to="/admin/pendingmentors">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -88,7 +88,21 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/allconvo">
+                        <router-link to="/admin/allconvo">
+                            <a
+                                href="#"
+                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            >
+                                <i
+                                    class="pi pi-send"
+                                    style="font-size: 1rem"
+                                ></i>
+                                <span class="ms-3">Conversations</span>
+                            </a>
+                        </router-link>
+                    </li>
+                    <li v-if="this.role === 3">
+                        <router-link to="/admin/allconvo">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -132,8 +146,8 @@
         </div>
     </aside>
     <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center min-h-screen">
-            <slot />
+        <div class="flex flex-col items-center min-h-screen px-5 md:px-20">
+            <router-view></router-view>
             <a href="https://www.google.com/" target="_blank">
                 <div
                     class="rounded-full bottom-0 right-0 fixed m-5"

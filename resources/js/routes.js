@@ -18,108 +18,123 @@ import ScheduleHistory from "@/pages/MentorPages/ScheduleHistory.vue";
 import Appointments from "@/pages/Appointments.vue";
 import TicketLogsStudent from "@/pages/TicketLogsStudent.vue";
 import AlumniInvite from "@/pages/PDCPages/AlumniInvite.vue";
-import MentorRequest from "@/pages/MentorRequest.vue";
+import MentorRequest from "@/pages/PDCPages/MentorRequest.vue";
 import PDCConversation from "./pages/PDCPages/PDCConversation.vue";
+import { createRouter, createWebHistory } from "vue-router";
 
+import LayoutStudent from "./Layout/LayoutStudent.vue";
+import LayoutMentor from "./Layout/LayoutMentor.vue";
+import LayoutEmployee from "./Layout/LayoutEmployee.vue";
+
+// Define routes
 export const routes = [
     {
         path: "/",
         name: "login",
         component: Login,
     },
-
-    {
-        path: "/home",
-        name: "home",
-        component: App,
-    },
-
     {
         path: "/signup",
         name: "signup",
         component: Signup,
     },
-
     {
-        path: "/chat/:id?",
-        name: "chat",
-        component: Conversation,
+        path: "/student",
+        component: LayoutStudent,
+        children: [
+            { path: "home", component: App },
+            {
+                path: "appointments",
+                name: "appointments",
+                component: Appointments,
+            },
+            {
+                path: "mentors",
+                name: "mentors",
+                component: Mentors,
+            },
+            {
+                path: "studenttickets",
+                name: "studenttickets",
+                component: TicketLogsStudent,
+            },
+            {
+                path: "chat/:id?",
+                name: "chat",
+                component: Conversation,
+            },
+        ],
     },
     {
-        path: "/mentorchat/:id?",
-        name: "mentorchat",
-        component: MentorConversation,
+        path: "/mentor",
+        component: LayoutMentor,
+        children: [
+            { path: "home", component: MentorApp },
+            {
+                path: "studentrequests",
+                name: "mentorstudentrequests",
+                component: MentorStudentRequests,
+            },
+            {
+                path: "chat/:id?",
+                name: "mentorchat",
+                component: MentorConversation,
+            },
+            {
+                path: "schedule",
+                name: "schedule",
+                component: ScheduleHistory,
+            },
+            {
+                path: "request",
+                name: "mentorrequest",
+                component: MentorRequest,
+            },
+        ],
     },
     {
-        path: "/appointments",
-        name: "appointments",
-        component: Appointments,
-    },
-    {
-        path: "/mentors",
-        name: "mentors",
-        component: Mentors,
-    },
-    //PDC Routes
-    {
-        path: "/pdchome",
-        name: "pdchome",
-        component: PDCApp,
-    },
-    {
-        path: "/pdcmentors",
-        name: "pdcmentors",
-        component: PDCMentors,
-    },
-    {
-        path: "/pdcstudents",
-        name: "pdcstudents",
-        component: PDCStudents,
-    },
-    {
-        path: "/pdcstudenttickets",
-        name: "pdcstudenttickets",
-        component: PDCStudentTickets,
-    },
-    {
-        path: "/studenttickets",
-        name: "studenttickets",
-        component: TicketLogsStudent,
-    },
-    {
-        path: "/alumniinvite",
-        name: "alumniinvite",
-        component: AlumniInvite,
-    },
-    //Mentor Routes
-    {
-        path: "/mentorhome",
-        name: "mentorhome",
-        component: MentorApp,
-    },
-    {
-        path: "/mentorstudentrequests",
-        name: "mentorstudentreuqests",
-        component: MentorStudentRequests,
-    },
-    {
-        path: "/schedule",
-        name: "schedule",
-        component: ScheduleHistory,
-    },
-    {
-        path: "/mentorrequest",
-        name: "mentorrequest",
-        component: MentorRequest,
-    },
-    {
-        path: "/pendingmentors",
-        name: "pendingmentors",
-        component: PDCPendingMentors,
-    },
-    {
-        path: "/allconvo",
-        name: "allconvo",
-        component: PDCConversation,
+        path: "/admin",
+        component: LayoutEmployee,
+        children: [
+            { path: "home", component: PDCApp },
+            {
+                path: "mentors",
+                name: "pdcmentors",
+                component: PDCMentors,
+            },
+            {
+                path: "students",
+                name: "pdcstudents",
+                component: PDCStudents,
+            },
+            {
+                path: "studenttickets",
+                name: "pdcstudenttickets",
+                component: PDCStudentTickets,
+            },
+            {
+                path: "pendingmentors",
+                name: "pendingmentors",
+                component: PDCPendingMentors,
+            },
+            {
+                path: "allconvo",
+                name: "allconvo",
+                component: PDCConversation,
+            },
+            {
+                path: "alumniinvite",
+                name: "alumniinvite",
+                component: AlumniInvite,
+            },
+        ],
     },
 ];
+
+// Create and export the router
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+export default router;

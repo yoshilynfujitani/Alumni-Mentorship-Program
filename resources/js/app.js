@@ -11,7 +11,7 @@ import "primevue/resources/themes/aura-light-green/theme.css";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "./routes";
 
-import Layout1 from "@/Layout/Layout1.vue";
+import Layout from "@/Layout/LayoutStudent.vue";
 import LayoutMentor from "@/Layout/LayoutMentor.vue";
 import LayoutEmployee from "@/Layout/LayoutEmployee.vue";
 import "primevue/resources/themes/aura-light-green/theme.css";
@@ -29,7 +29,7 @@ app.use(router);
 app.use(store);
 
 app.component("app", App);
-app.component("Layout", Layout1);
+app.component("Layout", Layout);
 app.component("LayoutMentor", LayoutMentor);
 app.component("LayoutPDC", LayoutEmployee);
 app.use(setupCalendar, {});
