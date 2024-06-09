@@ -8,7 +8,7 @@
         >
             <h1>No conversation selected</h1>
         </div>
-        <div class="w-full h-full">
+        <div class="w-full h-full" v-else>
             <div class="py-2.5 px-5 w-full bg-white shadow-sm" v-if="convoId">
                 <div class="flex items-center gap-1.5">
                     <img
@@ -34,7 +34,11 @@
 
             <div
                 v-else
-                class="overflow-y-scroll px-5 min-h-full h-full w-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
+                :class="{
+                    hidden: chat === null,
+                    'overflow-y-scroll': chat.length > 0,
+                }"
+                class="px-5 min-h-full h-full w-full scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-200 scrollbar-track-gray-100"
             >
                 <!-- <h1 class="text-center my-2.5">Load more</h1> -->
 
@@ -87,11 +91,16 @@
                                     'self-start bg-gray-400':
                                         chats.userId !== userId,
                                     'self-end': chats.userId === userId,
+                                    hidden: !chats.chats,
                                 }"
                             >
                                 {{ chats.chats }}
                             </p>
                             <div
+                                :class="{
+                                    'self-start': chats.userId !== userId,
+                                    'self-end': chats.userId === userId,
+                                }"
                                 class="bg-gray-600 rounded-md flex items-center gap-1.5 my-1.5 p-2.5 max-w-[300px] hover:cursor-pointer"
                                 @click="
                                     onDownload(chats.filePath, chats.fileName)
@@ -126,7 +135,7 @@
                 <button
                     type="button"
                     @click="triggerFileInput"
-                    class="bg-green-800 px-4 py-2 rounded-md text-gray-50 text-ellipsis overflow-hidden max-w-[200px]"
+                    class="bg-green-800 px-4 py-2 rounded-md text-gray-50 text-ellipsis overflow-hidden max-w-[200px] max-h-10 break-keep"
                 >
                     <span v-if="fileName">{{ fileName }}</span>
                     <span v-else

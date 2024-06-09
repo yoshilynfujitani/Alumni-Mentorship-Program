@@ -97,12 +97,16 @@ Route::post("/searchticket", [TicketController::class, "searchTicket"]);
 Route::post("/searchrequest", [MentorController::class, "searchRequest"]);
 Route::post("/searchuser", [PDCController::class, "searchUser"]);
 Route::post("/assignappointment", [PDCController::class, "assignStudentToMentor"]);
+Route::post("/createpdc", [PDCController::class, "createPDCAccount"]);
+Route::post("/getpdc", [PDCController::class, "getPDCAccounts"]);
+Route::get("/getcolleges", [PDCController::class, "getColleges"]);
 Route::get("/getmentorapplications", [MentorController::class, "getMentorApplications"]);
 Route::post("/createfield", [FieldController::class, "createField"]);
 Route::post("/editfield", [FieldController::class, "editField"]);
 Route::post("/getfields", [FieldController::class, "getFields"]);
 Route::post("/deletefield", [FieldController::class, "deleteField"]);
 Route::post("/verifyinvite", [AlumniController::class, "VerifyInvite"]);
+
 
 
 

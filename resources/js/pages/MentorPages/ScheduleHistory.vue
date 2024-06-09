@@ -45,12 +45,17 @@
                             <span class="text-red-600">{{ day.end }}</span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            {{
-                                moment(
-                                    day.created_at,
-                                    "YYYY-MM-DD HH:mm:ss"
-                                ).format("MMMM Do YYYY")
-                            }}
+                            <h1 v-if="0 !== index">
+                                {{
+                                    moment(
+                                        day.created_at,
+                                        "YYYY-MM-DD HH:mm:ss"
+                                    ).format("MMMM Do YYYY")
+                                }}
+                            </h1>
+                            <h1 v-else class="text-green-600 font-semibold">
+                                Active
+                            </h1>
                         </td>
                     </tr>
                 </tbody>

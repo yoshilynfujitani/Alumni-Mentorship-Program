@@ -49,7 +49,6 @@ export default {
     methods: {
         getAlumni() {
             axios.get("/getalumni").then(({ data }) => {
-                console.log(data);
                 this.Alumni = data;
             });
         },

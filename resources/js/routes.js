@@ -21,7 +21,7 @@ import AlumniInvite from "@/pages/PDCPages/AlumniInvite.vue";
 import MentorRequest from "@/pages/PDCPages/MentorRequest.vue";
 import PDCConversation from "./pages/PDCPages/PDCConversation.vue";
 import { createRouter, createWebHistory } from "vue-router";
-
+import ManagePDC from "./pages/PDCPages/ManagePDC.vue";
 import LayoutStudent from "./Layout/LayoutStudent.vue";
 import LayoutMentor from "./Layout/LayoutMentor.vue";
 import LayoutEmployee from "./Layout/LayoutEmployee.vue";
@@ -126,6 +126,11 @@ export const routes = [
                 path: "alumniinvite",
                 name: "alumniinvite",
                 component: AlumniInvite,
+            },
+            {
+                path: "managepdc",
+                name: "managepdc",
+                component: ManagePDC,
             },
         ],
     },
