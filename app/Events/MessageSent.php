@@ -21,6 +21,7 @@ class MessageSent implements ShouldBroadcast
      * Create a new event instance.
      */
    
+    public $id;
     public $message;
     public $userId;
     public $appointmentId;
@@ -30,7 +31,7 @@ class MessageSent implements ShouldBroadcast
     public $role;
 
 
-    public function __construct($message, $userId, $appointmentId, $created_at, $fileName, $filePath, $role)
+    public function __construct($message, $userId, $appointmentId, $created_at, $fileName, $filePath, $role, $id)
     {
         //
     
@@ -41,6 +42,7 @@ class MessageSent implements ShouldBroadcast
         $this->fileName = $fileName;
         $this->filePath = $filePath;
         $this->role = $role;
+        $this->id = $id;
     }
 
     /**

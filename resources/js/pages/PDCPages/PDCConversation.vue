@@ -124,7 +124,6 @@ export default {
             axios
                 .get(`/user/${userId}/online`)
                 .then(({ data }) => {
-                    console.log(data);
                     this.userIsOnline = data.online;
                 })
                 .catch((error) => {

@@ -22,17 +22,14 @@
             class="transition-all p-2.5 text-xl bg-green-600 rounded-md text-white hover:cursor-pointer hover:bg-green-500"
             @click="handleQueryData"
         >
-            <BsPersonFillAdd />
+            Add
         </div>
     </div>
 </template>
 <script>
-import { BsPersonFillAdd } from "@kalimahapps/vue-icons";
 export default {
     props: ["studentDetails", "isActive"],
-    components: {
-        BsPersonFillAdd,
-    },
+    components: {},
     data() {
         return {
             students: null,

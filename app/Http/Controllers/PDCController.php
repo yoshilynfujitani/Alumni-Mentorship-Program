@@ -50,7 +50,7 @@ public function getPDCAccounts(Request $request){
 
         $query = User::where('role', 4)
             ->join('colleges', 'users.course', '=', 'colleges.id')
-            ->select('users.name', 'users.email', 'colleges.CollegeName', 'users.last_active_at');
+            ->select('users.name', 'users.email', 'colleges.CollegeName', 'users.last_active_at', 'users.id', 'users.code');
 
         // Apply search filter if provided
         if (!empty($search)) {
@@ -119,5 +119,28 @@ public function getPDCAccounts(Request $request){
         ->get();
 
         return $users;
+    }
+
+    public function resetPDCPassword(Request $request){
+        $user = User::find($request->id);
+     
+        $code = mt_rand(10000000,99999999);
+
+        $user->code = $code;
+        $user->password = Hash::make($code);
+        $user->first_login = 1;
+
+        return $user->save();
+    }
+
+    public function resetPassword(Request $request){
+        $user = User::where("email", $request->email)->first();
+       
+
+        $user->first_login = 0;
+        $user->code = null;
+        $user->password = Hash::make($request->password);
+
+        return $user->save();
     }
 }

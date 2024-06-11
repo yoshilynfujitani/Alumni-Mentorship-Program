@@ -30,8 +30,12 @@
         </div>
     </div>
     <Toast />
-    <div v-if="isLoading">
-        <UnSpinnerAlt class="animate-spin text-green-500" />
+    <div v-if="isLoading">Loading</div>
+    <div
+        class="w-full h-full bg-red-100 flex items-center justify-center"
+        v-else-if="!isLoading && pdcaccounts.length === 0"
+    >
+        Please try a different keyword
     </div>
     <div
         v-else
@@ -43,9 +47,11 @@
             <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                 <tr>
                     <th scope="col" class="pl-6 py-2">Account Name</th>
-                    <th scope="col" class="pl-6">Email</th>
-                    <th scope="col" class="pl-6">College</th>
+                    <th scope="col" class="">Email</th>
+                    <th scope="col" class="">College</th>
                     <th scope="col" class="">Account Status</th>
+                    <th scope="col" class="">Code</th>
+                    <th scope="col" class="" align="center">Others</th>
                 </tr>
             </thead>
             <ConfirmPopup />
@@ -61,9 +67,9 @@
                     >
                         {{ pdc.name }}
                     </th>
-                    <td class="px-6 py-4">{{ pdc.email }}</td>
-                    <td class="px-6 py-4">{{ pdc.CollegeName }}</td>
-                    <td class="" align="center">
+                    <td class="">{{ pdc.email }}</td>
+                    <td class="">{{ pdc.CollegeName }}</td>
+                    <td class="">
                         <div class="flex items-center gap-1.5">
                             <div
                                 class="w-5 h-5 rounded-full"
@@ -73,6 +79,15 @@
                             ></div>
                             <h1>{{ pdc.isOnline ? "Online" : "Offline" }}</h1>
                         </div>
+                    </td>
+                    <td class="">{{ pdc.code ? pdc.code : "-" }}</td>
+                    <td class="" align="center">
+                        <button
+                            @click="resetPassword($event, pdc.id)"
+                            class="transition-colors text-white bg-blue-500 flex items-center px-4 py-2 gap-1 rounded-md hover:bg-blue-600"
+                        >
+                            Reset <i class="pi pi-key"></i>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -90,7 +105,6 @@
 </template>
 
 <script>
-import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
 import ConfirmPopup from "primevue/confirmpopup";
 import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
@@ -99,7 +113,6 @@ import AccountForm from "./AccountForm.vue";
 
 export default {
     components: {
-        UnSpinnerAlt,
         ConfirmPopup,
         Toast,
         Dialog,
@@ -154,6 +167,33 @@ export default {
                 life: 3000,
             });
             this.getAccounts();
+        },
+        confirmedResetPassword(id) {
+            axios.post("/resetpdcpassword", { id: id }).then(({ data }) => {
+                this.$toast.add({
+                    severity: "info",
+                    summary: "Confirmed",
+                    detail: "Password Reset Successful",
+                    life: 3000,
+                });
+                this.getAccounts();
+            });
+        },
+        resetPassword(event, id) {
+            this.$confirm.require({
+                target: event.currentTarget,
+                message: "Are you sure you want to proceed?",
+                icon: "pi pi-exclamation-triangle",
+                rejectClass: "p-button-secondary p-button-outlined p-button-sm",
+                acceptClass:
+                    "p-button-sm bg-green-600 px-2 py-1 ml-1.5 text-white font-semibold rounded-md",
+                rejectLabel: "Cancel",
+                acceptLabel: "Reset",
+                accept: () => {
+                    this.confirmedResetPassword(id);
+                },
+                reject: () => {},
+            });
         },
     },
     mounted() {

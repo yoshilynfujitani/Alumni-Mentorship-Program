@@ -33,7 +33,8 @@ class StudentLoginController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
-            'verified' => $user->verified
+            'verified' => $user->verified,
+            'first_login' => $user->first_login
      
         ];
     

@@ -62,9 +62,10 @@
                                 'self-end text-right': chats.userId === userId,
                             }"
                         >
-                            <h1 v-if="chats.role === 3">PDC Admin</h1>
+                            <h1 v-if="chats.role === 3">Admin</h1>
                             <h1 v-if="chats.role === 2">Mentor</h1>
                             <h1 v-if="chats.role === 1">Student</h1>
+                            <h1 v-if="chats.role === 4">PDC User</h1>
                         </div>
                         <p
                             v-if="!chats.fileName"
@@ -252,7 +253,9 @@ export default {
                     this.message = null;
                     this.selectedFile = null;
                     this.fileName = null; // Reset the filename
-                    this.$refs.fileInput.value = ""; // Clear the file input
+                    this.$refs.fileInput.value = "";
+
+                    this.scrollToEnd();
                 })
                 .catch((error) => {
                     console.error("Error sending message:", error);
@@ -266,15 +269,14 @@ export default {
             axios
                 .post("/getconvo", { appointmentId: parseInt(id) })
                 .then(({ data }) => {
-                    console.log(data);
                     this.chat = data;
                     this.scrollToEnd();
-                    console.log(this.listenerStatus);
+
                     if (!this.listenerStatus[id]) {
                         this.listen(id);
                         this.listenerStatus[id] = true; // Set to true when subscribing
                     }
-                    console.log(this.listenerStatus);
+
                     this.chatLoading = false;
                 })
                 .catch((error) => {
@@ -286,8 +288,10 @@ export default {
         scrollToEnd() {
             this.$nextTick(() => {
                 const chatContainer = this.$refs.chats;
+
                 if (chatContainer && this.chat.length > 0) {
                     const lastMessageId = this.chat[this.chat.length - 1].id;
+
                     const lastMessage = this.$refs[`chatIndex${lastMessageId}`];
                     if (lastMessage && lastMessage.length > 0) {
                         lastMessage[0].scrollIntoView({
@@ -332,7 +336,6 @@ export default {
                     });
                     // Scroll to the end when a new message is received
                 };
-                this.scrollToEnd();
 
                 this.subscription = {
                     channel: `chat${appointmentId}`,

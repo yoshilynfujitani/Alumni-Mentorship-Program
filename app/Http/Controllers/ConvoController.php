@@ -45,7 +45,7 @@ class ConvoController extends Controller
 
     $newConvo->save();  
 
-
+    
     return event(new MessageSent(
         $request->message, 
         $user->id, 
@@ -53,7 +53,8 @@ class ConvoController extends Controller
         $request->created_at, 
         $fileName,
         $filePath,
-        $user->role 
+        $user->role,
+        $newConvo->convoId 
     ));
 }
 
@@ -95,25 +96,25 @@ class ConvoController extends Controller
         }
         else if($role === 3){
             $ConvoId = mentorAppointment::
-                join('adminportal.users AS user', 'user.id', '=', 'studentId')
-                ->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
+                join('adminportal.users AS user', 'user.id', '=', 'mentorId')
+                ->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId',)
                 ->where(function ($query) {
                     $query->where('Status', 1)
                         ->orWhere('Status', 3);
                 })
-                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
+                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId', 'user.id as userId')
                 ->get();
         }
         else if($role === 4){
              $ConvoId = mentorAppointment::
-                join('adminportal.users AS user', 'user.id', '=', 'studentId')
+                join('adminportal.users AS user', 'user.id', '=', 'mentorId')
                 ->join('mentorportal.appointmentstatus AS status', 'Status', '=', 'status.statusId')
                 ->where('user.course', $user->course)
                 ->where(function ($query) {
                     $query->where('Status', 1)
                         ->orWhere('Status', 3);
                 })
-                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId')
+                ->select("appointmentId", "title", "user.name", 'status.statusName', 'status.statusId','user.id as userId' )
                 ->get();
         }
         return $ConvoId;

@@ -62,9 +62,6 @@
     </div>
 </template>
 <script>
-import { FlPeopleSettings } from "@kalimahapps/vue-icons";
-import { AkChatDots } from "@kalimahapps/vue-icons";
-import { FlFilledPersonStar } from "@kalimahapps/vue-icons";
 export default {
     props: {
         modalContent: {
@@ -95,11 +92,7 @@ export default {
             type: String,
         },
     },
-    components: {
-        FlPeopleSettings,
-        AkChatDots,
-        FlFilledPersonStar,
-    },
+    components: {},
     data() {
         return {
             isOpen: false,

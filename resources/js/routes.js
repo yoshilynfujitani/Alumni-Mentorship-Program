@@ -25,6 +25,7 @@ import ManagePDC from "./pages/PDCPages/ManagePDC.vue";
 import LayoutStudent from "./Layout/LayoutStudent.vue";
 import LayoutMentor from "./Layout/LayoutMentor.vue";
 import LayoutEmployee from "./Layout/LayoutEmployee.vue";
+import ResetPDCPassword from "@/pages/PDCPages/ResetPDCPassword.vue";
 
 // Define routes
 export const routes = [
@@ -85,12 +86,17 @@ export const routes = [
                 name: "schedule",
                 component: ScheduleHistory,
             },
-            {
-                path: "request",
-                name: "mentorrequest",
-                component: MentorRequest,
-            },
         ],
+    },
+    {
+        path: "/request",
+        name: "mentorrequest",
+        component: MentorRequest,
+    },
+    {
+        path: "/reset-password",
+        name: "pdcresetpassword",
+        component: ResetPDCPassword,
     },
     {
         path: "/admin",

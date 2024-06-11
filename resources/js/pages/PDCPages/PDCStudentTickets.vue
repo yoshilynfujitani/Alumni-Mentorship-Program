@@ -18,9 +18,7 @@
     </div>
     <Toast />
 
-    <div v-if="isLoading">
-        <UnSpinnerAlt class="animate-spin text-green-500" />
-    </div>
+    <div v-if="isLoading">Loading...</div>
 
     <div
         class="self-start overflow-x-auto w-full shadow-sm sm:rounded-lg z-40"
@@ -134,7 +132,7 @@
 <script>
 import moment from "moment";
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
-import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+
 import ConfirmPopup from "primevue/confirmpopup";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -144,7 +142,7 @@ import Pagination from "../../utils/Pagination.vue";
 export default {
     components: {
         MentorCard,
-        UnSpinnerAlt,
+
         ConfirmPopup,
         Toast,
         Button,

@@ -11,7 +11,7 @@
                 @click="findUser"
                 class="px-4 py-3.5 bg-green-600 rounded-md text-white"
             >
-                <BsSearch />
+                Search
             </button>
         </div>
         <div
@@ -19,9 +19,7 @@
             v-if="this.students === null"
         >
             <h1 class="text-8xl flex flex-col items-center opacity-50">
-                <FlPeopleSearch /><span class="text-sm font-normal"
-                    >Enter student name</span
-                >
+                <span class="text-sm font-normal">Enter student name</span>
             </h1>
         </div>
         <div class="" v-else>
@@ -37,13 +35,10 @@
 </template>
 <script>
 import StudentSearchCard from "./StudentSearchCard.vue";
-import { BsSearch } from "@kalimahapps/vue-icons";
-import { FlPeopleSearch } from "@kalimahapps/vue-icons";
+
 export default {
     components: {
         StudentSearchCard,
-        BsSearch,
-        FlPeopleSearch,
     },
     data() {
         return {

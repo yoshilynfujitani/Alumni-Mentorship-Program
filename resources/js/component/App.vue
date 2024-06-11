@@ -360,9 +360,7 @@ import moment from "moment";
 import Modal from "./Modal.vue";
 import Chat from "./Chat.vue";
 import FeedbackForm from "./StudentComponents/FeedbackForm.vue";
-import { FlFilledWarning } from "@kalimahapps/vue-icons";
-import { AkCircleCheck } from "@kalimahapps/vue-icons";
-import { AnOutlinedCloseCircle } from "@kalimahapps/vue-icons";
+
 import Textarea from "primevue/textarea";
 
 import Toast from "primevue/toast";
@@ -375,9 +373,7 @@ export default {
         Calendar,
         Menubar,
         Modal,
-        FlFilledWarning,
-        AkCircleCheck,
-        AnOutlinedCloseCircle,
+
         PieChart,
         BarChart,
         Chat,

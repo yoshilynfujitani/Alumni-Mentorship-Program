@@ -110,13 +110,13 @@ import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 import RequestFromStudent from "../../component/MentorComponents/RequestFromStudent.vue";
 import Pagination from "../../utils/Pagination.vue";
 import Chat from "../../component/Chat.vue";
-import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+
 import FeedbackForm from "../../component/StudentComponents/FeedbackForm.vue";
 
 export default {
     components: {
         MentorCard,
-        UnSpinnerAlt,
+
         Chat,
         RequestFromStudent,
         Pagination,

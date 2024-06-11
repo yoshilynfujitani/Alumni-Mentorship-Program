@@ -38,9 +38,7 @@
         </div>
     </div>
 
-    <div v-if="isLoading">
-        <UnSpinnerAlt class="animate-spin text-green-500" />
-    </div>
+    <div v-if="isLoading">Loading...</div>
 
     <div
         class="self-start mb-20 overflow-x-auto w-full min-h-full shadow-md sm:rounded-lg"
@@ -320,7 +318,7 @@
 </template>
 <script>
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
-import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+
 import AppointmentForm from "../../component/StudentComponents/AppointmentForm.vue";
 import Pagination from "../../utils/Pagination.vue";
 import Dropdown from "primevue/dropdown";
@@ -333,7 +331,7 @@ import Toast from "primevue/toast";
 export default {
     components: {
         MentorCard,
-        UnSpinnerAlt,
+
         AppointmentForm,
         Pagination,
         Dropdown,

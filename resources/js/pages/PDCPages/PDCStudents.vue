@@ -31,9 +31,7 @@
             </div>
 
         </div> -->
-    <div v-if="isLoading">
-        <UnSpinnerAlt class="animate-spin text-green-500" />
-    </div>
+    <div v-if="isLoading">Loading...></div>
 
     <div
         class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg"
@@ -169,11 +167,10 @@
 </template>
 <script>
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
-import { UnSpinnerAlt } from "@kalimahapps/vue-icons";
+
 export default {
     components: {
         MentorCard,
-        UnSpinnerAlt,
     },
     data() {
         return {
