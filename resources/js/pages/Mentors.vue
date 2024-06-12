@@ -119,7 +119,11 @@ export default {
                 })
                 .then(({ data }) => {
                     this.mentors = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 });
         },
         handleCourseChange() {
@@ -128,7 +132,6 @@ export default {
         },
         getFields() {
             axios.post("/getfields").then(({ data }) => {
-                console.log(data);
                 this.courses = data;
             });
         },
@@ -147,18 +150,22 @@ export default {
         },
         fetchRequests(page) {
             this.isLoading = true;
-
+            const { fieldToTake, allowToAppoint, selectedCourse, mentorQuery } =
+                this;
             axios
-                .post(
-                    `/getmentorstudent?page=${page}&field=${
-                        this.selectedCourse.id ? this.selectedCourse.id : null
-                    }`
-                )
+                .post(`/getmentorstudent?page=${page}`, {
+                    fieldToTake,
+                    allowToAppoint,
+                    selectedCourseId: selectedCourse ? selectedCourse.id : null,
+                    mentorQuery: mentorQuery ? mentorQuery : null,
+                })
                 .then(({ data }) => {
-                    console.log(data);
-
                     this.mentors = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 })
                 .catch((error) => {
                     console.error("Error fetching mentors:", error);
@@ -178,9 +185,12 @@ export default {
                     selectedCourseId: selectedCourse ? selectedCourse.id : null,
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.mentors = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 });
         },
     },

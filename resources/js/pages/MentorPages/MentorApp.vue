@@ -336,7 +336,11 @@ export default {
                 .post("/getOngoingAppointments", { userType: 2 })
                 .then(({ data }) => {
                     this.appointments = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
 
                     this.loading = false;
                 });
@@ -367,7 +371,11 @@ export default {
                 .get(`/getOngoingAppointments?page=${page}`)
                 .then(({ data }) => {
                     this.appointments = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 })
                 .catch((error) => {
                     console.error("Error fetching mentors:", error);

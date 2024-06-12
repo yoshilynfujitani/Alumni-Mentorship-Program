@@ -412,8 +412,11 @@ export default {
                 .post("/searchMentor", { mentorQuery: mentorQuery })
                 .then(({ data }) => {
                     this.mentors = data.data;
-                    console.log(data.data);
-                    this.pagination = data.pagination;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 });
         },
         getLatestSchedule() {
@@ -439,7 +442,11 @@ export default {
                 .post(`/getmentorAPI`, { searchBy })
                 .then(({ data }) => {
                     this.mentors = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 })
                 .catch((error) => {
                     console.error("Error fetching mentors:", error);
@@ -452,7 +459,6 @@ export default {
             axios
                 .post("/editmentorstatus", { statusId, mentorId })
                 .then(({ data }) => {
-                    console.log(data);
                     this.getMentors();
                 })
                 .catch((error) => {
@@ -509,7 +515,11 @@ export default {
                 .post(`/getmentorAPI?page=${page}`, { searchBy })
                 .then(({ data }) => {
                     this.mentors = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 })
                 .catch((error) => {
                     console.error("Error fetching mentors:", error);
@@ -530,7 +540,12 @@ export default {
             axios
                 .post("/getAllSchedule", { mentorId: this.currentId })
                 .then(({ data }) => {
-                    this.paginationSched = data;
+                    this.paginationSched = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
+
                     this.schedule = data.data.map((number) => {
                         return {
                             days: Array.from(
@@ -565,7 +580,11 @@ export default {
                     mentorId: this.currentId,
                 })
                 .then(({ data }) => {
-                    this.paginationSched = data;
+                    this.paginationSched = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                     this.schedule = data.data.map((number) => {
                         return {
                             days: Array.from(

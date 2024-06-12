@@ -167,7 +167,11 @@ export default {
                 console.log(data);
 
                 this.tickets = data.data;
-                this.pagination = data;
+                this.pagination = {
+                    current_page: data.current_page,
+                    last_page: data.last_page,
+                    total: data.total,
+                };
                 this.isLoading = false;
             });
         },
@@ -186,7 +190,11 @@ export default {
         fetchRequests(page) {
             axios.get(`/gettickets?page=${page}`).then(({ data }) => {
                 console.log(data);
-                this.pagination = data;
+                this.pagination = {
+                    current_page: data.current_page,
+                    last_page: data.last_page,
+                    total: data.total,
+                };
                 this.tickets = data.data;
             });
         },
@@ -210,7 +218,6 @@ export default {
                     ticketId,
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.getTickets();
                 });
         },

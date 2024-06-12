@@ -32,7 +32,7 @@ class ConvoController extends Controller
     $newConvo->userId = $user->id;
     $newConvo->appointmentId = $request->appointmentId;
     $newConvo->chats = $request->message;
-    $newConvo->role = $user->id;
+    $newConvo->role = $user->role;
     $newConvo->created_at = $request->created_at;
 
     if ($request->hasFile('file')) {

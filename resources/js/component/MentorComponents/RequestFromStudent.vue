@@ -392,7 +392,6 @@ export default {
                 .then(({ data }) => {
                     this.requestDetails = data;
                     this.getRecentTickets(parseInt(data.studentId));
-                    console.log(data);
                 });
         },
         getRecentTickets(studentId) {
@@ -400,19 +399,14 @@ export default {
                 .post("/getrecenttickets", { studentId: studentId })
                 .then(({ data }) => {
                     this.recentTickets = data;
-                    console.log(data);
                 });
         },
         setShowFeedback(appointmentId) {
-            console.log("clicked");
             this.showFeedback = !this.showFeedback;
-            console.log(this.showFeedback);
+
             this.getFeedback(appointmentId);
         },
         verify(requestStatus, studentId, appointmentId) {
-            console.log(requestStatus);
-            console.log(studentId);
-            console.log(appointmentId);
             const { remarks } = this;
             axios
                 .post("/verifyrequest", {
@@ -457,7 +451,6 @@ export default {
                     appointmentId,
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.feedbackDetails = data[0];
                 });
         },

@@ -189,8 +189,6 @@ export default {
             this.isLoading = true;
             const { fetchMentorBy } = this;
             axios.post("/getmentorAPI", { fetchMentorBy }).then(({ data }) => {
-                console.log(data);
-
                 this.mentors = data;
                 this.isLoading = false;
             });
@@ -202,7 +200,6 @@ export default {
             axios
                 .post("/editmentorstatus", { statusId, mentorId })
                 .then(({ data }) => {
-                    console.log(data);
                     this.getMentors();
                 });
         },

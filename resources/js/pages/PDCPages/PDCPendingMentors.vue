@@ -115,6 +115,11 @@ export default {
                 .get("/getmentorapplications")
                 .then(({ data }) => {
                     this.mentors = data.data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 })
                 .catch((error) => {
                     console.log(error);
@@ -136,8 +141,11 @@ export default {
             axios
                 .get(`/getmentorapplications?page=${page}`)
                 .then(({ data }) => {
-                    console.log(data);
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                     this.mentors = data.data;
                 });
         },
@@ -149,7 +157,11 @@ export default {
                 .post("/searchrequest", { ticketQuery: ticketQuery })
                 .then(({ data }) => {
                     this.mentors = data.data;
-                    this.pagination = data;
+                    this.pagination = {
+                        current_page: data.current_page,
+                        last_page: data.last_page,
+                        total: data.total,
+                    };
                 });
         },
         verify(statusId, mentorId) {
@@ -170,9 +182,9 @@ export default {
                     "p-button-sm text-white bg-green-400 px-2 py-1 ml-2",
                 rejectLabel: "Cancel",
                 acceptLabel: "Approve",
-                accept: () => {
+                accept: function () {
                     this.verify(requestStatus, mentorId);
-                    this.getApplications();
+
                     this.$toast.add({
                         severity: "success",
                         summary: "Confirmed",
@@ -180,8 +192,9 @@ export default {
                         position: "bottom-right",
                         life: 10000,
                     });
-                },
-                reject: () => {},
+                    this.getApplications(); // Ensure `this` refers to the Vue instance
+                }.bind(this), // Explicitly bind `this` to the function
+                reject: function () {}.bind(this), // Explicitly bind `this` to the function
             });
         },
         RejectTicket(event, requestStatus, mentorId) {
@@ -194,9 +207,9 @@ export default {
                     "p-button-danger p-button-sm bg-red-400 px-2 py-1 ml-2 text-white",
                 rejectLabel: "Cancel",
                 acceptLabel: "Reject",
-                accept: () => {
+                accept: function () {
                     this.verify(requestStatus, mentorId);
-                    this.getApplications();
+
                     this.$toast.add({
                         severity: "success",
                         summary: "Rejected",
@@ -204,8 +217,9 @@ export default {
                         position: "bottom-right",
                         life: 10000,
                     });
-                },
-                reject: () => {},
+                    this.getApplications(); // Ensure `this` refers to the Vue instance
+                }.bind(this), // Explicitly bind `this` to the function
+                reject: function () {}.bind(this), // Explicitly bind `this` to the function
             });
         },
     },
