@@ -27,36 +27,24 @@
         <div class="h-full" v-if="!this.requestDetails">Loading...</div>
         <div class="flex items-start justify-around h-full" v-else>
             <div
-                class="flex flex-col mr-5 justify-between h-full"
+                class="flex flex-col mr-5 justify-between h-full w-96"
                 v-if="!this.showFeedback && !this.verifying"
             >
-                <div class="border border-gray-200 rounded-md">
-                    <div class="rounded-t-md h-36 overflow-hidden">
+                <div class="border border-gray-200 rounded-md w-full">
+                    <div class="flex justify-center py-5 rounded-full">
                         <img
-                            class="object-fill w-96 h-56 object-center"
-                            src="../../../../public/mmsu_bg.webp"
-                            alt="Mountain"
-                        />
-                    </div>
-                    <div
-                        class="mx-auto w-28 h-28 relative -mt-16 border-4 border-white rounded-full overflow-hidden"
-                    >
-                        <img
-                            class="object-cover object-center h-28"
+                            class="h-28 rounded-full w-28"
                             src="../../../../public/DefaultAvatar.webp"
                             alt="Woman looking front"
                         />
                     </div>
-                    <div class="text-center mt-2">
+                    <div class="text-center">
                         <h2 class="font-semibold">
                             {{ this.requestDetails.name }}
                         </h2>
-                        <p class="text-gray-500">
-                            {{ this.requestDetails.course }}
-                        </p>
                     </div>
                     <ul
-                        class="py-4 mt-2 text-gray-700 flex items-center justify-around"
+                        class="py-4 text-gray-700 flex items-center justify-around"
                     >
                         <li class="flex flex-col items-center justify-around">
                             <i
@@ -67,28 +55,13 @@
                             <div>{{ this.requestDetails?.rating }}.0</div>
                         </li>
                         <li class="flex flex-col items-center justify-between">
-                            <svg
-                                class="w-4 fill-current text-blue-900"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z"
-                                />
-                            </svg>
-                            <div>10k</div>
-                        </li>
-                        <li class="flex flex-col items-center justify-around">
-                            <svg
-                                class="w-4 fill-current text-blue-900"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    d="M9 12H1v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-8v2H9v-2zm0-1H0V5c0-1.1.9-2 2-2h4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v6h-9V9H9v2zm3-8V2H8v1h4z"
-                                />
-                            </svg>
-                            <div>15</div>
+                            <i
+                                class="pi pi-building text-yellow-400"
+                                style="font-size: 1rem"
+                            ></i>
+                            <div>
+                                {{ this.requestDetails.CollegeName }}
+                            </div>
                         </li>
                     </ul>
                 </div>

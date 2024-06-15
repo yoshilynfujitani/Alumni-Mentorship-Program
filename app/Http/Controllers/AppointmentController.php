@@ -41,10 +41,11 @@ class AppointmentController extends Controller
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy','=','reqby.id')
+        ->join(DB::raw('adminportal.fields AS field'), 'appt.field','=','field.id')
         ->where("studentId",Auth::id())
         ->where("StatusId", 1)
         ->orderBy("appt.created_at")
-        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
+        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'field.fieldName') 
         ->paginate(5);
         }
         else if($request->userType === 2){
@@ -52,11 +53,12 @@ class AppointmentController extends Controller
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.studentId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy','=','reqby.id')
+        ->join(DB::raw('adminportal.fields AS field'), 'appt.field','=','field.id')
         ->where("mentorId",Auth::id())
         ->where("StatusId", 1)
         ->orWhere("StatusId", 0)
         ->orderBy("appt.created_at")
-        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
+        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'field.fieldName') 
         ->paginate(5);
         }
         
@@ -73,10 +75,11 @@ class AppointmentController extends Controller
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'),'users.id','=','appt.mentorId')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy','=','reqby.id')
+        ->join(DB::raw('adminportal.fields AS field'), 'appt.field','=','field.id')
         ->where("studentId",Auth::id())
       
         ->orderBy("appt.created_at", "desc")
-        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor') 
+        ->select('users.name', 'appt.*', 'status.*', 'reqby.requestor', 'field.fieldName') 
         ->paginate(10);
        
         
@@ -90,10 +93,11 @@ class AppointmentController extends Controller
 
     $data = DB::table(DB::raw('adminportal.users AS users'))
         ->join(DB::raw('mentorportal.appointmentdetails AS appt'), 'users.id', '=', 'appt.studentId')
+        ->join(DB::raw('adminportal.colleges AS college'), 'users.course', '=', 'college.id')
         ->join(DB::raw('mentorportal.appointmentstatus AS status'), 'appt.Status', '=', 'status.statusId')
         ->join(DB::raw('mentorportal.requestordetails AS reqby'), 'appt.requestedBy', '=', 'reqby.id')
         ->where("appt.appointmentId", $appointmentId) 
-        ->select('users.name','users.rating', 'appt.*', 'status.*', 'reqby.requestor', 'users.course') 
+        ->select('users.name','users.rating', 'appt.*', 'status.*', 'reqby.requestor', 'users.course', 'college.CollegeName') 
         ->first();
 
     $feedbackExists = Feedback::where('appointmentId', $appointmentId)

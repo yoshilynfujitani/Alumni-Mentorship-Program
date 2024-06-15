@@ -17,7 +17,7 @@
                 >
                     <tr>
                         <th scope="col" class="px-6 py-3">Student</th>
-                        <th scope="col" class="px-6 py-3">Field</th>
+                        <th scope="col" class="px-6 py-3">College</th>
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
                         </th>
@@ -44,7 +44,7 @@
                         >
                             {{ Request.name }}
                         </th>
-                        <td class="px-6 py-4">{{ Request.course }}</td>
+                        <td class="px-6 py-4">{{ Request.CollegeName }}</td>
 
                         <td class="px-6 py-4">
                             <h1

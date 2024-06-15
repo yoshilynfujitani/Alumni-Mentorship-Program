@@ -116,7 +116,7 @@ class TicketController extends Controller
         $data = Ticket::where('ticketlogs.studentId', $request->studentId)
             ->join("userstatus", "userstatus.statusId", "=", "ticketStatus")
             ->orderBy('ticketlogs.created_at', 'desc') 
-            ->take(8)
+            ->take(5)
             ->select('ticketlogs.created_at', 'ticketlogs.ticketStatus', 'userstatus.statusName')
             ->get();
             

@@ -1,5 +1,10 @@
 <template>
-    <div v-if="!activeCourses">Loading</div>
+    <div
+        v-if="activeCourses.length === 0 && isLoading"
+        class="w-full flex items-center justify-center"
+    >
+        <Spinner />
+    </div>
     <div class="pb-5" v-else>
         <div class="flex items-center gap-2.5 my-2.5">
             <h1 class="text-green-700 font-medium flex items-center gap-1">
@@ -15,6 +20,13 @@
             </div>
         </div>
         <div
+            class="w-full border border-gray-200 text-center py-10 rounded-md font-bold"
+            v-if="activeCourses.length === 0 && selectedCourses.length === 0"
+        >
+            No field selected
+        </div>
+        <div
+            v-else
             class="flex gap-x-2 flex-wrap border border-gray-200 rounded-md px-5 py-2.5"
         >
             <div v-for="course in selectedCourses" :key="course?.id" class="">
@@ -31,7 +43,7 @@
             </div>
             <br />
         </div>
-        <div class="" v-if="isEditCourses">
+        <div v-if="isEditCourses">
             <div>
                 <h1 class="font-semibold">Available Fields</h1>
                 <div
@@ -40,7 +52,7 @@
                 >
                     <div
                         v-for="course in availableCourses"
-                        :key="course?.id"
+                        :key="course.id"
                         class=""
                     >
                         <button
@@ -51,7 +63,7 @@
                                 'mr-2': !isActive(course),
                             }"
                         >
-                            {{ course?.name }}
+                            {{ course.name }}
                         </button>
                     </div>
                 </div>
@@ -82,13 +94,20 @@
 </template>
 
 <script>
+import Spinner from "../../utils/Spinner.vue";
+import axios from "axios";
+
 export default {
+    components: {
+        Spinner,
+    },
     data() {
         return {
             availableCourses: null,
             selectedCourses: [],
             activeCourses: [],
             isEditCourses: false,
+            isLoading: false,
         };
     },
     computed: {
@@ -100,7 +119,7 @@ export default {
         },
     },
     methods: {
-        cancelEditCourses() {
+        async cancelEditCourses() {
             this.selectedCourses = [...this.activeCourses];
             this.isEditCourses = !this.isEditCourses;
         },
@@ -121,52 +140,50 @@ export default {
             }
         },
         isActive(course) {
-            return this.selectedCourses?.some((c) => c?.id === course?.id);
+            return this.selectedCourses?.some((c) => c.id === course.id);
         },
-        saveCourses() {
+        async saveCourses() {
             const CourseId = this.selectedCourses.map((course) => course.id);
             const FieldId = CourseId.join(",");
 
-            axios
-                .post("/updatefield", { FieldId: FieldId })
-                .then((data) => {
-                    this.getField();
-                    this.isEditCourses = !this.isEditCourses;
-                })
-                .catch((error) => {
-                    console.error("Error saving courses:", error);
-                });
+            try {
+                await axios.post("/updatefield", { FieldId: FieldId });
+                await this.getField();
+                this.isEditCourses = !this.isEditCourses;
+            } catch (error) {
+                console.error("Error saving courses:", error);
+            }
         },
-        getFields() {
-            axios.post("/getfields").then(({ data }) => {
+        async getFields() {
+            try {
+                const { data } = await axios.post("/getfields");
                 this.availableCourses = data;
-            });
+                await this.getField();
+            } catch (error) {
+                console.error("Error fetching fields:", error);
+            }
         },
-        getField() {
-            axios
-                .get("/getfield")
-                .then((data) => {
-                    if (!data.data || data.data.length === 0) {
-                        // If the response data is empty, set activeCourses and selectedCourses to an empty array
-                        this.activeCourses = [];
-                        this.selectedCourses = [];
-                    } else {
-                        // Split the response data and map each course ID to its corresponding name
-                        const idStrings = data.data.toString().split(",");
-                        this.activeCourses = idStrings.map((courseId) => {
-                            return this.availableCourses?.find(
-                                (course) => course.id === parseInt(courseId, 10)
-                            );
-                        });
-                        this.selectedCourses = [...this.activeCourses];
-                    }
-                })
-                .catch((error) => {
-                    // Handle error
-                    console.error("Error saving courses:", error);
-                });
+        async getField() {
+            this.isLoading = true;
+            try {
+                const { data } = await axios.get("/getfield");
+                if (!data || data.length === 0) {
+                    this.activeCourses = [];
+                    this.selectedCourses = [];
+                } else {
+                    const idStrings = data.toString().split(",");
+                    this.activeCourses = idStrings.map((courseId) => {
+                        return this.availableCourses?.find(
+                            (course) => course.id === parseInt(courseId, 10)
+                        );
+                    });
+                    this.selectedCourses = [...this.activeCourses];
+                }
+                this.isLoading = false;
+            } catch (error) {
+                console.error("Error fetching active field:", error);
+            }
         },
-
         compareEditandActiveCourses() {
             const { selectedCourses, availableCourses } = this;
             var objectsAreSame = true;
@@ -182,9 +199,8 @@ export default {
             return objectsAreSame;
         },
     },
-    mounted() {
-        this.getFields();
-        this.getField();
+    async mounted() {
+        await this.getFields();
     },
 };
 </script>

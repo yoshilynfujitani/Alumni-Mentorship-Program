@@ -19,10 +19,10 @@
             </div>
         </div>
         <div
-            class="transition-all p-2.5 text-xl bg-green-600 rounded-md text-white hover:cursor-pointer hover:bg-green-500"
+            class="transition-all px-2.5 py-1 text-xl bg-green-600 rounded-full text-white hover:cursor-pointer hover:bg-green-500"
             @click="handleQueryData"
         >
-            Add
+            <i class="pi pi-plus"></i>
         </div>
     </div>
 </template>

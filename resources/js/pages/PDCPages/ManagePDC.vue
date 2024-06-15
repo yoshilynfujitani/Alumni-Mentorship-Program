@@ -84,6 +84,8 @@
                     <td class="" align="center">
                         <button
                             @click="resetPassword($event, pdc.id)"
+                            :class="{ 'opacity-60 ': pdc.code }"
+                            :disabled="pdc.code"
                             class="transition-colors text-white bg-blue-500 flex items-center px-4 py-2 gap-1 rounded-md hover:bg-blue-600"
                         >
                             Reset <i class="pi pi-key"></i>

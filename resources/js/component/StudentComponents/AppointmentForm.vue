@@ -17,7 +17,7 @@
         @click="visible = true"
         class="bg-green-700 w-fit px-2 py-1 rounded-md text-white text-sm"
     >
-        Request Appointment
+        Set Appointment
     </button>
 
     <Dialog v-model:visible="visible" modal header="Schedule an Appointment">
@@ -82,9 +82,17 @@
                 <input type="text" v-model="mentorId" hidden />
             </form>
             <div class="" v-if="this.type === 'pdc'">
+                <Message severity="warn" v-if="isIncomplete">
+                    Confirm all details are correct before submitting
+                    appointment.</Message
+                >
                 <StudentSearch @query="handleQueryData" />
             </div>
             <div class="w-full" v-if="this.type === 'student'">
+                <Message severity="warn" v-if="isIncomplete">
+                    Confirm all details are correct before submitting
+                    appointment.</Message
+                >
                 <h1 class="text-md text-gray-400 font-medium">
                     You are requesting an appointment with
                 </h1>
@@ -99,10 +107,15 @@
                     <div class="">
                         <h1 class="">
                             {{ this.MentorDetails.name }}
+                            <span class="font-semibold"
+                                >({{ this.MentorDetails.rating }}
+                                <i
+                                    class="pi pi-star-fill text-yellow-400"
+                                />)</span
+                            >
                         </h1>
                         <h1 class="text-sm text-gray-400">
                             {{ this.MentorDetails.fieldName }}
-                            <span>{{ this.MentorDetails.rating }}</span>
                         </h1>
                     </div>
                 </div>
@@ -151,11 +164,6 @@
                         }}
                     </h1>
                 </div>
-
-                <Message severity="warn">
-                    Confirm all details are correct before submitting
-                    appointment.</Message
-                >
             </div>
         </div>
         <div class="flex justify-content-end gap-2">
@@ -236,6 +244,7 @@ export default {
             minDate: null,
             courses: null,
             selectedField: null,
+            isIncomplete: false,
         };
     },
     methods: {
@@ -244,6 +253,9 @@ export default {
             const { id } = this.selectedStudent;
 
             if (this.type === "pdc") {
+                if (!title || !date || !selectedField || !id) {
+                    return (this.isIncomplete = true);
+                }
                 axios
                     .post("/assignappointment", {
                         title,
@@ -261,6 +273,9 @@ export default {
                         this.visible = false;
                     });
             } else if (this.type === "student") {
+                if (!title || !date) {
+                    return (this.isIncomplete = true);
+                }
                 axios
                     .post("/addAppointment", {
                         title,
@@ -269,7 +284,7 @@ export default {
                         mentorId,
                     })
                     .then(() => {
-                        this.$router.push("/appointments");
+                        this.$router.push("/student/appointments");
                         axios
                             .post("/sendEmailAppointment", { email: email })
                             .then(console.log("Success"));

@@ -126,7 +126,7 @@
                                             Ongoing Appointments
                                         </h1>
                                         <p class="text-gray-500">
-                                            {{ this.appointments.length }}
+                                            {{ this.appointments?.length }}
                                         </p>
                                     </div>
                                 </div>
@@ -203,7 +203,7 @@
                                         >
                                             {{ appointment.title }}
                                         </th>
-                                        <td>{{ appointment.field }}</td>
+                                        <td>{{ appointment.fieldName }}</td>
                                         <td>
                                             {{
                                                 moment(
@@ -316,6 +316,7 @@ export default {
                 },
             ],
             moment: moment,
+            pagination: null,
         };
     },
     computed: {
@@ -368,7 +369,7 @@ export default {
             this.isLoading = true;
 
             axios
-                .get(`/getOngoingAppointments?page=${page}`)
+                .post(`/getOngoingAppointments?page=${page}`, { userType: 2 })
                 .then(({ data }) => {
                     this.appointments = data.data;
                     this.pagination = {

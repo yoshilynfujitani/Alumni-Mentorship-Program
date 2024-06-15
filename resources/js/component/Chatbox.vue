@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-50 pb-32 rounded-md w-full flex-grow border border-gray-200 shadow-sm"
+        class="bg-gray-50 pb-32 rounded-md w-full flex-grow border border-gray-200 shadow-sm overflow-clip"
     >
         <div
             class="w-full h-full flex items-center justify-center"

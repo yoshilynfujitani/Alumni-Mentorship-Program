@@ -1,5 +1,15 @@
 <template>
-    <div class="pb-5 flex flex-col">
+    <div
+        class="w-full flex items-center justify-center"
+        v-if="
+            !currenttimeEnd &&
+            !currenttimeStart &&
+            activeAvailableDays.length === 0
+        "
+    >
+        <Spinner />
+    </div>
+    <div class="pb-5 flex flex-col" v-else>
         <div class="flex items-center gap-2.5">
             <h1 class="text-green-700 font-medium flex items-center gap-1">
                 <i class="pi pi-calendar"></i> Available Day for Appointments
@@ -128,9 +138,13 @@
 <script>
 import Calendar from "primevue/calendar";
 import moment from "moment";
+import Spinner from "../../utils/Spinner.vue";
+import Message from "primevue/message";
 export default {
     components: {
         Calendar,
+        Spinner,
+        Message,
     },
     data() {
         return {

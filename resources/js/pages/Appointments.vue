@@ -54,7 +54,7 @@
                             {{ appointment.title }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ appointment.field }}
+                            {{ appointment.fieldName }}
                         </td>
                         <td class="px-6 py-4">
                             {{

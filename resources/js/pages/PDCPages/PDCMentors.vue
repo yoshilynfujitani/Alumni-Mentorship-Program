@@ -277,26 +277,7 @@
                             </div>
                         </Dialog>
                     </td>
-                    <td
-                        class="px-6 py-4 text-center"
-                        v-if="fetchMentorBy?.id === 1"
-                    >
-                        <ConfirmPopup></ConfirmPopup>
-                        <div class="flex gap-2 justify-content-center">
-                            <button
-                                @click="AcceptRequest($event, 1, Mentor.id)"
-                                class="px-2 py-1 bg-green-400 text-white rounded font-medium"
-                            >
-                                Approve
-                            </button>
-                            <button
-                                @click="RejectRequest($event, 2, Mentor.id)"
-                                class="px-2 py-1 bg-red-400 text-white rounded font-medium"
-                            >
-                                Reject
-                            </button>
-                        </div>
-                    </td>
+
                     <td class="text-center" v-if="fetchMentorBy?.id === 0">
                         <AppointmentForm
                             :MentorDetails="Mentor"

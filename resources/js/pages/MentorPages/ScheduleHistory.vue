@@ -2,8 +2,15 @@
     <div class="my-10 w-full">
         <div class="border border-gray-200 rounded-md bg-white">
             <h1 class="text-2xl font-bold p-5">Schedule History</h1>
+            <div
+                class="flex items-center justify-center w-full"
+                v-if="schedule.length === 0"
+            >
+                <Spinner />
+            </div>
             <table
                 class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+                v-else
             >
                 <thead
                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -77,10 +84,12 @@
 import moment from "moment";
 import axios from "axios";
 import Pagination from "../../utils/Pagination.vue";
+import Spinner from "../../utils/Spinner.vue";
 
 export default {
     components: {
         Pagination,
+        Spinner,
     },
     data() {
         return {

@@ -9,9 +9,9 @@
             />
             <button
                 @click="findUser"
-                class="px-4 py-3.5 bg-green-600 rounded-md text-white"
+                class="px-4 py-2.5 bg-green-600 rounded-md text-white"
             >
-                Search
+                <i class="pi pi-search"></i>
             </button>
         </div>
         <div
