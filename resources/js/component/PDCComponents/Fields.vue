@@ -1,12 +1,16 @@
 <template>
     <div
-        class="border border-gray-300 pb-5 rounded-md max-h-[400px] overflow-y-scroll"
+        class="border border-gray-300 pb-5 rounded-md min-h-screen max-h-screen overflow-y-scroll"
     >
         <Toast />
         <ConfirmPopup></ConfirmPopup>
-        <div class="p-5" v-if="this.isCreate">
-            <h1 class="text-xl font-bold">Create a new Field</h1>
-            <div class="space-x-2.5">
+        <Dialog
+            v-model:visible="isCreate"
+            modal
+            header="Create New Field"
+            :style="{ width: '25rem' }"
+        >
+            <div class="space-y-2.5">
                 <input
                     v-model="fieldName"
                     type="text"
@@ -19,32 +23,32 @@
                 >
                     Create Field
                 </button>
-                <button
-                    @click="isCreate = !isCreate"
-                    class="bg-red-500 px-4 py-2 text-white font-medium rounded-md"
-                >
-                    <i class="pi pi-times"></i>
-                </button>
             </div>
-        </div>
-        <div class="" v-else-if="this.isEdit">
-            <h1 class="text-2xl font-bold pb-5">Edit Field</h1>
-            <div class="space-x-2.5">
+        </Dialog>
+        <Dialog
+            v-model:visible="isEdit"
+            modal
+            header="Edit Field"
+            :style="{ width: '25rem' }"
+            @hide="fieldName = ''"
+        >
+            <div class="space-y-2.5 flex flex-col">
                 <input
                     v-model="fieldName"
                     type="text"
-                    class="rounded-md border-gray-300"
+                    class="rounded-md border-gray-300 w-fit"
                     placeholder="Field Name"
                 />
                 <button
                     @click="saveEditField"
-                    class="bg-blue-500 px-4 py-2 text-white font-medum rounded-md"
+                    class="bg-blue-500 px-4 py-2 text-white font-medum rounded-md w-fit"
                 >
                     Edit Field
                 </button>
             </div>
-        </div>
-        <div class="p-2.5 pt-0" v-else>
+        </Dialog>
+
+        <div class="p-2.5 pt-0">
             <div class="sticky top-0 shadow-sm mb-5">
                 <h1 class="text-xl font-semibold bg-white p-2.5">
                     List of fields
@@ -88,8 +92,10 @@
 import ConfirmPopup from "primevue/confirmpopup";
 import Toast from "primevue/toast";
 
+import Dialog from "primevue/dialog";
+
 export default {
-    components: { ConfirmPopup, Toast },
+    components: { ConfirmPopup, Toast, Dialog },
     data() {
         return {
             isCreate: false,
