@@ -1,5 +1,5 @@
 <template>
-    <div class="py-10 self-start h-full">
+    <div class="py-10 self-start h-full w-full">
         <h1
             class="text-2xl font-bold w-full border rounded-md border-gray-200 p-2.5"
         >

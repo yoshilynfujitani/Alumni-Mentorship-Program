@@ -32,10 +32,10 @@
     <Toast />
     <div v-if="isLoading">Loading</div>
     <div
-        class="w-full h-full bg-red-100 flex items-center justify-center"
+        class="w-full h-full flex items-center justify-center"
         v-else-if="!isLoading && pdcaccounts.length === 0"
     >
-        Please try a different keyword
+        There is No Account Found
     </div>
     <div
         v-else

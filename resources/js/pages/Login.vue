@@ -168,7 +168,14 @@ export default {
 
                                     break;
                                 case 3:
-                                    this.$router.push("/admin/home");
+                                    if (res.data.user.first_login) {
+                                        this.$router.push({
+                                            name: "pdcresetpassword",
+                                            query: { email },
+                                        });
+                                    } else {
+                                        this.$router.push("/admin/home");
+                                    }
                                     break;
                                 case 4:
                                     console.log(res.data.user.first_login);

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointmentstatus', function (Blueprint $table) {
+        Schema::connection('mentor')->create('appointmentstatus', function (Blueprint $table) {
             $table->id();
             $table->string("statusName");
             $table->integer("statusId");
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointmentstatus');
+        Schema::connection('mentor')->dropIfExists('appointmentstatus');
     }
 };

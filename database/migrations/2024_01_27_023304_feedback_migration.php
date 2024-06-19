@@ -14,7 +14,7 @@ return new class extends Migration
         //
         Schema::connection('mentor')->create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->integer('appointmendId');
+            $table->integer('appointmentId');
             $table->integer('userId');
             $table->integer('userToRateId');
             $table->integer('rating');

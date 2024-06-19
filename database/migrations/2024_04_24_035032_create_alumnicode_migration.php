@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alumnicode_migration');
+        Schema::connection('admin')->dropIfExists('alumnicode_migration');
     }
 };

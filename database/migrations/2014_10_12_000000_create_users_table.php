@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('course')->nullable();
             $table->string('field')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->integer('role');
             $table->integer('first_login')->default(1);
             $table->integer('code')->nullable();
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->integer('ticketStatus')->nullable();
             $table->integer('fieldToTake')->nullable();
             $table->integer('allowToAppoint')->default(0);
-            $table->timestamps('last_active_at')->nullable();
+            $table->timestamp('last_active_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::connection('admin')->dropIfExists('users');
     }
 };

@@ -33,17 +33,17 @@ class TicketController extends Controller
     if ($user->role === 3) {
         $data = Ticket::orderBy('created_at', 'DESC')
             ->join('users', 'users.id', '=', 'ticketlogs.studentId')
-            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('fields', 'fields.id', '=', 'ticketlogs.field')
             ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'fields.fieldName', 'userstatus.statusName')
             ->paginate(10);
     } else {
         $data = Ticket::orderBy('created_at', 'DESC')
             ->where('users.course', '=', $user->course)
             ->join('users', 'users.id', '=', 'ticketlogs.studentId')
-            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('fields', 'fields.id', '=', 'ticketlogs.field')
             ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'fields.fieldName', 'userstatus.statusName')
             ->paginate(10);
     }
 
@@ -55,9 +55,9 @@ class TicketController extends Controller
         return Ticket::where('studentId', Auth::id())
         ->orderBy('created_at', 'DESC')
         ->join('users', 'users.id','=', 'ticketlogs.studentId')
-        ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+        ->join('fields', 'fields.id', '=', 'ticketlogs.field')
         ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-        ->select('users.name','users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+        ->select('users.name','users.course', 'ticketlogs.*', 'fields.fieldName', 'userstatus.statusName')
         ->paginate(10);
     }
 
@@ -67,9 +67,9 @@ class TicketController extends Controller
 
         if($user->role === 3){
             $data = Ticket::join('users', 'users.id', '=', 'ticketlogs.studentId')
-            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('fields', 'fields.id', '=', 'ticketlogs.field')
             ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'fields.fieldName', 'userstatus.statusName')
             ->where('name', 'LIKE', "%{$request->ticketQuery}%")
             ->orderBy('ticketlogs.created_at', 'DESC')
             ->get();
@@ -77,9 +77,9 @@ class TicketController extends Controller
         else{
             $data = Ticket::where('users.course', '=', $user->course)
             ->join('users', 'users.id', '=', 'ticketlogs.studentId')
-            ->join('userfields', 'userfields.fieldId', '=', 'ticketlogs.field')
+            ->join('fields', 'fields.id', '=', 'ticketlogs.field')
             ->join('userstatus', 'userstatus.statusId', '=', 'ticketlogs.ticketStatus')
-            ->select('users.name', 'users.course', 'ticketlogs.*', 'userfields.fieldName', 'userstatus.statusName')
+            ->select('users.name', 'users.course', 'ticketlogs.*', 'fields.fieldName', 'userstatus.statusName')
             ->where('name', 'LIKE', "%{$request->ticketQuery}%")
             ->orderBy('ticketlogs.created_at', 'DESC')
             ->get();

@@ -46,8 +46,8 @@ class MentorController extends Controller
             $query = DB::connection('admin')->table('users')
             ->orderBy('created_at')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->join('userfields', 'users.field', '=', 'userfields.fieldId')
-            ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
+            ->join('fields', 'users.field', '=', 'fields.id')
+            ->select('users.*', 'userstatus.statusName', 'fields.fieldName')
             ->where('users.role', 2);
         }
         else{
@@ -55,8 +55,8 @@ class MentorController extends Controller
             ->where('course', $user->course)
             ->orderBy('created_at')
             ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->join('userfields', 'users.field', '=', 'userfields.fieldId')
-            ->select('users.*', 'userstatus.statusName', 'userfields.fieldName')
+            ->join('fields', 'users.field', '=', 'fields.id')
+            ->select('users.*', 'userstatus.statusName', 'fields.fieldName')
             ->where('users.role', 2);
         }
        
@@ -164,9 +164,9 @@ class MentorController extends Controller
 
 public function getMentorsStudent(Request $request) {
     $query = DB::connection('admin')->table('users')
-        ->join('userfields', 'userfields.fieldId', '=', 'users.field')
+        ->join('fields', 'fields.id', '=', 'users.field')
         ->where('users.role', 2)
-        ->select('users.name', 'users.email', 'users.course', 'userfields.fieldName', 'users.id', 'users.rating');
+        ->select('users.name', 'users.email', 'users.course', 'fields.fieldName', 'users.id', 'users.rating');
 
     // Apply mentor name search if provided
     if ($request->mentorQuery && $request->selectedCourseId === null) {

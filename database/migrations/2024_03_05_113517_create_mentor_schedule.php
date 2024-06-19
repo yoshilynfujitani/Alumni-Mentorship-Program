@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mentor_schedule');
+        Schema::connection('mentor')->dropIfExists('mentor_schedule');
     }
 };

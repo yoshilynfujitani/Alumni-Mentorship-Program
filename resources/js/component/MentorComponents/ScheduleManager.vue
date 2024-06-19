@@ -1,12 +1,5 @@
 <template>
-    <div
-        class="w-full flex items-center justify-center"
-        v-if="
-            !currenttimeEnd &&
-            !currenttimeStart &&
-            activeAvailableDays.length === 0
-        "
-    >
+    <div class="w-full flex items-center justify-center" v-if="isLoading">
         <Spinner />
     </div>
     <div class="pb-5 flex flex-col" v-else>
@@ -187,6 +180,7 @@ export default {
             timeEnd: null,
             currenttimeEnd: null,
             errorTime: false,
+            isLoading: false,
         };
     },
     methods: {
@@ -257,15 +251,17 @@ export default {
             }
         },
         getLatestSchedule() {
+            this.isLoading = true;
             axios.post("/getLatestSchedule").then(({ data }) => {
                 this.timeStart = data.start;
                 this.currenttimeStart = this.timeStart;
                 this.timeEnd = data.end;
                 this.currenttimeEnd = this.timeEnd;
-                this.activeAvailableDays = data?.daysOfTheWeek.map((day) =>
-                    parseInt(day, 10)
-                );
+                this.activeAvailableDays = data
+                    ? data?.daysOfTheWeek.map((day) => parseInt(day, 10))
+                    : [];
                 this.editAvailableDays = [...this.activeAvailableDays];
+                this.isLoading = false;
             });
         },
     },

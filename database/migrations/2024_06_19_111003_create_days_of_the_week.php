@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('daysoftheweek', function (Blueprint $table) {
+        Schema::connection('mentor')->create('daysoftheweek', function (Blueprint $table) {
             $table->id();
             $table->string("dayName");
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('daysoftheweek');
+        Schema::connection('mentor')->dropIfExists('daysoftheweek');
     }
 };

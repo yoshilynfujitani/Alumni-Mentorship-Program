@@ -19,12 +19,12 @@ class AlumniController extends Controller
                 ->join('colleges', 'colleges.id', '=', 'users.course')
                 ->where('users.verified', 0)
                 ->select('users.name','users.email', 'colleges.CollegeName')
-                ->get();
+                ->paginate(30);
         }
         else{
             $data = User::where('verified', 0)
             ->where('course', $user->course)
-            ->get();
+            ->paginate(30);
         }
         
 

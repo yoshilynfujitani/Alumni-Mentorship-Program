@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string("studentId");
             $table->string("remarks")->nullable();
             $table->datetime('startSchedule');
-            $table->tinyInt('RequestedBy')->default(1);
-            $table->dateTime("startSchedule");
+            $table->tinyInteger('RequestedBy')->default(1);
+
            
 
     

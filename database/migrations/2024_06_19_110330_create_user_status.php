@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('userstatus', function (Blueprint $table) {
+        Schema::connection('admin')->create('userstatus', function (Blueprint $table) {
             $table->id();
             $table->string("statusName");
             $table->integer("statusId");
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('userstatus');
+        Schema::connection('admin')->dropIfExists('userstatus');
     }
 };

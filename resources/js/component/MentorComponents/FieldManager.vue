@@ -1,8 +1,5 @@
 <template>
-    <div
-        v-if="activeCourses.length === 0 && isLoading"
-        class="w-full flex items-center justify-center"
-    >
+    <div v-if="isLoading" class="w-full flex items-center justify-center">
         <Spinner />
     </div>
     <div class="pb-5" v-else>

@@ -22,7 +22,7 @@ class RequestorSeeder extends Seeder
 
         foreach ($Week as $Day) {
             DB::connection('mentor')->table('requestordetails')->insert([
-                'dayName' => $Day,
+                'requestor' => $Day,
          
             ]);
         }

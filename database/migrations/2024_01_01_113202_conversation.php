@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::connection('admin')->create('conversations', function (Blueprint $table) {
             $table->id();
             $table->integer('userId');
-            $table->integer('apppointmentId');
+            $table->integer('appointmentId');
             $table->string('fileName')->nullable();
             $table->string('filePath')->nullable();
             $table->string('chats')->nullable();
