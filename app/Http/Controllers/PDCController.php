@@ -19,11 +19,13 @@ class PDCController extends Controller
 
     public function createPDCAccount(Request $request){
         $user = new User();
+        $code = mt_rand(10000000,99999999);
 
         $user->name = $request->name;
         $user->email = $request->email;
         $user->course = $request->course;
-         $user->password = Hash::make($request->password);
+        $user->password = Hash::make($code);
+        $user->code = $code;
         $user->role = 4;
         $user->verified = 1;
 
@@ -75,7 +77,7 @@ public function getPDCAccounts(Request $request){
 
         return response()->json($data, 200);
     } catch (\Exception $e) {
-        return response()->json(['error' => 'An error occurred while fetching data'], 500);
+        return $e;
     }
 }
 

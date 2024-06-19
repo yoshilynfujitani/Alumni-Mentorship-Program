@@ -41,17 +41,6 @@
                             errors.college
                         }}</span>
                     </div>
-                    <div class="">
-                        <input
-                            v-model="formData.password"
-                            type="password"
-                            placeholder="••••••••"
-                            class="text-black placeholder-gray-600 w-full px-4 py-2.5 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                        />
-                        <span v-if="errors.password" class="text-red-600">{{
-                            errors.password
-                        }}</span>
-                    </div>
                 </div>
             </div>
             <div class="flex flex-row p-3">
@@ -89,7 +78,7 @@ export default {
     },
     data() {
         return {
-            formData: { name: "", email: "", college: "", password: "" },
+            formData: { name: "", email: "", college: "" },
             colleges: [],
             errors: {},
         };
@@ -111,9 +100,6 @@ export default {
             if (!this.formData.college) {
                 this.errors.college = "College is required.";
             }
-            if (!this.formData.password) {
-                this.errors.password = "Password is required.";
-            }
         },
         handleSave() {
             this.validateForm();
@@ -123,7 +109,6 @@ export default {
                         name: this.formData.name,
                         email: this.formData.email,
                         course: this.formData.college.id,
-                        password: this.formData.password,
                     })
                     .then(({ data }) => {
                         console.log(data);

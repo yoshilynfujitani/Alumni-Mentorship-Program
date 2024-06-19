@@ -161,7 +161,7 @@
         </div>
     </aside>
     <div class="ml-[300px] mx-10">
-        <div class="flex flex-col items-center min-h-screen px-5 md:px-20">
+        <div class="flex flex-col items-center min-h-screen px-5">
             <router-view></router-view>
             <a href="https://www.google.com/" target="_blank">
                 <div
