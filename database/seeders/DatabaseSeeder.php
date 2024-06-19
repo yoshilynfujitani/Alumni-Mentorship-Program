@@ -12,11 +12,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        for ($i = 0; $i < 100; $i++) {
+            User::factory()->create([
+                'name' => 'User ' . ($i + 1),
+                'email' => 'user' . ($i + 1) . '@example.com',
+                'password' => Hash::make('12345678'),
+                'role' => rand(1, 2), // 1 for student, 2 for mentor
+                'course' => rand(1, 10),
+                'field' => null,
+                'verified' => 0,
+                'first_login' => 1,
+                'rating' => 0,
+                'ticketStatus' => null,
+                'fieldToTake' => null,
+                'allowToAppoint' => 0,
+               
+            ]);
+        }
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Create the specific user with role 3
+        User::factory()->create([
+            'name' => 'Yoshi Admin',
+            'email' => 'yoshi@admin.com',
+            'password' => Hash::make('12345678'),
+            'role' => 3,
+            'course' => null,
+            'field' => null,
+            'verified' => 0,
+            'first_login' => 1,
+            'rating' => 0,
+            'ticketStatus' => null,
+            'fieldToTake' => null,
+            'allowToAppoint' => 0,
+            
+        ]);
     }
 }

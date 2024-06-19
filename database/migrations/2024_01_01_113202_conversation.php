@@ -16,7 +16,10 @@ return new class extends Migration
             $table->id();
             $table->integer('userId');
             $table->integer('apppointmentId');
-            $table->string('chats');
+            $table->string('fileName')->nullable();
+            $table->string('filePath')->nullable();
+            $table->string('chats')->nullable();
+            $table->integer('role');
             
             
         

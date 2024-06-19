@@ -19,13 +19,13 @@ return new class extends Migration
             $table->boolean('Status')->default(0);
             $table->string("mentorId");
             $table->string("studentId");
-            $table->integer('convoId');
+            $table->string("remarks")->nullable();
             $table->datetime('startSchedule');
             $table->tinyInt('RequestedBy')->default(1);
-            $table->tinyInt('feedback_sent_student')->default(0);
-            $table->tinyInt('feedback_sent_mentor')->default(0);
+            $table->dateTime("startSchedule");
+           
 
-            //1 is for student and 2 is for Employee
+    
         
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
