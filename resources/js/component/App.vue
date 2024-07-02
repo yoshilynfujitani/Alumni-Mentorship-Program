@@ -3,7 +3,7 @@
 
     <div class="" v-if="loading"><h1>Loading...</h1></div>
 
-    <div class="md:w-full my-10 overflow-clip px-20" v-else>
+    <div class="md:w-full my-10 overflow-clip px-10" v-else>
         <!-- <div class="w-full mb-2.5 bg-gray-50">
                 <Menubar :model="items" />
             </div> -->
@@ -36,12 +36,35 @@
         <div
             class="bg-white mb-5 md:p-2.5 rounded-md md:flex justify-center items-center md:gap-5"
         >
-            <Message severity="info" :closable="false"
+            <Message
+                severity="info"
+                :closable="false"
+                v-if="this.ticketStatus === 2 || this.ticketStatus === null"
                 >To be able to request appointments from a mentor you must first
                 request a ticket to PDC. Once approve you will be recommended to
                 mentors with your requested field and make appointments
             </Message>
-
+            <Message
+                severity="warn"
+                :closable="false"
+                v-if="this.ticketStatus === 0"
+                >Your ticket is sent for approval. Please wait for the PDC or
+                Admin Officer to verify your request
+            </Message>
+            <Message
+                severity="success"
+                :closable="false"
+                v-if="this.ticketStatus === 1"
+                >Your ticket is approved. Please send your mentor appointments
+                in the Mentor tab.
+            </Message>
+            <Message
+                severity="warn"
+                :closable="false"
+                v-if="this.ticketStatus === 2"
+                >Your ticket is rejected. Please send another ticket for the PDC
+                or Admin Officer to verify your request
+            </Message>
             <button
                 v-if="this.ticketStatus === 2 || this.ticketStatus === null"
                 @click="visible = true"
@@ -49,6 +72,7 @@
             >
                 Request Ticket
             </button>
+            
             <Dialog v-model:visible="visible" modal header="Request Ticket">
                 <div class="flex flex-col justify-between p-5 gap-5 w-[500px]">
                     <div class="w-full">
