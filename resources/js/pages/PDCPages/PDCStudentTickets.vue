@@ -46,9 +46,16 @@
                 >
                     <th
                         scope="row"
-                        class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap"
+                        class="px-6 py-6 font-medium text-gray-900 w-fit"
                     >
-                        {{ Ticket.name }}
+                        <div class="flex items-center gap-5">
+                            <img
+                                class="w-12 h-12 rounded-full"
+                                src="../../../../public/DefaultAvatar.webp"
+                                alt="Avatar"
+                            />
+                            {{ Ticket.name }}
+                        </div>
                     </th>
                     <td class="px-6 py-4 flex items-center justify-center">
                         <i class="pi pi-eye"></i>

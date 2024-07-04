@@ -39,7 +39,7 @@
             <Message
                 severity="info"
                 :closable="false"
-                v-if="this.ticketStatus === 2 || this.ticketStatus === null"
+                v-if="this.ticketStatus === null"
                 >To be able to request appointments from a mentor you must first
                 request a ticket to PDC. Once approve you will be recommended to
                 mentors with your requested field and make appointments
@@ -59,7 +59,7 @@
                 in the Mentor tab.
             </Message>
             <Message
-                severity="warn"
+                severity="error"
                 :closable="false"
                 v-if="this.ticketStatus === 2"
                 >Your ticket is rejected. Please send another ticket for the PDC
@@ -72,9 +72,28 @@
             >
                 Request Ticket
             </button>
-            
+
             <Dialog v-model:visible="visible" modal header="Request Ticket">
                 <div class="flex flex-col justify-between p-5 gap-5 w-[500px]">
+                    <div class="w-full flex justify-center">
+                        <img
+                            src="../../../public/mmsu_logo.png"
+                            alt=""
+                            class="w-16 h-16"
+                        />
+                    </div>
+                    <div
+                        class="w-full flex items-center justify-center"
+                        v-if="TicketError"
+                    >
+                        <Message
+                            severity="error"
+                            class="w-fit"
+                            :closable="false"
+                            >Please fill out all entries on the ticket
+                            form</Message
+                        >
+                    </div>
                     <div class="w-full">
                         <label
                             for="field"
@@ -99,18 +118,11 @@
                             autoResize
                             rows="5"
                             cols="30"
-                            class="rounded-md border border-green-200 text-sm"
+                            class="rounded-md border border-green-200 text-sm w-full"
                         />
                     </div>
                 </div>
-                <div
-                    class="w-full flex items-center justify-center"
-                    v-if="TicketError"
-                >
-                    <Message severity="error" class="w-fit" :closable="false"
-                        >Please fill out all entries on the ticket form</Message
-                    >
-                </div>
+
                 <div class="flex justify-content-end gap-2">
                     <button
                         @click="

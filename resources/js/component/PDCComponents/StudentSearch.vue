@@ -22,7 +22,7 @@
                 <span class="text-sm font-normal">Enter student name</span>
             </h1>
         </div>
-        <div class="" v-else>
+        <div class="overflow-y-scroll max-h-96" v-else>
             <div class="" v-for="Student in students" :key="Student.id">
                 <StudentSearchCard
                     :studentDetails="Student"

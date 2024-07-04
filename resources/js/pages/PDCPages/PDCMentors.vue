@@ -68,14 +68,18 @@
                         class="flex items-center gap-2 px-6 py-7 h-full font-medium text-gray-900"
                     >
                         <img
-                            class="w-7 h-7 rounded-full"
+                            class="w-12 h-12 rounded-full"
                             src="../../../../public/DefaultAvatar.webp"
                             alt="Avatar"
                         />{{ Mentor.name }}
                     </th>
-                    <td class="px-6 py-4">{{ Mentor.course }}</td>
+                    <td class="px-6 py-4">{{ Mentor.CollegeName }}</td>
                     <td class="px-6 py-4">
-                        {{ Mentor.fieldName }}
+                        {{
+                            Mentor.fieldName
+                                ? Mentor.fieldName
+                                : "No Field Selected"
+                        }}
                     </td>
                     <td
                         class="px-6 py-4 flex justify-center"

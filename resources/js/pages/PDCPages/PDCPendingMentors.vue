@@ -17,7 +17,16 @@
         </div>
         <Toast />
         <ConfirmPopup></ConfirmPopup>
-        <div class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg">
+        <div
+            class="h-96 flex items-center justify-center font-bold"
+            v-if="mentors?.length === 0"
+        >
+            No Pending Requests
+        </div>
+        <div
+            v-else
+            class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg"
+        >
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
             >
@@ -33,6 +42,7 @@
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr
                         v-for="Mentor in mentors"

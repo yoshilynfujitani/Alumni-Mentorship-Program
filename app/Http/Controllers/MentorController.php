@@ -38,39 +38,35 @@ class MentorController extends Controller
 
         return $mentor;
     }
-    public function getMentors(Request $request ){
-      $user = Auth::user();
-
+    public function getMentors(Request $request)
+    {
+        $user = Auth::user();
         $queryPerPage = 10;
-        if($user->role === 3){
-            $query = DB::connection('admin')->table('users')
-            ->orderBy('created_at')
-            ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->join('fields', 'users.field', '=', 'fields.id')
-            ->select('users.*', 'userstatus.statusName', 'fields.fieldName')
-            ->where('users.role', 2);
+
+        
+        $query = DB::connection('admin')->table('users')
+            ->leftJoin('userstatus', 'users.verified', '=', 'userstatus.statusId')
+            ->leftJoin('fields', 'users.field', '=', 'fields.id')
+            ->join('colleges', 'users.course', '=','colleges.id')
+            ->select('users.name','users.created_at', 'userstatus.statusName', 'fields.fieldName', 'colleges.CollegeName')
+            ->where('users.role', 2)
+            ->orderBy('created_at');
+
+    
+        if ($user->role !== 3) {
+            $query->where('course', $user->course);
         }
-        else{
-             $query = DB::connection('admin')->table('users')
-            ->where('course', $user->course)
-            ->orderBy('created_at')
-            ->join('userstatus', 'users.verified', '=', 'userstatus.statusId')
-            ->join('fields', 'users.field', '=', 'fields.id')
-            ->select('users.*', 'userstatus.statusName', 'fields.fieldName')
-            ->where('users.role', 2);
-        }
+
        
-    
-            // dd($request->searchBy);
-        if ($request->searchBy == 0 || $request->searchBy == null) {
-            return $query->where('users.verified', 1)->paginate($queryPerPage);
+        if ($request->searchBy === 0 || $request->searchBy === null) {
+            $query->where('users.verified', 1);
         }
-    
-    
-        if ($request->searchBy == 2) {
-            return $query->paginate($queryPerPage);
-        }
+
+      
+        return $query->paginate($queryPerPage);
     }
+
+
 
     public function getRequestToBeMentor(Request $request){
         $user = User::where("email", $request->email)->first();
@@ -164,35 +160,23 @@ class MentorController extends Controller
 
 public function getMentorsStudent(Request $request) {
     $query = DB::connection('admin')->table('users')
-        ->join('fields', 'fields.id', '=', 'users.field')
+        ->leftJoin('fields', 'users.field', '=', 'fields.id')
         ->where('users.role', 2)
         ->select('users.name', 'users.email', 'users.course', 'fields.fieldName', 'users.id', 'users.rating');
 
     // Apply mentor name search if provided
-    if ($request->mentorQuery && $request->selectedCourseId === null) {
-        $query->where('userfields.fieldName', 'LIKE', "%{$request->mentorQuery}%");
-    }
-     else if ($request->mentorQuery === null &&  $request->selectedCourseId  ) {
+    if ($request->mentorQuery && !$request->selectedCourseId) {
+        $query->where('users.name', 'LIKE', "%{$request->mentorQuery}%");
+    } elseif (!$request->mentorQuery && $request->selectedCourseId) {
         $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->selectedCourseId]);
-       
+    } elseif ($request->mentorQuery && $request->selectedCourseId) {
+        $query->where('users.name', 'LIKE', "%{$request->mentorQuery}%")
+              ->whereRaw('FIND_IN_SET(?, users.field)', [$request->selectedCourseId]);
     }
 
-    else if($request->mentorQuery  &&  $request->selectedCourseId ){
-            $query->where('name','LIKE',"%{$request->mentorQuery}%");
-            $query = $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->selectedCourseId]);
-                
+    if ($request->allowToAppoint == 1 && $request->fieldToTake) {
+        $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);
     }
-
-
-    // Null is the default search
-    // if ($request->searchBy === null) {
-    //     if ($request->allowToAppoint == 1 && $request->fieldToTake) {
-    //         $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);
-    //     }
-    // } 
-    else if ($request->allowToAppoint == 1 && $request->fieldToTake) {
-        $query->whereRaw('FIND_IN_SET(?, users.field)', [$request->fieldToTake]);}
-    
 
     $mentors = $query->paginate(12);
 
@@ -210,6 +194,7 @@ public function getMentorsStudent(Request $request) {
 
     return $mentors;
 }
+
 
 
     
