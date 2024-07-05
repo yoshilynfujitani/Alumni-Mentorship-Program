@@ -95,6 +95,7 @@ class TicketController extends Controller
         if($request->requestStatus == 2){
             $user->ticketStatus = 2;
             $ticket->ticketStatus = 2;
+            $ticket->rejectionRemarks = $request->remarks;
             $user->save();
             $ticket->save();
             return ;

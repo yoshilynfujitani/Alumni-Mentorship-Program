@@ -48,8 +48,9 @@ class MentorController extends Controller
             ->leftJoin('userstatus', 'users.verified', '=', 'userstatus.statusId')
             ->leftJoin('fields', 'users.field', '=', 'fields.id')
             ->join('colleges', 'users.course', '=','colleges.id')
-            ->select('users.name','users.created_at', 'userstatus.statusName', 'fields.fieldName', 'colleges.CollegeName')
+            ->select('users.name','users.id','users.created_at', 'userstatus.statusName', 'fields.fieldName', 'colleges.CollegeName')
             ->where('users.role', 2)
+            ->where('verified', 1)
             ->orderBy('created_at');
 
     
@@ -123,8 +124,21 @@ class MentorController extends Controller
     
 
     public function searchMentor(Request $request){
-    $mentors = User::where('name','LIKE',"%{$request->mentorQuery}%")
+    $user = Auth::user();
+
+    if($user->role === 4){
+        $mentors = User::where('name','LIKE',"%{$request->mentorQuery}%")
+                    ->where('role', 2)
+                    ->where('verified', 1)
+                    ->where('course', $user->course);
+                    
+    }
+    else{
+        $mentors = User::where('name','LIKE',"%{$request->mentorQuery}%")
+                    ->where('verified', 1)
                     ->where('role', 2);
+    }
+    
 
                         
     //null is default search

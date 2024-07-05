@@ -67,33 +67,7 @@
                         </h1>
                     </td>
                     <td class="px-6 py-4 items-center flex justify-center">
-                        <Modal
-                            :modalContent="{
-                                title: 'Ticket Remarks',
-                                disablebtn: disable,
-                                // content: 'Please fill out the form below:',
-                            }"
-                            type="rate"
-                            iconLabel="Review"
-                            cancelLabel="Back"
-                            @modalopen="viewTicket(Ticket)"
-                        >
-                            <div class="min-w-[500px] max-w-[500px]">
-                                <h1 class="text-sm font-medium">
-                                    {{
-                                        moment(
-                                            selectedTicket.created_at,
-                                            "YYYY-MM-DD HH:mm:ss"
-                                        ).format("MMMM Do YYYY")
-                                    }}
-                                </h1>
-                                <div
-                                    class="my-2.5 min-h-[200px] rounded-md border border-gray-200 p-4"
-                                >
-                                    {{ selectedTicket.ticketRemarks }}
-                                </div>
-                            </div>
-                        </Modal>
+                        <TicketRemarks :Ticket="Ticket" />
                     </td>
                 </tr>
             </tbody>
@@ -112,7 +86,7 @@
 <script>
 import moment from "moment";
 import Pagination from "../utils/Pagination.vue";
-
+import TicketRemarks from "../component/StudentComponents/TicketRemarks.vue";
 import ConfirmPopup from "primevue/confirmpopup";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -127,6 +101,7 @@ export default {
         Dialog,
         Pagination,
         Modal,
+        TicketRemarks,
     },
     data() {
         return {

@@ -8,13 +8,8 @@
                 type="text"
                 class="border-gray-300 rounded-md"
                 placeholder="Search alumni..."
+                @keyup="searchAlumni"
             />
-            <button
-                class="bg-green-600 px-4 py-2 rounded-md text-white"
-                @click="searchAlumni"
-            >
-                Search
-            </button>
         </div>
         <div
             class="grid lg:grid-cols-5 xl:grid-cols-6 gap-2.5 border p-5 rounded-md border-gray-300"

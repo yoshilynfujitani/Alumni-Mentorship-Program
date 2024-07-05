@@ -14,7 +14,7 @@
         > -->
     <button
         label="Show"
-        @click="visible = true"
+        @click="handleModal"
         class="bg-green-700 w-fit px-2 py-1 rounded-md text-white text-sm"
     >
         Set Appointment
@@ -34,7 +34,7 @@
                         />
                     </div>
 
-                    <div class="" v-if="this.type === 'pdc'">
+                    <div class="" v-if="this.userType === 'pdc'">
                         <div class="">
                             <label
                                 for="text"
@@ -81,14 +81,14 @@
 
                 <input type="text" v-model="mentorId" hidden />
             </form>
-            <div class="" v-if="this.type === 'pdc'">
+            <div class="" v-if="this.userType === 'pdc'">
                 <Message severity="warn" v-if="isIncomplete">
                     Confirm all details are correct before submitting
                     appointment.</Message
                 >
                 <StudentSearch @query="handleQueryData" />
             </div>
-            <div class="w-full" v-if="this.type === 'student'">
+            <div class="w-full" v-if="this.userType === 'student'">
                 <Message severity="warn" v-if="isIncomplete">
                     Confirm all details are correct before submitting
                     appointment.</Message
@@ -137,7 +137,7 @@
                 <div class="my-2">
                     <div
                         class="card flex justify-content-center"
-                        v-if="this.type === 'pdc'"
+                        v-if="this.userType === 'pdc'"
                     >
                         <Dropdown
                             v-model="selectedField"
@@ -201,14 +201,8 @@ import Dialog from "primevue/dialog";
 import Message from "primevue/message";
 
 export default {
-    props: {
-        type: {
-            type: String,
-        },
-        MentorDetails: {
-            type: Object,
-        },
-    },
+    emits: ["Sent"],
+    props: ["MentorDetails", "userType"],
     components: {
         Calendar,
         Message,
@@ -312,11 +306,11 @@ export default {
                 this.courses = data;
             });
         },
-    },
-
-    mounted() {
-        this.minDate = this.getToday();
-        this.getFields();
+        handleModal() {
+            this.visible = true;
+            this.minDate = this.getToday();
+            this.getFields();
+        },
     },
 };
 </script>

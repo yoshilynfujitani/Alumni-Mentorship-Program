@@ -7,13 +7,8 @@
                 type="text"
                 class="border-gray-300 rounded-md"
                 placeholder="Search name..."
+                @keyup="searchticket"
             />
-            <button
-                class="bg-green-600 px-4 py-2 rounded-md text-white"
-                @click="searchticket"
-            >
-                Search
-            </button>
         </div>
         <Toast />
         <ConfirmPopup></ConfirmPopup>

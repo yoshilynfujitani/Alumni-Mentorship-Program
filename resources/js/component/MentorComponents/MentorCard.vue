@@ -163,7 +163,7 @@
                         <div class="flex" v-if="displaybtn">
                             <AppointmentForm
                                 :MentorDetails="MentorDetails"
-                                type="student"
+                                userType="student"
                             />
                         </div>
                     </div>

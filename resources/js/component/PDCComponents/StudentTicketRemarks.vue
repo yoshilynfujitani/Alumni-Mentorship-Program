@@ -6,18 +6,33 @@
         v-model:visible="visible"
         modal
         header="Ticket Remarks"
-        :style="{ width: '25rem' }"
+        :style="{ width: '40rem' }"
     >
         <div class="">
-            <h1 class="text-sm font-medium">
-                {{
-                    moment(this.date, "YYYY-MM-DD HH:mm:ss").format(
-                        "MMMM Do YYYY"
-                    )
-                }}
-            </h1>
+            <div class="flex justify-between">
+                <div class="flex items-center gap-2.5">
+                    <img
+                        class="w-12 h-12 rounded-full"
+                        src="../../../../public/DefaultAvatar.webp"
+                        alt="Avatar"
+                    />
+                    {{ this.name }}
+                </div>
+                <div class="flex flex-col">
+                    <p class="text-sm font-medium text-green-600">
+                        Ticket Requested
+                    </p>
+                    <h1 class="">
+                        {{
+                            moment(this.date, "YYYY-MM-DD HH:mm:ss").format(
+                                "MMMM Do YYYY"
+                            )
+                        }}
+                    </h1>
+                </div>
+            </div>
             <div
-                class="my-2.5 min-h-[200px] rounded-md border border-gray-200 p-4"
+                class="my-2.5 min-h-[500px] rounded-md border border-gray-200 p-4"
             >
                 {{ this.remarks }}
             </div>
@@ -38,7 +53,7 @@ import moment from "moment";
 import Dialog from "primevue/dialog";
 
 export default {
-    props: ["remarks", "date"],
+    props: ["remarks", "date", "name"],
     components: {
         Dialog,
     },

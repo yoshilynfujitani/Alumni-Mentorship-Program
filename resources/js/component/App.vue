@@ -8,10 +8,12 @@
                 <Menubar :model="items" />
             </div> -->
 
-        <div class="md:flex items-center justify-between mb-2">
+        <div
+            class="md:flex items-center justify-between mb-2 border border-gray-200 p-2.5 rounded-md"
+        >
             <div class="">
                 <h1
-                    class="text-lg gap-1 flex items-center md:text-2xl font-bold pb-2.5"
+                    class="text-lg gap-1 flex items-center md:text-2xl font-bold"
                 >
                     <span
                         ><i
@@ -55,15 +57,15 @@
                 severity="success"
                 :closable="false"
                 v-if="this.ticketStatus === 1"
-                >Your ticket is approved. Please send your mentor appointments
+                >Your ticket was approved. Please send your mentor appointments
                 in the Mentor tab.
             </Message>
             <Message
                 severity="error"
                 :closable="false"
                 v-if="this.ticketStatus === 2"
-                >Your ticket is rejected. Please send another ticket for the PDC
-                or Admin Officer to verify your request
+                >Your ticket was rejected. Please send another ticket for the
+                PDC or Admin Officer to verify your request
             </Message>
             <button
                 v-if="this.ticketStatus === 2 || this.ticketStatus === null"
@@ -104,10 +106,10 @@
                             <Dropdown
                                 v-model="selectedField"
                                 :options="this.courses"
-                                :highlightOnSelect="false"
+                                :highlightOnSelect="true"
                                 optionLabel="name"
                                 placeholder="Select a field"
-                                class="w-full text-xs"
+                                class="w-full text-xs border-gray-400"
                             />
                         </div>
                     </div>
@@ -118,7 +120,7 @@
                             autoResize
                             rows="5"
                             cols="30"
-                            class="rounded-md border border-green-200 text-sm w-full"
+                            class="rounded-md border text-sm w-full border-gray-300"
                         />
                     </div>
                 </div>

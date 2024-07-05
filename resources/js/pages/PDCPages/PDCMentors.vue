@@ -9,17 +9,18 @@
         </div>
         <div class="mb-5 flex space-x-2">
             <div class="">
-                <span class="text-sm font-medium text-green-600"
-                    >Search Mentors By</span
+                <button
+                    @click="handleFilterChange({ id: 2, name: 'All' })"
+                    class="text-white bg-green-600 px-3 py-2 rounded-md ml-2 h-fit"
                 >
-                <Dropdown
-                    v-model="fetchMentorBy"
-                    :options="this.mentorStatus"
-                    optionLabel="name"
-                    placeholder="Sort by Status"
-                    class="w-full md:w-14rem border-gray-200 border focus:border-2 focus:border-green-500"
-                    @change="handleFilterChange"
-                />
+                    <i class="pi pi-search"> </i> All
+                </button>
+                <button
+                    @click="handleFilterChange({ id: 0, name: 'Active' })"
+                    class="text-green-700 border border-green-600 px-3 py-2 rounded-md ml-2 h-fit"
+                >
+                    <i class="pi pi-plus"></i> Set Appointments
+                </button>
             </div>
 
             <div class="self-end">
@@ -27,13 +28,14 @@
                     class="rounded-md border-gray-200 h-fit"
                     placeholder="Search Mentor"
                     v-model="mentorQuery"
+                    @keyup="searchMentor"
                 />
-                <button
+                <!-- <button
                     @click="searchMentor"
                     class="text-white bg-green-600 px-3 py-2 rounded-md ml-2 h-fit"
                 >
                     <i class="pi pi-search"></i>
-                </button>
+                </button> -->
             </div>
         </div>
     </div>
@@ -285,7 +287,7 @@
                     <td class="text-center" v-if="fetchMentorBy?.id === 0">
                         <AppointmentForm
                             :MentorDetails="Mentor"
-                            type="pdc"
+                            userType="pdc"
                             @sent="runToast"
                         />
                     </td>
@@ -330,10 +332,7 @@ export default {
             mentors: [],
             pagination: {},
             fetchMentorBy: { id: 2, name: "All" },
-            mentorStatus: [
-                { id: 2, name: "All" },
-                { id: 0, name: "Active" },
-            ],
+
             daysOfTheWeek: [
                 { id: 1, name: "Sun" },
                 { id: 2, name: "Mon" },
@@ -416,7 +415,8 @@ export default {
                     console.error("Error fetching latest schedule:", error);
                 });
         },
-        handleFilterChange() {
+        handleFilterChange(filterObject) {
+            this.fetchMentorBy = filterObject;
             this.getMentors();
         },
         getMentors() {

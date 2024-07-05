@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="self-start pt-5">
+    <div class="self-start pt-10">
         <h1 class="text-2xl font-bold pb-2.5">Student Tickets</h1>
         <div class="space-x-2.5 pb-5">
             <input
@@ -7,13 +7,8 @@
                 type="text"
                 class="border-gray-300 rounded-md"
                 placeholder="Search name..."
+                @keyup="searchticket"
             />
-            <button
-                class="bg-green-600 px-4 py-2 rounded-md text-white"
-                @click="searchticket"
-            >
-                Search
-            </button>
         </div>
     </div>
     <Toast />
@@ -57,13 +52,13 @@
                             {{ Ticket.name }}
                         </div>
                     </th>
-                    <td class="px-6 py-4 flex items-center justify-center">
+                    <td class="px-6 py-4" align="center">
                         <i class="pi pi-eye"></i>
                     </td>
                     <td class="px-6 py-4">
                         {{ Ticket.fieldName }}
                     </td>
-                    <td class="px-6 py-4 justify-center">
+                    <td class="px-6 py-4">
                         <h1
                             class="font-bold text-center"
                             :class="{
@@ -76,8 +71,9 @@
                             {{ Ticket.statusName }}
                         </h1>
                     </td>
-                    <td class="px-6 py-4 items-center flex justify-center">
+                    <td class="px-6 py-4" align="center">
                         <StudentTicketRemarks
+                            :name="Ticket.name"
                             :remarks="Ticket.ticketRemarks"
                             :date="Ticket.created_at"
                         />
@@ -106,19 +102,68 @@
                                     Approve
                                 </button>
                                 <button
-                                    @click="
-                                        RejectTicket(
-                                            $event,
-                                            2,
-                                            Ticket.studentId,
-                                            Ticket.field,
-                                            Ticket.id
-                                        )
-                                    "
+                                    @click="this.visible = true"
                                     class="px-2 py-1 bg-red-400 text-white rounded font-medium"
                                 >
                                     Reject
                                 </button>
+                                <Dialog
+                                    v-model:visible="visible"
+                                    modal
+                                    header="Reject Ticket"
+                                    :style="{ width: '40rem' }"
+                                >
+                                    <div class="flex justify-between">
+                                        <div class="flex items-center gap-5">
+                                            <img
+                                                class="w-12 h-12 rounded-full"
+                                                src="../../../../public/DefaultAvatar.webp"
+                                                alt="Avatar"
+                                            />
+                                            {{ Ticket.name }}
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <p
+                                                class="text-sm font-medium text-green-600"
+                                            >
+                                                Ticket Requested
+                                            </p>
+                                            <h1 class="">
+                                                {{
+                                                    moment(
+                                                        Ticket.created_at,
+                                                        "YYYY-MM-DD HH:mm:ss"
+                                                    ).format("MMMM Do YYYY")
+                                                }}
+                                            </h1>
+                                        </div>
+                                    </div>
+
+                                    <Textarea
+                                        v-model="rejectionRemarks"
+                                        autoResize
+                                        rows="5"
+                                        cols="30"
+                                        class="w-full max-h-[500px] my-2.5 overflow-y-scroll border-gray-300 active:border-gray-400"
+                                    />
+
+                                    <div class="w-full flex items-start">
+                                        <button
+                                            class="bg-red-400 text-white rounded-md px-4 py-2 font-semibold"
+                                            @click="
+                                                RejectTicket(
+                                                    $event,
+                                                    2,
+                                                    Ticket.studentId,
+                                                    Ticket.field,
+                                                    Ticket.id
+                                                )
+                                            "
+                                        >
+                                            Confirm Rejection
+                                        </button>
+                                    </div>
+                                </Dialog>
                             </div>
                         </div>
                     </td>
@@ -140,6 +185,8 @@
 import moment from "moment";
 import MentorCard from "../../component/MentorComponents/MentorCard.vue";
 
+import Textarea from "primevue/textarea";
+
 import ConfirmPopup from "primevue/confirmpopup";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -156,6 +203,7 @@ export default {
         Dialog,
         StudentTicketRemarks,
         Pagination,
+        Textarea,
     },
     data() {
         return {
@@ -164,6 +212,8 @@ export default {
             isLoading: false,
             pagination: null,
             moment: moment,
+            visible: false,
+            rejectionRemarks: "",
         };
     },
     methods: {
@@ -217,12 +267,14 @@ export default {
                 });
         },
         verify(requestStatus, studentId, field, ticketId) {
+            co;
             axios
                 .post("/verifyticket", {
                     requestStatus,
                     studentId,
                     field,
                     ticketId,
+                    remarks: this.rejectionRemarks,
                 })
                 .then(({ data }) => {
                     this.getTickets();
@@ -264,6 +316,7 @@ export default {
                 acceptLabel: "Reject",
                 accept: () => {
                     this.verify(requestStatus, studentId, field, ticketId);
+                    this.visible = false;
                     this.$toast.add({
                         severity: "success",
                         summary: "Rejected",
