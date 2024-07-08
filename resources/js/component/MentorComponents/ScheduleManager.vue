@@ -14,10 +14,24 @@
             >
                 <i class="pi pi-wrench"></i>
             </button>
+            <div class="gap-2.5 flex" v-else>
+                <button
+                    @click="saveSchedule"
+                    class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
+                >
+                    Save
+                </button>
+                <button
+                    @click="cancelEdit"
+                    class="border border-green-600 font-semibold text-green-600 px-2 py-1 rounded-md"
+                >
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
         </div>
 
         <div
-            class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 my-2 gap-3"
+            class="flex justify-around items-center border p-2.5 rounded-md border-gray-200 flex-wrap my-2 gap-3"
             v-if="!isEdit"
         >
             <div class="flex flex-col gap-2.5">
@@ -113,18 +127,6 @@
             >
                 {{ day.name }}
             </div>
-            <button
-                @click="saveSchedule"
-                class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
-            >
-                Save
-            </button>
-            <button
-                @click="cancelEdit"
-                class="border border-green-600 font-semibold text-green-600 px-2 py-1 rounded-md"
-            >
-                <i class="pi pi-times text-sm"></i>
-            </button>
         </div>
     </div>
 </template>

@@ -14,7 +14,7 @@
                 <input
                     v-model="formData.name"
                     placeholder="Name"
-                    class="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                    class="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                 />
                 <span v-if="errors.name" class="text-red-600">{{
                     errors.name
@@ -23,7 +23,7 @@
                     v-model="formData.email"
                     placeholder="user@email.com"
                     type="email"
-                    class="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                    class="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                 />
                 <span v-if="errors.email" class="text-red-600">{{
                     errors.email
@@ -51,16 +51,16 @@
                         :disabled="hasErrors"
                         class="flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize bg-green-600 rounded-md"
                     >
-                        <span class="pl-2 mx-1">Save</span>
+                        <span class="">Save</span>
                     </button>
                 </div>
                 <div class="flex-initial">
                     <button
                         type="button"
                         @click="$emit('cancel')"
-                        class="flex items-center px-5 py-2.5 font-medium tracking-wide text-black capitalize rounded-md hover:bg-red-200 hover:fill-current hover:text-red-600 focus:outline-none transition duration-300 transform active:scale-95 ease-in-out"
+                        class="flex items-center px-5 py-2.5 font-medium tracking-wide text-black capitalize rounded-md"
                     >
-                        <span class="pl-2 mx-1">Cancel</span>
+                        <span class="">Cancel</span>
                     </button>
                 </div>
             </div>

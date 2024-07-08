@@ -162,6 +162,11 @@
     </aside>
     <div class="ml-[300px] mx-10">
         <div class="flex flex-col items-center min-h-screen px-5">
+            <img
+                src="../../../public/BGGEOMETRIC.png"
+                alt=""
+                class="absolute -z-10 w-[400px] h-[400px] left-10 top-0"
+            />
             <router-view></router-view>
             <a href="https://www.google.com/" target="_blank">
                 <div

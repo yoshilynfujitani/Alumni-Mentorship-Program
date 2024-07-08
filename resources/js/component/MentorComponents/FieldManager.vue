@@ -15,12 +15,26 @@
                     <i class="pi pi-wrench"></i>
                 </button>
             </div>
+            <div class="space-x-2" v-else>
+                <button
+                    @click="saveCourses"
+                    class="text-white font-semibold bg-green-600 px-2 py-1 rounded-md"
+                >
+                    Save Courses
+                </button>
+                <button
+                    @click="cancelEditCourses"
+                    class="font-semibold border border-gray-400 px-2 py-1 rounded-md"
+                >
+                    Cancel
+                </button>
+            </div>
         </div>
         <div
-            class="w-full border border-gray-200 text-center py-10 rounded-md font-bold"
+            class="w-full border border-gray-200 text-center py-10 rounded-md font-semibold text-red-600"
             v-if="activeCourses.length === 0 && selectedCourses.length === 0"
         >
-            No field selected
+            <i class="pi pi-ban"></i> No field selected
         </div>
         <div
             v-else
@@ -40,7 +54,7 @@
             </div>
             <br />
         </div>
-        <div v-if="isEditCourses">
+        <div v-if="isEditCourses" class="py-2.5">
             <div>
                 <h1 class="font-semibold">Available Fields</h1>
                 <div
@@ -70,20 +84,6 @@
                     >
                         <h1 class="font-bold">No available courses</h1>
                     </div>
-                </div>
-                <div class="space-x-2">
-                    <button
-                        @click="saveCourses"
-                        class="text-white font-semibold bg-green-600 px-4 py-1 rounded-md"
-                    >
-                        Save Courses
-                    </button>
-                    <button
-                        @click="cancelEditCourses"
-                        class="font-bold border px-4 py-1 rounded-md"
-                    >
-                        Cancel
-                    </button>
                 </div>
             </div>
         </div>

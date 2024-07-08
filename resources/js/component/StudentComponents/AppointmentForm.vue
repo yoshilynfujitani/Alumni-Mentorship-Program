@@ -243,10 +243,11 @@ export default {
     },
     methods: {
         submitAppointment() {
+            console.log("test");
             const { title, date, mentorId, email, selectedField } = this;
             const { id } = this.selectedStudent;
 
-            if (this.type === "pdc") {
+            if (this.userType === "pdc") {
                 if (!title || !date || !selectedField || !id) {
                     return (this.isIncomplete = true);
                 }
@@ -266,7 +267,7 @@ export default {
                         this.$emit("Sent");
                         this.visible = false;
                     });
-            } else if (this.type === "student") {
+            } else if (this.userType === "student") {
                 if (!title || !date) {
                     return (this.isIncomplete = true);
                 }

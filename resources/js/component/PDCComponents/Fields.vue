@@ -1,6 +1,6 @@
 <template>
     <div
-        class="border border-gray-300 pb-5 rounded-md min-h-screen max-h-screen overflow-y-scroll"
+        class="border border-gray-300 pb-5 rounded-md min-h-screen max-h-screen overflow-y-scroll bg-white"
     >
         <Toast />
         <ConfirmPopup></ConfirmPopup>
@@ -60,7 +60,7 @@
             >
                 Create Field
             </button>
-            <div class="grid grid-cols-2 gap-x-2">
+            <div class="flex flex-wrap space-x-5">
                 <div
                     class="border border-gray-200 p-2.5 rounded-md flex justify-between gap-5 my-2.5"
                     v-for="field in fields"

@@ -41,7 +41,7 @@ export default {
                 plugins: {
                     title: {
                         display: true,
-                        text: `Your most frequent Field of Appointment`,
+                        text: `Frequent Field of Appointment`,
                     },
                 },
             },

@@ -9,7 +9,7 @@
             </div> -->
 
         <div
-            class="md:flex items-center justify-between mb-2 border border-gray-200 p-2.5 rounded-md"
+            class="md:flex items-center justify-between mb-2 border border-gray-200 bg-white p-2.5 rounded-md"
         >
             <div class="">
                 <h1

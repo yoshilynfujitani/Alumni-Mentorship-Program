@@ -110,42 +110,45 @@ class AppointmentController extends Controller
 }
 
     public function getPieChartData(Request $request){
-        
-        $appointments = mentorAppointment::join(DB::raw('adminportal.fields AS field'), 'field.id', '=', 'appointmentdetails.field');
+    $user = Auth::user();
+    $appointments = mentorAppointment::join(DB::raw('adminportal.fields AS field'), 'field.id', '=', 'appointmentdetails.field');
 
-        if($request->role == 1) {
-            $appointments->where('appointmentdetails.studentId', Auth::id())
-                ->select('field.fieldName', 'field.id')
-                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.id AND appointmentdetails.studentId = ' . Auth::id() . ') as count'))
-                ->groupBy('field.fieldName', 'field.id');
-            }
-        elseif($request->role == 2) {
-            $appointments->where('appointmentdetails.mentorId', Auth::id())
-                ->select('field.fieldName', 'field.id')
-                ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.id AND appointmentdetails.mentorId = ' . Auth::id() . ') as count'))
-                ->groupBy('field.fieldName', 'field.id');
-        
-            }
-
-        $appointments = $appointments->get();
-
-        $data = [
-            'labels' => [],
-            'datasets' => [
-                [
-                    'backgroundColor' => ["#41B883", "#FAFA33", "#00D8FF", "#DD1B16"],
-                    'data' => [],
-                ],
-            ],
-        ];
-
-        foreach ($appointments as $appointment) {
-            $data['labels'][] = $appointment->fieldName;
-            $data['datasets'][0]['data'][] = $appointment->count; 
-        }
-
-        return response()->json(['chartData' => $data]);
+    if ($request->role == 1) {
+        $appointments->where('appointmentdetails.studentId', Auth::id())
+            ->select('field.fieldName', 'field.id')
+            ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.id AND appointmentdetails.studentId = ' . Auth::id() . ') as count'))
+            ->groupBy('field.fieldName', 'field.id');
+    } elseif ($request->role == 2) {
+        $appointments->where('appointmentdetails.mentorId', Auth::id())
+            ->select('field.fieldName', 'field.id')
+            ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.id AND appointmentdetails.mentorId = ' . Auth::id() . ') as count'))
+            ->groupBy('field.fieldName', 'field.id');
+    } else {
+        $appointments->select('field.fieldName', 'field.id')
+            ->addSelect(DB::raw('(SELECT COUNT(DISTINCT appointmentId) FROM appointmentdetails WHERE appointmentdetails.field = field.id) as count'))
+            ->groupBy('field.fieldName', 'field.id');
     }
+
+    $appointments = $appointments->get();
+
+    $data = [
+        'labels' => [],
+        'datasets' => [
+            [
+                'backgroundColor' => ["#41B883", "#FAFA33", "#00D8FF", "#DD1B16"],
+                'data' => [],
+            ],
+        ],
+    ];
+
+    foreach ($appointments as $appointment) {
+        $data['labels'][] = $appointment->fieldName;
+        $data['datasets'][0]['data'][] = $appointment->count; 
+    }
+
+    return response()->json(['chartData' => $data]);
+}
+
     public function getBarChartData(Request $request)
     {
         $currentYear = now()->year; 

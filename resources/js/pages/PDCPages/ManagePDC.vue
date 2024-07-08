@@ -6,13 +6,9 @@
                 v-model="search"
                 placeholder="Search PDC"
                 class="border-gray-200 rounded-md"
+                @keyup="getAccounts"
             />
-            <button
-                @click="getAccounts"
-                class="bg-green-600 rounded-md text-white font-semibold px-4 py-2 space-x-5"
-            >
-                Get Accounts <span class="pi pi-search"></span>
-            </button>
+
             <div class="flex justify-content-center">
                 <button
                     @click="visible = true"
@@ -42,7 +38,7 @@
         class="self-start overflow-x-auto w-full shadow-sm sm:rounded-lg z-40"
     >
         <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white"
         >
             <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                 <tr>

@@ -97,14 +97,16 @@ class MentorController extends Controller
     if ($authUser->role === 3) {
         // For admins, get all mentor requests with user details
         $applications = MentorRequest::join('users', 'users.id', '=', 'mentorrequest.userId')
-            ->select('mentorrequest.*', 'users.name', 'users.course')
+            ->join('colleges', 'colleges.id', '=', 'users.course')
+            ->select('mentorrequest.*', 'users.name', 'colleges.CollegeName')
             ->orderBy('mentorrequest.created_at', 'DESC')
             ->paginate(10);
     } else {
         // For other users, get mentor requests filtered by their course with user details
         $applications = MentorRequest::join('users', 'users.id', '=', 'mentorrequest.userId')
+            ->join('colleges', 'colleges.id', '=', 'users.course')
             ->where('users.course', $authUser->course)
-            ->select('mentorrequest.*', 'users.name', 'users.course')
+            ->select('mentorrequest.*', 'users.name', 'colleges.CollegeName')
             ->orderBy('mentorrequest.created_at', 'DESC')
             ->paginate(10);
     }

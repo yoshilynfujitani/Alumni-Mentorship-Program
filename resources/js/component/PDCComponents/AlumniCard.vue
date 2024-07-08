@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        class="bg-white border px-14 my-1.5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
     >
         <div class="flex flex-col items-center py-5">
             <img

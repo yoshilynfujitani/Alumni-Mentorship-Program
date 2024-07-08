@@ -23,7 +23,7 @@
             class="self-start overflow-x-auto w-full shadow-md sm:rounded-lg"
         >
             <table
-                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white"
             >
                 <thead
                     class="text-xs text-gray-700 uppercase dark:text-gray-400"
@@ -56,7 +56,7 @@
                         </th>
                         <td class="px-6 py-4">{{ Mentor.email }}</td>
                         <td class="px-6 py-4">
-                            {{ Mentor.course }}
+                            {{ Mentor.CollegeName }}
                         </td>
                         <td class="flex gap-2 justify-center">
                             <div class="" v-if="Mentor.verified">

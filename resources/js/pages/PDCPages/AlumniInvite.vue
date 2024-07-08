@@ -12,7 +12,7 @@
             />
         </div>
         <div
-            class="grid lg:grid-cols-5 xl:grid-cols-6 gap-2.5 border p-5 rounded-md border-gray-300"
+            class="flex flex-wrap justify-between border p-5 rounded-md border-gray-300 bg-white"
         >
             <div class="" v-for="Alum in Alumni" :key="Alum.id">
                 <AlumniCard :Alum="Alum" />

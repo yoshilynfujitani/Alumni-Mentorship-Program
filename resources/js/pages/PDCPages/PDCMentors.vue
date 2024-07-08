@@ -47,7 +47,7 @@
         v-else
     >
         <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white"
         >
             <thead
                 class="text-xs text-gray-700 uppercase dark:text-gray-400 border-b border-gray-200"
@@ -407,9 +407,14 @@ export default {
             axios
                 .post("/getLatestSchedule", { mentorId: this.currentId })
                 .then(({ data }) => {
-                    this.activeAvailableDays = data.map((day) =>
-                        parseInt(day, 10)
-                    );
+                    if (data && data.length > 0) {
+                        this.activeAvailableDays = data.map((day) =>
+                            parseInt(day, 10)
+                        );
+                    } else {
+                        console.log("No schedule data available.");
+                        this.activeAvailableDays = [];
+                    }
                 })
                 .catch((error) => {
                     console.error("Error fetching latest schedule:", error);
