@@ -15,20 +15,25 @@
                 >
             </div>
             <div v-if="navOpen" class="md:hidden">
-                <button class="text-gray-400" @click="this.navOpen = false">
+                <button
+                    class="text-gray-400 pb-5"
+                    @click="this.navOpen = false"
+                >
                     <a
                         href="#"
                         class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <i class="pi pi-times" style="font-size: 1rem"></i>
-                        <span class="ms-3">Back</span>
+                        <span class="ms-3 text-sm">Back</span>
                     </a>
                 </button>
             </div>
-            <ul class="space-y-2 font-medium flex flex-col justify-between">
-                <div class="pb-[300px] space-y-4">
-                    <li>
-                        <router-link to="/home">
+            <ul
+                class="space-y-2 font-medium flex flex-col justify-between min-h-[500px] max-h-full"
+            >
+                <div class="space-y-4">
+                    <li @click="this.navOpen = false">
+                        <router-link to="/student/home">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -42,8 +47,8 @@
                         </router-link>
                     </li>
 
-                    <li>
-                        <router-link to="/mentors">
+                    <li @click="this.navOpen = false">
+                        <router-link to="/student/mentors">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -57,8 +62,8 @@
                         </router-link>
                     </li>
 
-                    <li>
-                        <router-link to="/appointments">
+                    <li @click="this.navOpen = false">
+                        <router-link to="/student/appointments">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -72,8 +77,8 @@
                         </router-link>
                     </li>
 
-                    <li>
-                        <router-link to="/chat">
+                    <li @click="this.navOpen = false">
+                        <router-link to="/student/chat">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -86,8 +91,8 @@
                             </a>
                         </router-link>
                     </li>
-                    <li>
-                        <router-link to="/studenttickets">
+                    <li @click="this.navOpen = false">
+                        <router-link to="/student/studenttickets">
                             <a
                                 href="#"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -105,7 +110,7 @@
                 <li @click="logout">
                     <a
                         href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                        class="flex items-center p-2 py-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
                             class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -254,7 +259,8 @@
     </div>
 
     <div
-        class="flex items-center justify-center relative shadow-sm py-2.5 md:hidden"
+    v-if="!navOpen"
+        class="sticky flex items-center justify-center top-0 z-40 bg-gray-50 shadow-sm py-2.5 md:hidden"
     >
         <button @click="this.navOpen = true" class="absolute left-0 ml-5">
             <i class="pi pi-list text-xl"></i>
@@ -264,7 +270,7 @@
         </div>
     </div>
     <div class="m-0 md:ml-[250px] bg-[#fdfdff]">
-        <div class="min-h-screen md:flex flex-col px-5 md:px-20">
+        <div class="min-h-screen md:flex flex-col md:px-20">
             <router-view></router-view>
             <a href="https://www.google.com/" target="_blank">
                 <div

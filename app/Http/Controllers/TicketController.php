@@ -26,6 +26,7 @@ class TicketController extends Controller
 
         return;
     }
+   
    public function getTickets(){
     $user = Auth::user();
     $data = null;

@@ -98,17 +98,94 @@
                                 <Dialog
                                     v-model:visible="visible"
                                     modal
-                                    header="Ticket Remarks"
-                                    :style="{ width: '25rem' }"
+                                    header="Appointment Remarks"
+                                    :style="{ width: '35rem' }"
                                 >
-                                    <button>Resend Appointment</button>
-                                    <div
-                                        class="border min-h-[250px] px-5 py-2.5 rounded border-gray-200"
+                                    <button
+                                        v-if="!willResched"
+                                        @click="willResched = true"
+                                        class="bg-yellow-400 text-white px-4 py-2 rounded-md my-2 font-medium"
                                     >
-                                        {{ appointment.remarks }}
+                                        Request a Reschedule
+                                    </button>
+                                    <div
+                                        v-if="willResched"
+                                        class="my-2 space-x-5"
+                                    >
+                                        <button @click="willResched = false">
+                                            Back
+                                        </button>
+                                        <Calendar
+                                            v-model="newDate"
+                                            showIcon
+                                            iconDisplay="input"
+                                        />
+                                    </div>
+                                    <button
+                                        v-if="willResched"
+                                        @click="
+                                            resched(appointment.appointmentId)
+                                        "
+                                        class="bg-green-400 text-white px-4 py-2 rounded-md my-2 font-medium"
+                                    >
+                                        Confirm Reschedule
+                                    </button>
+
+                                    <div
+                                        class="card border border-gray-300 rounded-md"
+                                    >
+                                        <Accordion :activeIndex="0">
+                                            <AccordionTab header="Your Request">
+                                                <p class="text-sm">
+                                                    Appointment Title:
+                                                    <span
+                                                        class="font-medium text-base"
+                                                    >
+                                                        {{
+                                                            appointment.title
+                                                        }}</span
+                                                    >
+                                                </p>
+                                                <p class="text-sm">
+                                                    Field:
+                                                    <span
+                                                        class="font-medium text-base"
+                                                    >
+                                                        {{
+                                                            appointment.fieldName
+                                                        }}</span
+                                                    >
+                                                </p>
+                                                <p class="text-sm">
+                                                    Start Date:
+                                                    <span
+                                                        class="font-medium text-base"
+                                                    >
+                                                        {{
+                                                            moment(
+                                                                appointment.startSchedule,
+                                                                "YYYY-MM-DD HH:mm:ss"
+                                                            ).format(
+                                                                "MMMM Do YYYY"
+                                                            )
+                                                        }}</span
+                                                    >
+                                                </p>
+                                            </AccordionTab>
+                                            <AccordionTab
+                                                header="Reason for Rejection"
+                                                class="rejection-header"
+                                            >
+                                                <p>
+                                                    {{ appointment.remarks }}
+                                                </p>
+                                            </AccordionTab>
+                                        </Accordion>
                                     </div>
 
-                                    <div class="flex justify-content-end gap-2">
+                                    <div
+                                        class="flex justify-content-end gap-2 my-2.5"
+                                    >
                                         <Button
                                             type="button"
                                             label="Cancel"
@@ -164,6 +241,9 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+
+import Calendar from "primevue/calendar";
+
 import Chat from "../component/Chat.vue";
 import FeedbackForm from "../component/StudentComponents/FeedbackForm.vue";
 import Pagination from "../utils/Pagination.vue";
@@ -171,6 +251,8 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import moment from "moment";
 import Toast from "primevue/toast";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 
 export default {
     computed: {
@@ -183,15 +265,20 @@ export default {
         Dialog,
         Button,
         Toast,
+        Accordion,
+        AccordionTab,
+        Calendar,
     },
 
     data() {
         return {
+            willResched: false,
             loading: false,
             appointments: null,
             pagination: null,
             visible: false,
             moment: moment,
+            newDate: null,
         };
     },
 
@@ -233,6 +320,24 @@ export default {
                         last_page: data.last_page,
                         total: data.total,
                     };
+                })
+                .catch((error) => {
+                    console.error("Error fetching mentors:", error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
+        resched(id) {
+            this.isLoading = true;
+
+            axios
+                .post("/requestReschedule", { id, date: this.newDate })
+                .then(({ data }) => {
+                    this.willResched = false;
+                    this.newDate = null;
+                    this.visible = false;
+                    this.getAppointments();
                 })
                 .catch((error) => {
                     console.error("Error fetching mentors:", error);

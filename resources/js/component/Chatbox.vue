@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gray-50 pb-32 rounded-md w-full flex-grow border border-gray-200 shadow-sm overflow-clip"
+        class="bg-gray-50 min-h-full rounded-md w-full overflow-scroll flex-grow border border-gray-200 shadow-sm md:overflow-clip"
     >
         <div
             class="w-full h-full flex items-center justify-center"
@@ -8,24 +8,35 @@
         >
             <h1>No conversation selected</h1>
         </div>
-        <div class="w-full h-full" v-else>
-            <div class="py-2.5 px-5 w-full bg-white shadow-sm" v-if="convoId">
-                <div class="flex items-center gap-1.5">
-                    <img
-                        class="w-10 h-10 rounded-full shadow-lg"
-                        src="../../../public/DefaultAvatar.webp"
-                        alt=""
-                    />
-                    {{ userName }}
+        <div
+            class="w-full min-h-full md:h-full flex pb-32 md:pb-36 flex-col justify-between"
+            v-else
+        >
+            <div
+                class="py-2.5 px-5 w-full flex justify-between bg-white shadow-sm"
+                v-if="convoId"
+            >
+                <div class="">
+                    <div class="flex items-center gap-1.5">
+                        <img
+                            class="w-10 h-10 rounded-full shadow-lg"
+                            src="../../../public/DefaultAvatar.webp"
+                            alt=""
+                        />
+                        {{ userName }}
+                    </div>
+                    <div class="flex items-center gap-1" v-if="userIsOnline">
+                        <div class="w-3 h-3 rounded-full bg-green-600"></div>
+                        <h1 class="text-sm">Online</h1>
+                    </div>
+                    <div class="flex items-center gap-1" v-else>
+                        <div class="w-3 h-3 rounded-full bg-red-600"></div>
+                        <h1 class="text-sm">Offline</h1>
+                    </div>
                 </div>
-                <div class="flex items-center gap-1" v-if="userIsOnline">
-                    <div class="w-3 h-3 rounded-full bg-green-600"></div>
-                    <h1 class="text-sm">Online</h1>
-                </div>
-                <div class="flex items-center gap-1" v-else>
-                    <div class="w-3 h-3 rounded-full bg-red-600"></div>
-                    <h1 class="text-sm">Offline</h1>
-                </div>
+                <button class="md:hidden text-sm" @click="$emit('clear')">
+                    Back
+                </button>
             </div>
             <div class="flex items-center justify-center h-full" v-else>
                 Please Select chat to get started
@@ -139,8 +150,9 @@
                     class="bg-green-800 px-4 py-2 rounded-md text-gray-50 text-ellipsis overflow-hidden max-w-[200px] max-h-10 break-keep"
                 >
                     <span v-if="fileName">{{ fileName }}</span>
-                    <span v-else
-                        ><i class="pi pi-cloud-download"></i> Upload File</span
+                    <span class="flex items-center gap-2.5" v-else
+                        ><i class="pi pi-cloud-download"></i>
+                        <span class="hidden md:block">Upload File</span></span
                     >
                 </button>
 

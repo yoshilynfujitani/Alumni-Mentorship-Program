@@ -3,13 +3,13 @@
 
     <div class="" v-if="loading"><h1>Loading...</h1></div>
 
-    <div class="md:w-full my-10 overflow-clip px-10" v-else>
+    <div class="md:w-full my-10 overflow-clip px-2.5 md:px-10" v-else>
         <!-- <div class="w-full mb-2.5 bg-gray-50">
                 <Menubar :model="items" />
             </div> -->
 
         <div
-            class="md:flex items-center justify-between mb-2 border border-gray-200 bg-white p-2.5 rounded-md"
+            class="flex items-center justify-between mb-2 border border-gray-200 bg-white p-2.5 rounded-md"
         >
             <div class="">
                 <h1
@@ -224,7 +224,11 @@
                                             'text-green-400': this.rating > 3,
                                         }"
                                     >
-                                        {{ this.rating }}.0
+                                        <!-- {{ this.rating }}.0 --><p
+                                        class="text-white text-sm bg-red-400 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
+                                    >
+                                        Hidden
+                                    </p>
                                     </p>
                                 </div>
                             </div>
@@ -262,10 +266,7 @@
                                     <p
                                         class="text-white text-sm bg-gray-800 px-2 py-1 w-fit rounded-md flex items-center gap-1 hover:cursor-pointer"
                                     >
-                                        View
-                                        <span
-                                            class="pi pi-arrow-right text-xs"
-                                        ></span>
+                                        Hidden
                                     </p>
                                 </div>
                             </div>

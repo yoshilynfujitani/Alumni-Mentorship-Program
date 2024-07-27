@@ -267,7 +267,6 @@ export default {
                 });
         },
         verify(requestStatus, studentId, field, ticketId) {
-            co;
             axios
                 .post("/verifyticket", {
                     requestStatus,

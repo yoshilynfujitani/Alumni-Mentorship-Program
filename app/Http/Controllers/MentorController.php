@@ -216,6 +216,7 @@ public function getMentorsStudent(Request $request) {
     
     public function getMentorAppointment(){
         return mentorAppointment::where('appointmentdetails.mentorId', Auth::id())
+        ->orderBy('appointmentdetails.updated_at', 'desc')
         ->join('appointmentstatus', 'appointmentstatus.statusId', '=', 'appointmentdetails.status')
         ->join(DB::raw('adminportal.users AS users'), 'users.id', '=', 'appointmentdetails.studentId')
         ->join(DB::raw('adminportal.colleges AS college'), 'college.id', '=', 'users.course')

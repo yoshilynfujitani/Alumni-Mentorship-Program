@@ -78,6 +78,7 @@ Route::get("/getstudentrequests", [MentorController::class, "getMentorAppointmen
 Route::post("/verifyrequest", [MentorController::class, "verifyRequest"]);
 Route::post("/getrecentfeedback", [FeedbackController::class, "getRecentMentorFeedback"]);
 Route::post("/getrecenttickets", [TicketController::class, "getRecentStudentTicketRequests"]);
+Route::post("/requestReschedule", [AppointmentController::class, "requestReschedule"]);
 Route::post("/getAppointment", [AppointmentController::class, "getAppointment"]);
 Route::post("/getFeedback", [FeedbackController::class, "getFeedback"]);
 Route::post("/setSchedule", [ScheduleController::class, "setSchedule"]);

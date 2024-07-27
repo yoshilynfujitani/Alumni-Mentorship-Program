@@ -59,9 +59,25 @@
                                 class="pi pi-building text-yellow-400"
                                 style="font-size: 1rem"
                             ></i>
+                            <p class="font-medium">College</p>
                             <div>
                                 {{ this.requestDetails.CollegeName }}
                             </div>
+                        </li>
+                        <li class="flex flex-col items-center justify-between">
+                            <i
+                                class="pi pi-clock text-yellow-400"
+                                style="font-size: 1rem"
+                            ></i>
+                            <p class="font-medium">Requested Date</p>
+                            <h1 class="text-sm text-gray-400">
+                                {{
+                                    moment(
+                                        this.requestDetails?.startSchedule,
+                                        "YYYY-MM-DD HH:mm:ss"
+                                    ).format("MMMM Do YYYY")
+                                }}
+                            </h1>
                         </li>
                     </ul>
                 </div>
@@ -69,7 +85,7 @@
                     v-if="this.requestDetails.statusId === 0"
                     class="flex flex-col items-center w-full justify-around gap-2 self-end mt-5"
                 >
-                    <h1
+                    <!-- <h1
                         class="self-start text-sm bg-green-600 text-white py-1 px-2 rounded-full flex items-center justify-center gap-1"
                     >
                         <span
@@ -78,11 +94,11 @@
                             ></i
                         ></span>
                         Verify Appointment
-                    </h1>
+                    </h1> -->
                     <div class="flex w-full gap-2.5">
                         <div
                             @click="this.verifying = true"
-                            class="transition-all border text-center border-red-400 rounded-md w-full py-2 font-semibold text-red-500 hover:bg-red-400 hover:text-white hover:cursor-pointer"
+                            class="transition-all text-center rounded-md w-full py-2 font-semibold bg-red-500 text-white hover:bg-red-600 hover:cursor-pointer"
                         >
                             Reject
                         </div>
@@ -94,7 +110,7 @@
                                     this.requestDetails.appointmentId
                                 )
                             "
-                            class="transition-all border text-center border-green-400 rounded-md w-full py-2 font-semibold text-green-500 hover:bg-green-400 hover:text-white hover:cursor-pointer"
+                            class="transition-all text-center rounded-md w-full bg-green-500 py-2 font-semibold text-white hover:bg-green-600 hover:cursor-pointer"
                         >
                             Accept
                         </div>
@@ -151,7 +167,9 @@
                 </div>
             </div>
             <div class="mr-5" v-if="this.verifying">
-                <button @click="this.verifying = false">Back</button>
+                <button @click="this.verifying = false" class="py-2.5 text-sm">
+                    Back
+                </button>
                 <div
                     class="max-w-xl mx-auto flex w-full flex-col border border-gray-200 rounded-lg bg-white p-8"
                 >
@@ -161,8 +179,8 @@
                         Reason for Rejection
                     </h2>
                     <p class="mb-5 leading-relaxed text-gray-600">
-                        If you had any issues or you liked our product, please
-                        share with us!
+                        Please state the reason for rejection below, the student
+                        may apply for a rescheduling of the appointment.
                     </p>
 
                     <div class="mb-4">
@@ -335,6 +353,7 @@ export default {
             feedbackDetails: null,
             recentTickets: null,
             remarks: "",
+            newDate: null,
         };
     },
     computed: {

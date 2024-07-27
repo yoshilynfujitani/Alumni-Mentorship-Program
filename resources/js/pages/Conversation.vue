@@ -1,9 +1,11 @@
 <template>
     <Layout1>
-        <div class="my-10 flex w-full gap-5 h-screen pb-20">
+        <div
+            class="my-10 px-2.5 justify-center flex w-full md:gap-5 h-screen pb-20"
+        >
             <!-- Message Headers -->
             <div
-                class="p-5 bg-white rounded-md min-w-[400px] max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-50 scrollbar-track-gray-50"
+                class="p-2.5 md:p-5 bg-white rounded-md md:min-w-[400px] md:max-w-[400px] min-h-full max-h-full border border-gray-200 shadow-sm overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-50 scrollbar-track-gray-50"
             >
                 <div>
                     <h1 class="font-bold text-2xl py-2">Messages</h1>
@@ -74,11 +76,26 @@
                 </div>
             </div>
             <!-- Messages -->
+
             <Chatbox
+                @clear="ConvoId = null"
+                class="fixed md:static top-0 z-40 flex justify-center max-h-full md:block md:w-screen md:h-full"
+                :class="{ hidden: !ConvoId }"
                 :convoId="ConvoId"
                 :userIsOnline="userIsOnline"
                 :userName="ConvoWithName"
             />
+
+            <!-- <div
+                v-if="ConvoId"
+                class=" h-full pb-36 z-40 md:hidden"
+            >
+                <Chatbox
+                    :convoId="ConvoId"
+                    :userIsOnline="userIsOnline"
+                    :userName="ConvoWithName"
+                />
+            </div> -->
         </div>
     </Layout1>
 </template>

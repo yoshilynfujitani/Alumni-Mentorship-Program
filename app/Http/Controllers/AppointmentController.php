@@ -34,6 +34,20 @@ class AppointmentController extends Controller
     
         return $res;
     }
+
+    public function requestReschedule(Request $request){
+        
+        $currentAppointment = mentorAppointment::where('appointmentId', $request->id)->first();
+ 
+        $currentAppointment->startSchedule = Carbon::parse($request->date);
+        $currentAppointment->Status = 0;
+        $currentAppointment->save();
+        
+        return ;
+
+
+        
+    }
     public function getOngoingAppointments(Request $request){
 
         if($request->userType === 1){

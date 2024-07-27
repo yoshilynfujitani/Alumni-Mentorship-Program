@@ -1,12 +1,14 @@
 <template lang="">
     <div class="h-full w-full">
         <div
-            class="bg-white border border-gray-200 rounded-lg shadow-sm h-full w-56 py-5 px-2.5"
+            class="bg-white border border-gray-200 rounded-lg shadow-sm h-full md:w-56 py-5 px-2.5 w-full"
         >
             <div
                 class="flex px-5 md:px-0 md:flex-col justify-end items-center h-full w-full"
             >
-                <div class="items-center flex md:flex-col w-full">
+                <div
+                    class="items-center space-x-1.5 md:space-x-0 flex md:flex-col w-full"
+                >
                     <img
                         class="w-10 h-10 md:w-24 md:h-24 mb-3 rounded-full shadow-lg"
                         src="../../../../public/DefaultAvatar.webp"
@@ -18,7 +20,7 @@
                         {{ MentorDetails.name }}
                     </h5>
                     <h1
-                        class="text-sm text-center text-gray-500 dark:text-gray-400"
+                        class="text-sm text-center text-gray-500 dark:text-gray-400 hidden md:block"
                     >
                         {{ MentorDetails.fieldName }}
                     </h1>
@@ -47,6 +49,7 @@
                             <i class="pi pi-eye"></i>
                         </button>
                         <Dialog
+                            class="max-w-[400px] md: w-full"
                             v-model:visible="visible"
                             modal
                             :header="MentorDetails.name + '\'s Profile'"
@@ -100,7 +103,7 @@
                                     for Appointments
                                 </h1>
                                 <div
-                                    class="flex space-x-2.5 border-gray-200 text-gray-200"
+                                    class="flex space-x-1 md:space-x-2.5 border-gray-200 text-gray-200"
                                 >
                                     <div
                                         class="border px-2 py-1 rounded-md"

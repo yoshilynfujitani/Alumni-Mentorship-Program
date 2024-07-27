@@ -36,7 +36,7 @@
                     </h1>
                 </div>
             </div>
-            <div class="my-2.5 min-h-[500px] p-4">
+            <div class="my-2.5 min-h-[200px] p-4">
                 <div class="card border border-gray-300 rounded-md">
                     <Accordion :activeIndex="0">
                         <AccordionTab header="Your Request">
